@@ -1,0 +1,809 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Estudio Contable Iglesias | Contabilidad & Agro</title>
+
+  <meta name="description" content="Estudio Contable Iglesias. Servicios contables, impositivos y asesoramiento para empresas, emprendedores y productores agropecuarios.">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #172033;
+      background: #f8f8f6;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* NAVBAR */
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(255,255,255,0.96);
+      border-bottom: 1px solid #e5e2dc;
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: auto;
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #102a43;
+      letter-spacing: 0.5px;
+    }
+
+    .logo span {
+      color: #b89452;
+    }
+
+    .menu {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .menu a:hover {
+      color: #b89452;
+    }
+
+    .button {
+      background: #102a43;
+      color: white;
+      padding: 12px 21px;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .button:hover {
+      background: #b89452;
+    }
+
+    /* HERO */
+
+    .hero {
+      min-height: 100vh;
+      padding: 160px 25px 100px;
+      display: flex;
+      align-items: center;
+      background:
+        linear-gradient(rgba(16,42,67,0.91), rgba(16,42,67,0.91)),
+        radial-gradient(circle at 80% 20%, #b89452, transparent 30%);
+      color: white;
+    }
+
+    .hero-content {
+      max-width: 1200px;
+      width: 100%;
+      margin: auto;
+    }
+
+    .hero small {
+      color: #d8bb7a;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: bold;
+    }
+
+    .hero h1 {
+      max-width: 850px;
+      font-size: clamp(42px, 7vw, 76px);
+      line-height: 1.05;
+      margin: 22px 0;
+    }
+
+    .hero h1 span {
+      color: #d8bb7a;
+    }
+
+    .hero p {
+      max-width: 650px;
+      font-size: 20px;
+      color: #e7edf3;
+      margin-bottom: 35px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .button-gold {
+      background: #b89452;
+      color: white;
+      padding: 14px 25px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .button-outline {
+      border: 1px solid rgba(255,255,255,0.6);
+      color: white;
+      padding: 13px 25px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    /* SECTIONS */
+
+    section {
+      padding: 100px 25px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section-title {
+      max-width: 700px;
+      margin-bottom: 55px;
+    }
+
+    .section-title small {
+      color: #b89452;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .section-title h2 {
+      font-size: 42px;
+      color: #102a43;
+      margin: 12px 0;
+    }
+
+    .section-title p {
+      color: #65758b;
+      font-size: 17px;
+    }
+
+    /* SERVICIOS */
+
+    .services {
+      background: white;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .card {
+      padding: 35px;
+      border: 1px solid #e5e2dc;
+      background: #fff;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(16,42,67,0.09);
+    }
+
+    .card-number {
+      color: #b89452;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .card h3 {
+      margin: 12px 0;
+      color: #102a43;
+      font-size: 22px;
+    }
+
+    .card p {
+      color: #65758b;
+    }
+
+    /* AGRO */
+
+    .agro {
+      background: #102a43;
+      color: white;
+    }
+
+    .agro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .agro h2 {
+      font-size: 45px;
+      line-height: 1.15;
+      margin: 15px 0 25px;
+    }
+
+    .agro p {
+      color: #dce5ec;
+      font-size: 17px;
+    }
+
+    .agro-label {
+      color: #d8bb7a;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .agro-box {
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 40px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .agro-box h3 {
+      color: #d8bb7a;
+      margin-bottom: 20px;
+      font-size: 25px;
+    }
+
+    .agro-box ul {
+      list-style: none;
+    }
+
+    .agro-box li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .agro-box li::before {
+      content: "✓";
+      color: #d8bb7a;
+      margin-right: 10px;
+    }
+
+    /* SOBRE NOSOTROS */
+
+    .about {
+      background: #f8f8f6;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .about-text h2 {
+      font-size: 42px;
+      color: #102a43;
+      margin-bottom: 20px;
+    }
+
+    .about-text p {
+      color: #65758b;
+      margin-bottom: 18px;
+      font-size: 17px;
+    }
+
+    .about-highlight {
+      border-left: 4px solid #b89452;
+      padding-left: 22px;
+      font-weight: bold;
+      color: #102a43;
+    }
+
+    .about-card {
+      background: white;
+      padding: 50px;
+      border-radius: 8px;
+      border: 1px solid #e5e2dc;
+    }
+
+    .about-card .big {
+      font-size: 55px;
+      font-weight: bold;
+      color: #b89452;
+    }
+
+    .about-card h3 {
+      color: #102a43;
+      margin-bottom: 10px;
+    }
+
+    /* PORTAL */
+
+    .portal {
+      background: white;
+      text-align: center;
+    }
+
+    .portal-content {
+      max-width: 750px;
+      margin: auto;
+    }
+
+    .portal h2 {
+      font-size: 42px;
+      color: #102a43;
+      margin: 15px 0;
+    }
+
+    .portal p {
+      color: #65758b;
+      font-size: 17px;
+      margin-bottom: 30px;
+    }
+
+    /* CONTACTO */
+
+    .contact {
+      background: #f8f8f6;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+
+    .contact h2 {
+      font-size: 42px;
+      color: #102a43;
+      margin-bottom: 20px;
+    }
+
+    .contact p {
+      color: #65758b;
+      font-size: 17px;
+      margin-bottom: 15px;
+    }
+
+    .contact-box {
+      background: #102a43;
+      color: white;
+      padding: 40px;
+      border-radius: 8px;
+    }
+
+    .contact-box h3 {
+      color: #d8bb7a;
+      margin-bottom: 20px;
+    }
+
+    .contact-item {
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* FOOTER */
+
+    footer {
+      background: #0b1d2e;
+      color: #b9c5d0;
+      text-align: center;
+      padding: 35px 20px;
+      font-size: 14px;
+    }
+
+    footer strong {
+      color: white;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 850px) {
+
+      .menu {
+        display: none;
+      }
+
+      .cards,
+      .agro-grid,
+      .about-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+      }
+
+      .section-title h2,
+      .agro h2,
+      .about-text h2,
+      .portal h2,
+      .contact h2 {
+        font-size: 34px;
+      }
+
+      section {
+        padding: 75px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+
+  <header>
+    <nav>
+      <a href="#inicio" class="logo">
+        ESTUDIO <span>IGLESIAS</span>
+      </a>
+
+      <ul class="menu">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#agro">Agro</a></li>
+        <li><a href="#nosotros">Estudio</a></li>
+        <li><a href="#portal">Portal</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+
+      <a href="#contacto" class="button">Consultar</a>
+    </nav>
+  </header>
+
+
+  <!-- HERO -->
+
+  <section class="hero" id="inicio">
+    <div class="hero-content">
+
+      <small>Estudio Contable Iglesias</small>
+
+      <h1>
+        Contabilidad que
+        <span>acompaña tus decisiones.</span>
+      </h1>
+
+      <p>
+        Soluciones contables e impositivas para empresas,
+        emprendedores y productores agropecuarios.
+        Una mirada profesional, cercana y estratégica.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#contacto" class="button-gold">
+          Quiero hacer una consulta
+        </a>
+
+        <a href="#servicios" class="button-outline">
+          Conocer servicios
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- SERVICIOS -->
+
+  <section class="services" id="servicios">
+
+    <div class="container">
+
+      <div class="section-title">
+        <small>Servicios profesionales</small>
+
+        <h2>
+          Una estructura contable
+          pensada para tu crecimiento.
+        </h2>
+
+        <p>
+          Trabajamos para que la información contable e impositiva
+          deje de ser solamente una obligación y se convierta
+          en una herramienta para tomar mejores decisiones.
+        </p>
+      </div>
+
+
+      <div class="cards">
+
+        <div class="card">
+          <span class="card-number">01</span>
+          <h3>Contabilidad</h3>
+          <p>
+            Registración, análisis y seguimiento de la información
+            contable para empresas, profesionales y contribuyentes.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <span class="card-number">02</span>
+          <h3>Impuestos</h3>
+          <p>
+            Planificación y cumplimiento de obligaciones fiscales,
+            con una mirada integral sobre la situación de cada cliente.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <span class="card-number">03</span>
+          <h3>Asesoramiento</h3>
+          <p>
+            Acompañamiento profesional para analizar alternativas,
+            ordenar información y tomar decisiones con mayor claridad.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <span class="card-number">04</span>
+          <h3>Empresas</h3>
+          <p>
+            Información financiera y contable para acompañar
+            la gestión y el crecimiento de empresas.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <span class="card-number">05</span>
+          <h3>Emprendedores</h3>
+          <p>
+            Herramientas para ordenar la actividad, conocer los
+            números y construir una estructura sostenible.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <span class="card-number">06</span>
+          <h3>Productores agropecuarios</h3>
+          <p>
+            Servicios contables e impositivos adaptados
+            a las particularidades de la actividad agropecuaria.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- AGRO -->
+
+  <section class="agro" id="agro">
+
+    <div class="container agro-grid">
+
+      <div>
+
+        <span class="agro-label">
+          Especialización
+        </span>
+
+        <h2>
+          El campo necesita
+          números claros.
+        </h2>
+
+        <p>
+          Desarrollamos una propuesta especialmente orientada
+          al sector agropecuario, entendiendo la dinámica de la
+          actividad y la importancia de contar con información
+          confiable para decidir.
+        </p>
+
+      </div>
+
+
+      <div class="agro-box">
+
+        <h3>
+          Contabilidad agropecuaria
+        </h3>
+
+        <ul>
+          <li>Seguimiento contable de la actividad</li>
+          <li>Análisis de información económica</li>
+          <li>Planificación impositiva</li>
+          <li>Orden y control de documentación</li>
+          <li>Información para la toma de decisiones</li>
+        </ul>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- SOBRE EL ESTUDIO -->
+
+  <section class="about" id="nosotros">
+
+    <div class="container about-grid">
+
+      <div class="about-text">
+
+        <small style="color:#b89452; font-weight:bold;">
+          EL ESTUDIO
+        </small>
+
+        <h2>
+          Profesionalidad,
+          cercanía y visión.
+        </h2>
+
+        <p>
+          Estudio Contable Iglesias nace con una mirada
+          moderna sobre la profesión contable.
+        </p>
+
+        <p>
+          Buscamos construir relaciones profesionales de largo
+          plazo, acompañando a cada cliente con información clara,
+          orden y criterio.
+        </p>
+
+        <p class="about-highlight">
+          Porque detrás de cada número hay una decisión.
+        </p>
+
+      </div>
+
+
+      <div class="about-card">
+
+        <div class="big">01</div>
+
+        <h3>
+          Una nueva forma de entender
+          el servicio contable.
+        </h3>
+
+        <p>
+          Tecnología, organización y asesoramiento profesional
+          para simplificar la gestión y ayudarte a enfocarte
+          en lo importante.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- PORTAL -->
+
+  <section class="portal" id="portal">
+
+    <div class="container portal-content">
+
+      <small style="color:#b89452; font-weight:bold; letter-spacing:2px;">
+        PORTAL DE CLIENTES
+      </small>
+
+      <h2>
+        Tu información,
+        siempre a mano.
+      </h2>
+
+      <p>
+        Próximamente vas a poder acceder a un espacio exclusivo
+        para consultar documentación, vencimientos, obligaciones
+        y otra información relacionada con tu actividad.
+      </p>
+
+      <a href="#contacto" class="button">
+        Quiero ser cliente
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- CONTACTO -->
+
+  <section class="contact" id="contacto">
+
+    <div class="container contact-grid">
+
+      <div>
+
+        <small style="color:#b89452; font-weight:bold; letter-spacing:2px;">
+          CONTACTO
+        </small>
+
+        <h2>
+          Empecemos a trabajar juntos.
+        </h2>
+
+        <p>
+          Si querés ordenar tu situación contable,
+          analizar tu actividad o simplemente hacer una consulta,
+          podés comunicarte con el estudio.
+        </p>
+
+      </div>
+
+
+      <div class="contact-box">
+
+        <h3>
+          Estudio Contable Iglesias
+        </h3>
+
+        <div class="contact-item">
+          📧 Email: próximamente
+        </div>
+
+        <div class="contact-item">
+          📱 WhatsApp: próximamente
+        </div>
+
+        <div class="contact-item">
+          📍 Buenos Aires, Argentina
+        </div>
+
+        <div class="contact-item">
+          💼 Atención profesional
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <p>
+      © 2026 <strong>Estudio Contable Iglesias</strong>.
+      Todos los derechos reservados.
+    </p>
+
+    <p style="margin-top:8px;">
+      Contadora Pública
+    </p>
+
+  </footer>
+
+
+</body>
+</html>
+```
