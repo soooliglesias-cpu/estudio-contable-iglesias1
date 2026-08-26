@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,14 +7,14 @@
 
 <title>Estudio Contable Iglesias | Contabilidad, Impuestos & Agro</title>
 
-<meta name="description" content="Estudio Contable Iglesias. Servicios contables, impositivos y asesoramiento profesional para empresas, emprendedores y productores agropecuarios.">
+<meta name="description" content="Estudio Contable Iglesias. Contabilidad, impuestos, asesoramiento profesional y gestión agropecuaria.">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
 /* =========================================================
-   ESTILOS GENERALES
+   RESET
 ========================================================= */
 
 *{
@@ -49,8 +48,8 @@ select{
 
 .container{
     max-width:1200px;
-    margin:auto;
     width:100%;
+    margin:auto;
 }
 
 section{
@@ -68,7 +67,7 @@ header{
     left:0;
     width:100%;
     height:76px;
-    background:rgba(255,255,255,.97);
+    background:rgba(255,255,255,.98);
     border-bottom:1px solid #e1e5e9;
     z-index:1000;
 }
@@ -84,7 +83,7 @@ nav{
 }
 
 .logo{
-    font-size:21px;
+    font-size:20px;
     font-weight:bold;
     color:#102a43;
     letter-spacing:.5px;
@@ -97,36 +96,40 @@ nav{
 
 .menu{
     display:flex;
-    gap:21px;
+    align-items:center;
+    gap:22px;
     list-style:none;
     font-size:13px;
     font-weight:bold;
 }
 
-.menu a{
+/* =========================================================
+   MENU SIN SUBRAYADO
+========================================================= */
+
+.menu li,
+.menu a,
+.menu a:hover,
+.menu a:focus,
+.menu a:active{
     text-decoration:none !important;
+}
+
+.menu a{
     color:#172033;
-    position:relative;
     padding:8px 0;
+    border:none !important;
+    box-shadow:none !important;
 }
 
 .menu a:hover{
     color:#b89452;
 }
 
+/* SIN LINEA DEBAJO */
 .menu a::after{
-    content:"";
-    position:absolute;
-    left:0;
-    bottom:0;
-    width:0;
-    height:2px;
-    background:#b89452;
-    transition:.3s;
-}
-
-.menu a:hover::after{
-    width:100%;
+    display:none !important;
+    content:none !important;
 }
 
 .nav-button{
@@ -175,7 +178,7 @@ nav{
 ========================================================= */
 
 .section-title{
-    max-width:760px;
+    max-width:780px;
     margin-bottom:50px;
 }
 
@@ -248,7 +251,7 @@ nav{
 
 
 /* =========================================================
-   SOBRE NOSOTROS
+   SOBRE EL ESTUDIO
 ========================================================= */
 
 .about{
@@ -303,12 +306,12 @@ nav{
 
 .photo-placeholder strong{
     display:block;
-    font-size:25px;
+    font-size:28px;
     margin-bottom:8px;
 }
 
 .photo-placeholder span{
-    color:#e8d6a8;
+    color:#f0dfb4;
     font-size:14px;
 }
 
@@ -505,7 +508,7 @@ nav{
 
 
 /* =========================================================
-   AGRO
+   AGRO PUBLICO
 ========================================================= */
 
 .agro{
@@ -815,7 +818,7 @@ textarea{
 
 .agro-client h3{
     color:#102a43;
-    margin-bottom:20px;
+    margin-bottom:25px;
 }
 
 .agro-client-grid{
@@ -838,6 +841,35 @@ textarea{
 
 .agro-data strong{
     color:#102a43;
+}
+
+
+/* =========================================================
+   AGRO DETALLE
+========================================================= */
+
+.agro-modules{
+    margin-top:25px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.agro-module{
+    border:1px solid #e1e5e9;
+    border-radius:7px;
+    padding:20px;
+    background:#fff;
+}
+
+.agro-module h4{
+    color:#102a43;
+    margin-bottom:7px;
+}
+
+.agro-module p{
+    color:#687789;
+    font-size:14px;
 }
 
 
@@ -888,7 +920,7 @@ textarea{
 
 
 /* =========================================================
-   FECHAS
+   FECHAS IMPORTANTES
 ========================================================= */
 
 .dates{
@@ -1034,7 +1066,8 @@ footer strong{
     .dashboard,
     .date-grid,
     .arca-grid,
-    .agro-client-grid{
+    .agro-client-grid,
+    .agro-modules{
         grid-template-columns:1fr 1fr;
     }
 
@@ -1042,6 +1075,7 @@ footer strong{
     .dashboard-grid{
         grid-template-columns:1fr;
     }
+
 }
 
 @media(max-width:600px){
@@ -1056,7 +1090,8 @@ footer strong{
     .dashboard,
     .date-grid,
     .arca-grid,
-    .agro-client-grid{
+    .agro-client-grid,
+    .agro-modules{
         grid-template-columns:1fr;
     }
 
@@ -1090,6 +1125,7 @@ footer strong{
     .calendar-table td{
         padding:9px;
     }
+
 }
 
 </style>
@@ -1101,7 +1137,7 @@ footer strong{
 
 
 <!-- =========================================================
-     NAVBAR
+     HEADER
 ========================================================= -->
 
 <header>
@@ -1114,19 +1150,33 @@ ESTUDIO <span>IGLESIAS</span>
 
 <ul class="menu">
 
-<li><a href="#inicio">Inicio</a></li>
+<li>
+<a href="#inicio">Inicio</a>
+</li>
 
-<li><a href="#estudio">El Estudio</a></li>
+<li>
+<a href="#sobre-estudio">Sobre el estudio</a>
+</li>
 
-<li><a href="#servicios">Servicios</a></li>
+<li>
+<a href="#servicios">Servicios</a>
+</li>
 
-<li><a href="#agro">Agro</a></li>
+<li>
+<a href="#agro">Agro</a>
+</li>
 
-<li><a href="#portal">Portal</a></li>
+<li>
+<a href="#portal">Portal</a>
+</li>
 
-<li><a href="#vencimientos">Vencimientos</a></li>
+<li>
+<a href="#vencimientos">Vencimientos</a>
+</li>
 
-<li><a href="#contacto">Contacto</a></li>
+<li>
+<a href="#contacto">Contacto</a>
+</li>
 
 </ul>
 
@@ -1140,7 +1190,7 @@ Portal clientes
 
 
 <!-- =========================================================
-     HERO
+     INICIO
 ========================================================= -->
 
 <section class="hero" id="inicio">
@@ -1183,10 +1233,10 @@ Quiero ser cliente
 
 
 <!-- =========================================================
-     EL ESTUDIO
+     SOBRE EL ESTUDIO
 ========================================================= -->
 
-<section class="about" id="estudio">
+<section class="about" id="sobre-estudio">
 
 <div class="container">
 
@@ -1196,7 +1246,7 @@ Quiero ser cliente
 <div class="about-text">
 
 <small style="color:#b89452;font-weight:bold;letter-spacing:2px;">
-SOBRE NOSOTROS
+SOBRE EL ESTUDIO
 </small>
 
 <h2>
@@ -1244,7 +1294,7 @@ Contadora Pública
 
 <br><br>
 
-Este espacio está preparado para incorporar
+Este espacio queda preparado para incorporar
 tu fotografía profesional.
 
 </span>
@@ -1256,7 +1306,9 @@ tu fotografía profesional.
 </div>
 
 
-<!-- HISTORIA -->
+<!-- =====================================================
+     HISTORIA
+===================================================== -->
 
 <div class="history">
 
@@ -1282,18 +1334,18 @@ contable moderno.
 <p>
 
 El proyecto surge con la visión de acompañar a personas,
-empresas, emprendedores y especialmente productores
-agropecuarios, entendiendo que cada actividad tiene
-necesidades y desafíos diferentes.
+empresas, emprendedores y productores agropecuarios,
+entendiendo que cada actividad tiene necesidades,
+características y desafíos diferentes.
 
 </p>
 
 <p>
 
 La propuesta combina el ejercicio tradicional de la
-profesión con nuevas herramientas digitales, buscando
-hacer más simple, ordenada y transparente la relación
-entre el cliente y su información contable.
+profesión con herramientas digitales, buscando hacer
+más simple, ordenada y transparente la relación entre
+el cliente y su información.
 
 </p>
 
@@ -1302,7 +1354,9 @@ entre el cliente y su información contable.
 </div>
 
 
-<!-- MISION VISION COMPROMISO -->
+<!-- =====================================================
+     MISION VISION COMPROMISO
+===================================================== -->
 
 <div style="margin-top:80px;">
 
@@ -1404,7 +1458,7 @@ Compromiso con la sustentabilidad.
 <p>
 
 Entendemos la sustentabilidad como un compromiso
-que abarca la dimensión económica, social y ambiental.
+que abarca las dimensiones económica, social y ambiental.
 
 Buscamos promover una gestión responsable de la
 información y acompañar proyectos que puedan crecer
@@ -1457,7 +1511,9 @@ Sustentabilidad
 </div>
 
 
-<!-- UBICACION -->
+<!-- =====================================================
+     UBICACION
+===================================================== -->
 
 <div class="location">
 
@@ -1665,20 +1721,30 @@ adaptadas al sector agropecuario.
 <div>
 
 <span class="agro-label">
-Área agropecuaria
+Gestión agropecuaria
 </span>
 
 <h2>
-Mucho más que números.
-Seguimiento de tu actividad.
+La información de tu campo,
+en un solo lugar.
 </h2>
 
 <p>
 
-Una propuesta especialmente pensada para productores
-agropecuarios que necesitan ordenar información,
-conocer la evolución de su actividad y tomar decisiones
-con datos confiables.
+Una propuesta de seguimiento integral para productores
+agropecuarios: información del establecimiento, producción,
+hacienda, documentación y evolución económica.
+
+</p>
+
+<br>
+
+<p>
+
+La idea es que el productor pueda contar con una visión
+ordenada de su actividad y que el estudio pueda utilizar
+esa información como herramienta de análisis y
+asesoramiento.
 
 </p>
 
@@ -1688,13 +1754,25 @@ con datos confiables.
 <div class="agro-panel">
 
 <h3>
-Seguimiento agropecuario
+Panel agro
 </h3>
 
 <ul class="agro-list">
 
 <li>
-Campo y establecimientos
+Establecimientos y campos
+</li>
+
+<li>
+Superficie y lotes
+</li>
+
+<li>
+Campañas agrícolas
+</li>
+
+<li>
+Cultivos y producción
 </li>
 
 <li>
@@ -1710,11 +1788,7 @@ Caravanas e identificación
 </li>
 
 <li>
-Campañas agrícolas
-</li>
-
-<li>
-Producción
+Movimientos de hacienda
 </li>
 
 <li>
@@ -1723,6 +1797,14 @@ Ingresos y gastos
 
 <li>
 Resultado económico
+</li>
+
+<li>
+Documentación
+</li>
+
+<li>
+Indicadores y gráficos
 </li>
 
 </ul>
@@ -1772,15 +1854,15 @@ la relación con el estudio.
 </div>
 
 <h3>
-Mis ingresos
+Ingresos
 </h3>
 
 <p>
-Visualizá tus ingresos facturados y su evolución.
+Visualizá tus ingresos facturados y su evolución mensual.
 </p>
 
 <a href="#cliente">
-Ver ingresos →
+Ver →
 </a>
 
 </div>
@@ -1793,15 +1875,15 @@ Ver ingresos →
 </div>
 
 <h3>
-Mis gastos
+Gastos
 </h3>
 
 <p>
-Consultá tus gastos y analizá su comportamiento.
+Registrá y analizá tus gastos con gráficos.
 </p>
 
 <a href="#cliente">
-Ver gastos →
+Ver →
 </a>
 
 </div>
@@ -1818,12 +1900,32 @@ ARCA
 </h3>
 
 <p>
-Consultá la información fiscal cargada
-por el estudio.
+Información fiscal cargada y administrada por el estudio.
 </p>
 
 <a href="#cliente">
-Ver información →
+Ver →
+</a>
+
+</div>
+
+
+<div class="portal-card">
+
+<div class="icon">
+📋
+</div>
+
+<h3>
+Estado impositivo
+</h3>
+
+<p>
+Conocé tus obligaciones y el estado de tus presentaciones.
+</p>
+
+<a href="#cliente">
+Ver →
 </a>
 
 </div>
@@ -1840,32 +1942,11 @@ Vencimientos
 </h3>
 
 <p>
-Tené presentes tus próximas obligaciones.
+Calendario de obligaciones y recordatorios.
 </p>
 
 <a href="#vencimientos">
-Ver calendario →
-</a>
-
-</div>
-
-
-<div class="portal-card">
-
-<div class="icon">
-⭐
-</div>
-
-<h3>
-Fechas importantes
-</h3>
-
-<p>
-Recordatorios personalizados para tu actividad.
-</p>
-
-<a href="#fechas">
-Ver fechas →
+Ver →
 </a>
 
 </div>
@@ -1878,15 +1959,15 @@ Ver fechas →
 </div>
 
 <h3>
-Seguimiento agro
+Gestión agro
 </h3>
 
 <p>
-Campo, hacienda, SISA, caravanas y producción.
+Campo, hacienda, SISA, caravanas, campañas y resultados.
 </p>
 
 <a href="#cliente">
-Ver seguimiento →
+Ver →
 </a>
 
 </div>
@@ -1914,11 +1995,11 @@ Contacto profesional
 </small>
 
 <h2>
-¿Querés trabajar con nosotros?
+Comenzá a trabajar con el estudio.
 </h2>
 
 <p>
-Completá el formulario correspondiente y nos pondremos en contacto.
+Elegí el formulario que corresponda.
 </p>
 
 </div>
@@ -1927,7 +2008,7 @@ Completá el formulario correspondiente y nos pondremos en contacto.
 <div class="form-grid">
 
 
-<!-- SER CLIENTE -->
+<!-- FORMULARIO CLIENTE -->
 
 <div class="form-box">
 
@@ -1941,30 +2022,43 @@ Completá el formulario correspondiente y nos pondremos en contacto.
 Nombre y apellido
 </label>
 
-<input type="text" required placeholder="Tu nombre">
+<input
+type="text"
+required
+placeholder="Tu nombre y apellido"
+>
 
 
 <label>
 Email
 </label>
 
-<input type="email" required placeholder="tu@email.com">
+<input
+type="email"
+required
+placeholder="tu@email.com"
+>
 
 
 <label>
 Teléfono
 </label>
 
-<input type="tel" placeholder="Tu teléfono">
+<input
+type="tel"
+placeholder="Tu teléfono"
+>
 
 
 <label>
-Actividad
+Tipo de actividad
 </label>
 
-<select>
+<select required>
 
-<option>Seleccionar</option>
+<option value="">
+Seleccionar
+</option>
 
 <option>
 Empresa
@@ -1997,11 +2091,18 @@ Otro
 Contanos sobre tu actividad
 </label>
 
-<textarea placeholder="Escribí aquí..."></textarea>
+<textarea
+placeholder="Escribí aquí..."
+></textarea>
 
 
-<button class="btn btn-gold" type="submit">
+<button
+class="btn btn-gold"
+type="submit"
+>
+
 Solicitar contacto
+
 </button>
 
 </form>
@@ -2009,7 +2110,7 @@ Solicitar contacto
 </div>
 
 
-<!-- CONSULTA -->
+<!-- FORMULARIO CONSULTA -->
 
 <div class="form-box">
 
@@ -2023,23 +2124,33 @@ Solicitar contacto
 Nombre
 </label>
 
-<input type="text" required placeholder="Tu nombre">
+<input
+type="text"
+required
+placeholder="Tu nombre"
+>
 
 
 <label>
 Email
 </label>
 
-<input type="email" required placeholder="tu@email.com">
+<input
+type="email"
+required
+placeholder="tu@email.com"
+>
 
 
 <label>
 Motivo
 </label>
 
-<select>
+<select required>
 
-<option>Seleccionar</option>
+<option value="">
+Seleccionar
+</option>
 
 <option>
 Impuestos
@@ -2068,11 +2179,19 @@ Otro
 Consulta
 </label>
 
-<textarea required placeholder="Escribí tu consulta..."></textarea>
+<textarea
+required
+placeholder="Escribí tu consulta..."
+></textarea>
 
 
-<button class="btn btn-gold" type="submit">
+<button
+class="btn btn-gold"
+type="submit"
+>
+
 Enviar consulta
+
 </button>
 
 </form>
@@ -2088,7 +2207,7 @@ Enviar consulta
 
 
 <!-- =========================================================
-     PORTAL PRIVADO — DEMO
+     PORTAL CLIENTE
 ========================================================= -->
 
 <section class="client-area" id="cliente">
@@ -2101,11 +2220,11 @@ Enviar consulta
 <div>
 
 <h2>
-Mi portal
+Portal del cliente
 </h2>
 
 <p>
-Área privada del cliente.
+Tu información contable, impositiva y productiva.
 </p>
 
 </div>
@@ -2120,14 +2239,18 @@ Agendar cita
 <div class="demo-warning">
 
 ⚠️ <strong>Vista de demostración.</strong>
+
 Los datos mostrados son ficticios.
-En la versión definitiva cada cliente tendrá
-acceso únicamente a su propia información.
+
+La versión definitiva tendrá autenticación y
+cada cliente verá únicamente su propia información.
 
 </div>
 
 
-<!-- METRICAS -->
+<!-- =====================================================
+     RESUMEN
+===================================================== -->
 
 <div class="dashboard">
 
@@ -2187,10 +2310,12 @@ Próximo vencimiento
 </div>
 
 
+<!-- =====================================================
+     GRAFICOS
+===================================================== -->
+
 <div class="dashboard-grid">
 
-
-<!-- INGRESOS -->
 
 <div class="dashboard-box">
 
@@ -2207,8 +2332,6 @@ Ingresos facturados
 </div>
 
 
-<!-- GASTOS -->
-
 <div class="dashboard-box">
 
 <h3>
@@ -2224,7 +2347,9 @@ Gastos
 </div>
 
 
-<!-- ESTADO IMPOSITIVO -->
+<!-- =====================================================
+     ESTADO IMPOSITIVO
+===================================================== -->
 
 <div class="dashboard-box">
 
@@ -2284,10 +2409,13 @@ Al día
 
 </div>
 
+
 </div>
 
 
-<!-- FECHAS -->
+<!-- =====================================================
+     FECHAS
+===================================================== -->
 
 <div class="dashboard-box">
 
@@ -2346,6 +2474,7 @@ Presentación
 </span>
 
 </div>
+
 
 </div>
 
@@ -2451,13 +2580,13 @@ Activo
 
 
 <!-- =====================================================
-     AGRO DEL CLIENTE
+     AGRO CLIENTE
 ===================================================== -->
 
 <div class="agro-client">
 
 <h3>
-🌾 Seguimiento agropecuario
+🌾 Gestión de la actividad agropecuaria
 </h3>
 
 
@@ -2564,6 +2693,98 @@ Estado documental
 <strong class="ok">
 Al día
 </strong>
+
+</div>
+
+
+</div>
+
+
+<!-- MODULOS AGRO -->
+
+<div class="agro-modules">
+
+
+<div class="agro-module">
+
+<h4>
+🌾 Campo
+</h4>
+
+<p>
+Establecimientos, hectáreas, lotes,
+ubicación y actividad productiva.
+</p>
+
+</div>
+
+
+<div class="agro-module">
+
+<h4>
+🚜 Campañas
+</h4>
+
+<p>
+Cultivos, superficies, producción,
+campañas y evolución.
+</p>
+
+</div>
+
+
+<div class="agro-module">
+
+<h4>
+🐄 Hacienda
+</h4>
+
+<p>
+Stock, categorías, altas, bajas
+y movimientos.
+</p>
+
+</div>
+
+
+<div class="agro-module">
+
+<h4>
+🏷️ Caravanas
+</h4>
+
+<p>
+Identificación y seguimiento de
+animales registrados.
+</p>
+
+</div>
+
+
+<div class="agro-module">
+
+<h4>
+📋 SISA
+</h4>
+
+<p>
+Información declarada, actividades,
+establecimientos y estado.
+</p>
+
+</div>
+
+
+<div class="agro-module">
+
+<h4>
+📈 Resultados
+</h4>
+
+<p>
+Ingresos, gastos, producción,
+costos y resultado económico.
+</p>
 
 </div>
 
@@ -2861,9 +3082,11 @@ disponibles y reservar una reunión.
 
 </p>
 
-<a href="#contacto"
+<a
+href="#contacto"
 class="btn btn-gold"
-onclick="alert('La agenda se conectará posteriormente con tu calendario profesional.')">
+onclick="alert('La agenda se conectará posteriormente con tu calendario profesional.')"
+>
 
 Ver horarios disponibles
 
@@ -2905,8 +3128,13 @@ profesional, podés comunicarte con el estudio.
 
 <br>
 
-<a href="#ser-cliente" class="btn btn-gold">
+<a
+href="#ser-cliente"
+class="btn btn-gold"
+>
+
 Quiero ser cliente
+
 </a>
 
 </div>
@@ -2970,9 +3198,8 @@ Contadora Pública
 
 <script>
 
-
 /* =========================================================
-   GRAFICO DE INGRESOS
+   GRAFICO INGRESOS
 ========================================================= */
 
 new Chart(
@@ -3051,7 +3278,7 @@ beginAtZero:true
 
 
 /* =========================================================
-   GRAFICO DE GASTOS
+   GRAFICO GASTOS
 ========================================================= */
 
 new Chart(
@@ -3130,7 +3357,7 @@ beginAtZero:true
 
 
 /* =========================================================
-   FORMULARIOS DEMO
+   FORMULARIOS
 ========================================================= */
 
 function enviarFormulario(event,tipo){
@@ -3145,9 +3372,7 @@ alert(
 
 );
 
-}
-
-else{
+}else{
 
 alert(
 
@@ -3164,4 +3389,3 @@ alert(
 
 </body>
 </html>
-```
