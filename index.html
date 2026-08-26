@@ -2,10 +2,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Estudio Contable Iglesias | Portal Profesional</title>
+<title>Estudio Contable Iglesias | Contabilidad, Impuestos & Agro</title>
+
+<meta name="description"
+content="Estudio Contable Iglesias. Servicios contables, impositivos y asesoramiento profesional para empresas, emprendedores y productores agropecuarios.">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -22,10 +26,15 @@ scroll-behavior:smooth;
 }
 
 body{
-font-family:Arial,Helvetica,sans-serif;
+font-family:Arial, Helvetica, sans-serif;
 background:#f5f6f8;
 color:#172033;
 line-height:1.6;
+}
+
+a{
+text-decoration:none;
+color:inherit;
 }
 
 header{
@@ -33,15 +42,15 @@ position:fixed;
 top:0;
 left:0;
 width:100%;
-height:75px;
-background:#ffffff;
-border-bottom:1px solid #e3e6ea;
+height:76px;
+background:rgba(255,255,255,.97);
+border-bottom:1px solid #e1e5e9;
 z-index:1000;
 }
 
 nav{
 max-width:1250px;
-height:75px;
+height:76px;
 margin:auto;
 padding:0 25px;
 display:flex;
@@ -52,8 +61,8 @@ justify-content:space-between;
 .logo{
 font-size:21px;
 font-weight:bold;
-letter-spacing:.5px;
 color:#102a43;
+letter-spacing:.5px;
 }
 
 .logo span{
@@ -62,9 +71,9 @@ color:#b89452;
 
 .menu{
 display:flex;
-gap:24px;
+gap:21px;
 list-style:none;
-font-size:14px;
+font-size:13px;
 font-weight:bold;
 }
 
@@ -74,8 +83,8 @@ color:#b89452;
 
 .nav-button{
 background:#102a43;
-color:#fff;
-padding:10px 18px;
+color:white;
+padding:10px 17px;
 border-radius:5px;
 }
 
@@ -88,12 +97,40 @@ max-width:1200px;
 margin:auto;
 }
 
+.section-title{
+max-width:760px;
+margin-bottom:50px;
+}
+
+.section-title small{
+color:#b89452;
+font-weight:bold;
+letter-spacing:2px;
+text-transform:uppercase;
+}
+
+.section-title h2{
+font-size:42px;
+line-height:1.15;
+color:#102a43;
+margin:12px 0;
+}
+
+.section-title p{
+color:#687789;
+font-size:17px;
+}
+
+
+/* ================= HERO ================= */
+
 .hero{
 min-height:100vh;
 padding-top:150px;
 display:flex;
 align-items:center;
-background:linear-gradient(135deg,#102a43,#183d5c);
+background:
+linear-gradient(135deg,#0d263e,#183f60);
 color:white;
 }
 
@@ -109,8 +146,8 @@ text-transform:uppercase;
 }
 
 .hero h1{
-font-size:clamp(45px,7vw,75px);
-line-height:1.05;
+font-size:clamp(45px,7vw,76px);
+line-height:1.03;
 margin:20px 0;
 }
 
@@ -119,10 +156,10 @@ color:#d8bb7a;
 }
 
 .hero p{
-font-size:20px;
-color:#e5edf4;
 max-width:700px;
-margin-bottom:30px;
+font-size:20px;
+color:#e1e9f0;
+margin-bottom:32px;
 }
 
 .buttons{
@@ -150,32 +187,193 @@ background:white;
 color:#102a43;
 }
 
-.section-title{
-margin-bottom:45px;
-max-width:750px;
+
+/* ================= EL ESTUDIO ================= */
+
+.about{
+background:white;
 }
 
-.section-title small{
-color:#b89452;
+.about-intro{
+display:grid;
+grid-template-columns:1.1fr .9fr;
+gap:70px;
+align-items:center;
+margin-bottom:80px;
+}
+
+.about-text h2{
+font-size:45px;
+line-height:1.15;
+color:#102a43;
+margin:15px 0 25px;
+}
+
+.about-text p{
+color:#687789;
+font-size:17px;
+margin-bottom:18px;
+}
+
+.about-highlight{
+border-left:4px solid #b89452;
+padding-left:20px;
 font-weight:bold;
+color:#102a43!important;
+}
+
+.photo-placeholder{
+min-height:430px;
+border-radius:8px;
+background:
+linear-gradient(135deg,#102a43,#b89452);
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:white;
+padding:30px;
+}
+
+.photo-placeholder div{
+border:1px solid rgba(255,255,255,.5);
+padding:35px;
+border-radius:8px;
+}
+
+.photo-placeholder strong{
+display:block;
+font-size:25px;
+margin-bottom:8px;
+}
+
+.photo-placeholder span{
+color:#e8d6a8;
+font-size:14px;
+}
+
+
+/* ORIGEN */
+
+.origin{
+background:#f5f6f8;
+padding:60px 0;
+}
+
+.origin-box{
+max-width:900px;
+margin:auto;
+text-align:center;
+}
+
+.origin-box h3{
+font-size:30px;
+color:#102a43;
+margin-bottom:18px;
+}
+
+.origin-box p{
+color:#687789;
+font-size:17px;
+}
+
+
+/* MISION VISION COMPROMISO */
+
+.mvv{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:22px;
+margin-top:30px;
+}
+
+.mvv-card{
+padding:35px;
+border:1px solid #e0e4e8;
+border-radius:8px;
+background:white;
+}
+
+.mvv-card span{
+font-size:13px;
+font-weight:bold;
+color:#b89452;
 letter-spacing:2px;
 text-transform:uppercase;
 }
 
-.section-title h2{
-font-size:40px;
+.mvv-card h3{
+font-size:25px;
 color:#102a43;
-margin:10px 0;
+margin:12px 0;
 }
 
-.section-title p{
+.mvv-card p{
 color:#687789;
 }
 
-/* SERVICIOS */
+
+/* VALORES */
+
+.values{
+margin-top:50px;
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+}
+
+.value{
+padding:11px 17px;
+background:#102a43;
+color:white;
+border-radius:30px;
+font-size:13px;
+font-weight:bold;
+}
+
+
+/* UBICACION */
+
+.location{
+margin-top:70px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+}
+
+.location-box{
+background:#102a43;
+color:white;
+padding:40px;
+border-radius:8px;
+}
+
+.location-box h3{
+font-size:27px;
+color:#d8bb7a;
+margin-bottom:15px;
+}
+
+.location-box p{
+color:#dbe4eb;
+}
+
+.map-box{
+background:#e8ebee;
+border-radius:8px;
+min-height:260px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:#687789;
+}
+
+
+/* ================= SERVICIOS ================= */
 
 .services{
-background:white;
+background:#f5f6f8;
 }
 
 .cards{
@@ -186,7 +384,7 @@ gap:22px;
 
 .card{
 background:white;
-border:1px solid #e1e4e8;
+border:1px solid #e0e4e8;
 border-radius:8px;
 padding:30px;
 transition:.3s;
@@ -199,8 +397,8 @@ box-shadow:0 12px 30px rgba(16,42,67,.08);
 
 .card-number{
 color:#b89452;
-font-weight:bold;
 font-size:13px;
+font-weight:bold;
 }
 
 .card h3{
@@ -212,7 +410,8 @@ margin:10px 0;
 color:#687789;
 }
 
-/* AGRO */
+
+/* ================= AGRO ================= */
 
 .agro{
 background:#102a43;
@@ -222,18 +421,8 @@ color:white;
 .agro-grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:60px;
+gap:65px;
 align-items:center;
-}
-
-.agro h2{
-font-size:45px;
-line-height:1.15;
-margin:15px 0;
-}
-
-.agro p{
-color:#d9e2e9;
 }
 
 .agro-label{
@@ -243,16 +432,28 @@ letter-spacing:2px;
 text-transform:uppercase;
 }
 
+.agro h2{
+font-size:46px;
+line-height:1.1;
+margin:15px 0 25px;
+}
+
+.agro p{
+color:#dbe4eb;
+font-size:17px;
+}
+
 .agro-panel{
 background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.15);
+border:1px solid rgba(255,255,255,.16);
 border-radius:8px;
 padding:35px;
 }
 
 .agro-panel h3{
 color:#d8bb7a;
-margin-bottom:20px;
+font-size:25px;
+margin-bottom:18px;
 }
 
 .agro-list{
@@ -270,10 +471,11 @@ color:#d8bb7a;
 margin-right:10px;
 }
 
-/* PORTAL */
+
+/* ================= PORTAL ================= */
 
 .portal{
-background:#f5f6f8;
+background:white;
 }
 
 .portal-grid{
@@ -283,14 +485,14 @@ gap:20px;
 }
 
 .portal-card{
-background:white;
-border:1px solid #e1e4e8;
+background:#f7f8fa;
+border:1px solid #e1e5e9;
 border-radius:8px;
 padding:30px;
 }
 
 .portal-card .icon{
-font-size:30px;
+font-size:29px;
 margin-bottom:10px;
 }
 
@@ -311,45 +513,30 @@ color:#b89452;
 font-weight:bold;
 }
 
-/* FORMULARIOS */
+
+/* ================= FORMULARIOS ================= */
 
 .forms{
-background:white;
+background:#f5f6f8;
 }
 
 .form-grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:30px;
+gap:25px;
 }
 
 .form-box{
-background:#f7f8fa;
+background:white;
 padding:35px;
 border-radius:8px;
-border:1px solid #e2e5e9;
+border:1px solid #e1e5e9;
 }
 
 .form-box h3{
 color:#102a43;
 margin-bottom:20px;
-}
-
-input,
-textarea,
-select{
-width:100%;
-padding:13px;
-margin-bottom:14px;
-border:1px solid #d7dce1;
-border-radius:5px;
-font-family:inherit;
-background:white;
-}
-
-textarea{
-min-height:120px;
-resize:vertical;
+font-size:24px;
 }
 
 label{
@@ -360,7 +547,25 @@ display:block;
 margin-bottom:6px;
 }
 
-/* CLIENTE */
+input,
+textarea,
+select{
+width:100%;
+padding:13px;
+margin-bottom:14px;
+border:1px solid #d5dbe1;
+border-radius:5px;
+font-family:inherit;
+background:white;
+}
+
+textarea{
+min-height:120px;
+resize:vertical;
+}
+
+
+/* ================= CLIENTE ================= */
 
 .client-area{
 background:#102a43;
@@ -403,7 +608,7 @@ color:#687789;
 
 .metric strong{
 display:block;
-font-size:28px;
+font-size:27px;
 color:#102a43;
 margin-top:5px;
 }
@@ -437,19 +642,18 @@ padding:13px 0;
 border-bottom:1px solid #e4e6e9;
 }
 
-.status span:last-child{
-font-weight:bold;
-}
-
 .ok{
 color:#287d3c;
+font-weight:bold;
 }
 
 .pending{
 color:#b07a17;
+font-weight:bold;
 }
 
-/* VENCIMIENTOS */
+
+/* ================= VENCIMIENTOS ================= */
 
 .calendar{
 background:white;
@@ -459,7 +663,7 @@ background:white;
 width:100%;
 border-collapse:collapse;
 background:white;
-border:1px solid #e2e5e9;
+border:1px solid #e1e5e9;
 }
 
 .calendar-table th{
@@ -471,7 +675,7 @@ text-align:left;
 
 .calendar-table td{
 padding:15px;
-border-bottom:1px solid #e6e8eb;
+border-bottom:1px solid #e5e8eb;
 }
 
 .tag{
@@ -492,7 +696,8 @@ background:#f3ead8;
 color:#8c6b2f;
 }
 
-/* FECHAS */
+
+/* ================= FECHAS ================= */
 
 .dates{
 background:#f5f6f8;
@@ -515,12 +720,46 @@ border-radius:5px;
 display:block;
 font-size:18px;
 color:#102a43;
+margin-bottom:5px;
 }
 
-/* CONTACTO */
+.date-card p{
+color:#687789;
+}
+
+
+/* ================= AGENDA ================= */
+
+.agenda{
+background:white;
+}
+
+.agenda-box{
+max-width:800px;
+margin:auto;
+background:#f5f6f8;
+border:1px solid #e1e5e9;
+padding:45px;
+border-radius:8px;
+text-align:center;
+}
+
+.agenda-box h3{
+color:#102a43;
+font-size:27px;
+margin-bottom:15px;
+}
+
+.agenda-box p{
+color:#687789;
+margin-bottom:25px;
+}
+
+
+/* ================= CONTACTO ================= */
 
 .contact{
-background:white;
+background:#f5f6f8;
 }
 
 .contact-grid{
@@ -537,6 +776,7 @@ margin:10px 0 20px;
 
 .contact p{
 color:#687789;
+font-size:17px;
 }
 
 .contact-box{
@@ -549,6 +789,7 @@ border-radius:8px;
 .contact-box h3{
 color:#d8bb7a;
 margin-bottom:20px;
+font-size:25px;
 }
 
 .contact-item{
@@ -556,38 +797,47 @@ padding:14px 0;
 border-bottom:1px solid rgba(255,255,255,.15);
 }
 
-/* FOOTER */
+
+/* ================= FOOTER ================= */
 
 footer{
 background:#0b1d2e;
 color:#aebbc7;
 text-align:center;
 padding:35px;
+font-size:14px;
 }
 
 footer strong{
 color:white;
 }
 
-/* RESPONSIVE */
 
-@media(max-width:900px){
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:950px){
 
 .menu{
 display:none;
 }
 
+.about-intro,
+.agro-grid,
+.location,
+.contact-grid{
+grid-template-columns:1fr;
+}
+
 .cards,
 .portal-grid,
+.mvv,
 .dashboard,
 .date-grid{
 grid-template-columns:1fr 1fr;
 }
 
-.agro-grid,
 .form-grid,
-.dashboard-grid,
-.contact-grid{
+.dashboard-grid{
 grid-template-columns:1fr;
 }
 
@@ -597,6 +847,7 @@ grid-template-columns:1fr;
 
 .cards,
 .portal-grid,
+.mvv,
 .dashboard,
 .date-grid{
 grid-template-columns:1fr;
@@ -611,6 +862,11 @@ font-size:45px;
 font-size:34px;
 }
 
+.about-text h2,
+.agro h2{
+font-size:35px;
+}
+
 nav{
 padding:0 15px;
 }
@@ -622,7 +878,9 @@ display:none;
 }
 
 </style>
+
 </head>
+
 
 <body>
 
@@ -639,6 +897,8 @@ ESTUDIO <span>IGLESIAS</span>
 
 <ul class="menu">
 
+<li><a href="#inicio">Inicio</a></li>
+<li><a href="#estudio">El Estudio</a></li>
 <li><a href="#servicios">Servicios</a></li>
 <li><a href="#agro">Agro</a></li>
 <li><a href="#portal">Portal</a></li>
@@ -665,15 +925,13 @@ Portal clientes
 <small>Estudio Contable Iglesias</small>
 
 <h1>
-Tu contabilidad.
-<br>
-<span>Una herramienta para crecer.</span>
+Contabilidad que
+<span>acompaña tus decisiones.</span>
 </h1>
 
 <p>
-Servicios contables e impositivos para empresas,
-emprendedores y productores agropecuarios.
-Información clara para tomar mejores decisiones.
+Servicios contables, impositivos y asesoramiento profesional
+para empresas, emprendedores y productores agropecuarios.
 </p>
 
 <div class="buttons">
@@ -687,6 +945,234 @@ Quiero ser cliente
 </a>
 
 </div>
+
+</div>
+
+</section>
+
+
+<!-- ================= EL ESTUDIO ================= -->
+
+<section class="about" id="estudio">
+
+<div class="container">
+
+
+<div class="about-intro">
+
+<div class="about-text">
+
+<small style="color:#b89452;font-weight:bold;letter-spacing:2px;">
+SOBRE EL ESTUDIO
+</small>
+
+<h2>
+Una mirada profesional,
+cercana y moderna.
+</h2>
+
+<p>
+Estudio Contable Iglesias nace con la intención de construir
+una forma diferente de ejercer la profesión contable:
+con profesionalismo, tecnología, cercanía y una mirada
+puesta en las necesidades reales de cada cliente.
+</p>
+
+<p>
+El objetivo no es solamente cumplir con las obligaciones,
+sino transformar la información contable e impositiva
+en una herramienta para comprender la realidad económica
+y tomar mejores decisiones.
+</p>
+
+<p class="about-highlight">
+Detrás de cada número hay una historia, una actividad
+y una decisión.
+</p>
+
+</div>
+
+
+<div class="photo-placeholder">
+
+<div>
+
+<strong>
+Tu foto profesional
+</strong>
+
+<span>
+Este espacio está preparado para incorporar
+la fotografía de Sol Iglesias.
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ORIGEN -->
+
+<div class="origin">
+
+<div class="origin-box">
+
+<small style="color:#b89452;font-weight:bold;letter-spacing:2px;">
+EL ORIGEN
+</small>
+
+<h3>
+El comienzo de una nueva etapa profesional.
+</h3>
+
+<p>
+Estudio Contable Iglesias surge como un proyecto profesional
+independiente, con la visión de crear un estudio moderno,
+organizado y preparado para acompañar tanto a personas
+como a empresas y productores agropecuarios.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- MISION VISION COMPROMISO -->
+
+<div style="margin-top:80px;">
+
+<div class="section-title">
+
+<small>Nuestra identidad</small>
+
+<h2>
+Misión, visión y compromiso.
+</h2>
+
+<p>
+Los principios que orientan nuestra forma de trabajar.
+</p>
+
+</div>
+
+
+<div class="mvv">
+
+
+<div class="mvv-card">
+
+<span>Misión</span>
+
+<h3>
+Acompañar con claridad.
+</h3>
+
+<p>
+Brindar servicios contables e impositivos con
+profesionalismo, claridad y cercanía, transformando
+la información contable en una herramienta útil
+para la toma de decisiones.
+</p>
+
+</div>
+
+
+<div class="mvv-card">
+
+<span>Visión</span>
+
+<h3>
+Construir futuro.
+</h3>
+
+<p>
+Construir un estudio contable moderno, confiable
+y en constante evolución, reconocido por la calidad
+de su asesoramiento, la tecnología y el acompañamiento
+personalizado.
+</p>
+
+</div>
+
+
+<div class="mvv-card">
+
+<span>Compromiso</span>
+
+<h3>
+Estar presentes.
+</h3>
+
+<p>
+Conocer la realidad de cada cliente, anticiparnos
+a sus necesidades y trabajar con responsabilidad,
+confidencialidad y criterio profesional.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="values">
+
+<div class="value">Profesionalismo</div>
+<div class="value">Confianza</div>
+<div class="value">Cercanía</div>
+<div class="value">Transparencia</div>
+<div class="value">Innovación</div>
+<div class="value">Compromiso</div>
+
+</div>
+
+</div>
+
+
+<!-- UBICACION -->
+
+<div class="location">
+
+<div class="location-box">
+
+<h3>
+Nuestra ubicación
+</h3>
+
+<p>
+📍 Carlos Casares, Buenos Aires, Argentina
+</p>
+
+<br>
+
+<p>
+Atención presencial y modalidad remota,
+con alcance a clientes de todo el país.
+</p>
+
+</div>
+
+
+<div class="map-box">
+
+📍
+
+<br>
+
+Mapa del estudio
+
+<br>
+
+<small>
+Aquí podremos incorporar el mapa de Google
+con la ubicación exacta.
+</small>
+
+</div>
+
+</div>
+
 
 </div>
 
@@ -708,8 +1194,7 @@ Una estructura contable pensada para tu crecimiento.
 </h2>
 
 <p>
-Acompañamiento profesional, información clara y
-una mirada estratégica sobre cada actividad.
+Soluciones profesionales adaptadas a cada actividad.
 </p>
 
 </div>
@@ -721,8 +1206,7 @@ una mirada estratégica sobre cada actividad.
 <span class="card-number">01</span>
 <h3>Contabilidad</h3>
 <p>
-Registración, análisis y seguimiento de la información
-contable.
+Registración, análisis y seguimiento de información contable.
 </p>
 </div>
 
@@ -738,8 +1222,8 @@ Planificación y cumplimiento de obligaciones fiscales.
 <span class="card-number">03</span>
 <h3>Asesoramiento</h3>
 <p>
-Análisis de alternativas y acompañamiento profesional
-para la toma de decisiones.
+Análisis y acompañamiento profesional para la toma
+de decisiones.
 </p>
 </div>
 
@@ -756,8 +1240,8 @@ la gestión empresarial.
 <span class="card-number">05</span>
 <h3>Emprendedores</h3>
 <p>
-Orden, planificación y herramientas para construir
-una estructura sostenible.
+Orden y planificación para construir una estructura
+sostenible.
 </p>
 </div>
 
@@ -795,9 +1279,10 @@ de tu actividad.
 </h2>
 
 <p>
-Una herramienta pensada para productores agropecuarios
-que necesitan conocer la evolución de su actividad,
-ordenar información y tomar decisiones con datos.
+Una propuesta especialmente pensada para productores
+agropecuarios que necesitan ordenar información,
+conocer la evolución de su actividad y tomar decisiones
+con datos confiables.
 </p>
 
 </div>
@@ -817,9 +1302,11 @@ Seguimiento agropecuario
 
 <li>Evolución de campañas</li>
 
+<li>Seguimiento de superficie y actividad</li>
+
 <li>Control de documentación</li>
 
-<li>Análisis económico de la actividad</li>
+<li>Análisis económico</li>
 
 <li>Información para toma de decisiones</li>
 
@@ -843,18 +1330,20 @@ Seguimiento agropecuario
 <small>Portal de clientes</small>
 
 <h2>
-Toda tu información profesional en un solo lugar.
+Tu información profesional,
+en un solo lugar.
 </h2>
 
 <p>
-Una plataforma diseñada para simplificar la relación
-con el estudio.
+Un espacio exclusivo diseñado para simplificar
+la relación con el estudio.
 </p>
 
 </div>
 
 
 <div class="portal-grid">
+
 
 <div class="portal-card">
 
@@ -865,11 +1354,12 @@ Mis ingresos
 </h3>
 
 <p>
-Visualizá tus ingresos facturados y su evolución.
+Visualizá tus ingresos facturados y su evolución
+a través de gráficos.
 </p>
 
 <a href="#cliente">
-Ver información →
+Ver ingresos →
 </a>
 
 </div>
@@ -884,11 +1374,12 @@ Mis gastos
 </h3>
 
 <p>
-Consultá tus gastos y analizá su comportamiento.
+Consultá tus gastos y analizá su comportamiento
+mensual.
 </p>
 
 <a href="#cliente">
-Ver información →
+Ver gastos →
 </a>
 
 </div>
@@ -922,7 +1413,7 @@ Vencimientos
 </h3>
 
 <p>
-Tené siempre presentes tus próximas obligaciones.
+Tené presentes tus próximas obligaciones.
 </p>
 
 <a href="#vencimientos">
@@ -941,7 +1432,7 @@ Fechas importantes
 </h3>
 
 <p>
-Recordatorios y fechas relevantes para tu actividad.
+Recordatorios personalizados para tu actividad.
 </p>
 
 <a href="#fechas">
@@ -960,7 +1451,7 @@ Seguimiento agro
 </h3>
 
 <p>
-Evolución económica y seguimiento de tu actividad.
+Información económica y evolución de tu actividad.
 </p>
 
 <a href="#agro">
@@ -991,8 +1482,7 @@ Conocer →
 </h2>
 
 <p>
-Completá el formulario correspondiente y nos pondremos
-en contacto.
+Completá el formulario y nos pondremos en contacto.
 </p>
 
 </div>
@@ -1000,8 +1490,6 @@ en contacto.
 
 <div class="form-grid">
 
-
-<!-- FORMULARIO CLIENTE -->
 
 <div class="form-box">
 
@@ -1012,15 +1500,15 @@ en contacto.
 <form onsubmit="enviarFormulario(event,'cliente')">
 
 <label>Nombre y apellido</label>
-<input type="text" placeholder="Tu nombre">
+<input type="text" required placeholder="Tu nombre">
 
 <label>Email</label>
-<input type="email" placeholder="tu@email.com">
+<input type="email" required placeholder="tu@email.com">
 
 <label>Teléfono</label>
 <input type="tel" placeholder="Tu teléfono">
 
-<label>Tipo de actividad</label>
+<label>Actividad</label>
 
 <select>
 
@@ -1034,7 +1522,7 @@ en contacto.
 
 </select>
 
-<label>Contanos brevemente sobre tu actividad</label>
+<label>Contanos sobre tu actividad</label>
 
 <textarea placeholder="Escribí aquí..."></textarea>
 
@@ -1047,8 +1535,6 @@ Solicitar contacto
 </div>
 
 
-<!-- FORMULARIO CONSULTA -->
-
 <div class="form-box">
 
 <h3>
@@ -1058,12 +1544,12 @@ Solicitar contacto
 <form onsubmit="enviarFormulario(event,'consulta')">
 
 <label>Nombre</label>
-<input type="text" placeholder="Tu nombre">
+<input type="text" required placeholder="Tu nombre">
 
 <label>Email</label>
-<input type="email" placeholder="tu@email.com">
+<input type="email" required placeholder="tu@email.com">
 
-<label>Motivo de consulta</label>
+<label>Motivo</label>
 
 <select>
 
@@ -1078,7 +1564,7 @@ Solicitar contacto
 
 <label>Consulta</label>
 
-<textarea placeholder="Escribí tu consulta..."></textarea>
+<textarea required placeholder="Escribí tu consulta..."></textarea>
 
 <button class="btn btn-gold" type="submit">
 Enviar consulta
@@ -1088,6 +1574,7 @@ Enviar consulta
 
 </div>
 
+
 </div>
 
 </div>
@@ -1095,7 +1582,7 @@ Enviar consulta
 </section>
 
 
-<!-- ================= CLIENTE ================= -->
+<!-- ================= PORTAL CLIENTE ================= -->
 
 <section class="client-area" id="cliente">
 
@@ -1110,7 +1597,7 @@ Mi portal
 </h2>
 
 <p>
-Vista de ejemplo del área privada del cliente.
+Panel de ejemplo del área privada del cliente.
 </p>
 
 </div>
@@ -1122,9 +1609,8 @@ Agendar cita
 </div>
 
 
-<!-- METRICAS -->
-
 <div class="dashboard">
+
 
 <div class="metric">
 
@@ -1175,8 +1661,6 @@ $ 5.270.000
 <div class="dashboard-grid">
 
 
-<!-- INGRESOS -->
-
 <div class="dashboard-box">
 
 <h3>
@@ -1192,8 +1676,6 @@ Ingresos facturados
 </div>
 
 
-<!-- GASTOS -->
-
 <div class="dashboard-box">
 
 <h3>
@@ -1208,8 +1690,6 @@ Gastos
 
 </div>
 
-
-<!-- ESTADO IMPOSITIVO -->
 
 <div class="dashboard-box">
 
@@ -1239,8 +1719,6 @@ Estado impositivo
 
 </div>
 
-
-<!-- SEGUIMIENTO AGRO -->
 
 <div class="dashboard-box">
 
@@ -1292,7 +1770,7 @@ Calendario de vencimientos
 </h2>
 
 <p>
-Una vista general de las próximas obligaciones.
+Una vista general de obligaciones y fechas relevantes.
 </p>
 
 </div>
@@ -1303,10 +1781,12 @@ Una vista general de las próximas obligaciones.
 <thead>
 
 <tr>
+
 <th>Fecha</th>
 <th>Obligación</th>
 <th>Período</th>
 <th>Estado</th>
+
 </tr>
 
 </thead>
@@ -1314,31 +1794,58 @@ Una vista general de las próximas obligaciones.
 <tbody>
 
 <tr>
+
 <td>10/09/2026</td>
 <td>IVA</td>
 <td>08/2026</td>
-<td><span class="tag tag-blue">Próximo</span></td>
+<td>
+<span class="tag tag-blue">
+Próximo
+</span>
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>15/09/2026</td>
 <td>IIBB</td>
 <td>08/2026</td>
-<td><span class="tag tag-gold">Recordatorio</span></td>
+<td>
+<span class="tag tag-gold">
+Recordatorio
+</span>
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>20/09/2026</td>
 <td>Ganancias</td>
 <td>Anticipo</td>
-<td><span class="tag tag-blue">Próximo</span></td>
+<td>
+<span class="tag tag-blue">
+Próximo
+</span>
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>30/09/2026</td>
 <td>Presentación contable</td>
 <td>09/2026</td>
-<td><span class="tag tag-blue">Programado</span></td>
+<td>
+<span class="tag tag-blue">
+Programado
+</span>
+</td>
+
 </tr>
 
 </tbody>
@@ -1372,6 +1879,7 @@ Información relevante para organizar tu actividad.
 
 
 <div class="date-grid">
+
 
 <div class="date-card">
 
@@ -1417,6 +1925,7 @@ Próximo anticipo.
 
 </div>
 
+
 </div>
 
 </div>
@@ -1426,7 +1935,7 @@ Próximo anticipo.
 
 <!-- ================= AGENDA ================= -->
 
-<section class="forms" id="agenda">
+<section class="agenda" id="agenda">
 
 <div class="container">
 
@@ -1439,29 +1948,31 @@ Agendá una reunión.
 </h2>
 
 <p>
-Elegí el día y horario disponible para reunirnos.
+Elegí un día y horario disponible para reunirnos.
 </p>
 
 </div>
 
 
-<div class="form-box" style="max-width:700px;margin:auto;text-align:center;">
+<div class="agenda-box">
 
 <h3>
 📅 Reservar una cita
 </h3>
 
-<p style="margin-bottom:25px;color:#687789;">
-
-La agenda se conectará con tu calendario profesional
-para que los clientes puedan consultar horarios
-disponibles y reservar una reunión.
-
+<p>
+En la versión final esta sección se conectará
+con tu calendario profesional para que cada cliente
+pueda consultar horarios disponibles y reservar
+una reunión.
 </p>
 
-<a href="#" class="btn btn-gold"
-onclick="alert('La agenda se conectará posteriormente con Google Calendar.')">
+<a href="#contacto"
+class="btn btn-gold"
+onclick="alert('La agenda se conectará posteriormente con tu calendario profesional.')">
+
 Ver horarios disponibles
+
 </a>
 
 </div>
@@ -1477,6 +1988,7 @@ Ver horarios disponibles
 
 <div class="container contact-grid">
 
+
 <div>
 
 <small style="color:#b89452;font-weight:bold;letter-spacing:2px;">
@@ -1484,14 +1996,20 @@ CONTACTO
 </small>
 
 <h2>
-Empecemos a trabajar juntos.
+Hablemos de tu proyecto.
 </h2>
 
 <p>
 Si querés ordenar tu situación contable, analizar
 tu actividad o realizar una consulta profesional,
-estamos para acompañarte.
+podés comunicarte con el estudio.
 </p>
+
+<br>
+
+<a href="#ser-cliente" class="btn btn-gold">
+Quiero ser cliente
+</a>
 
 </div>
 
@@ -1503,6 +2021,10 @@ Estudio Contable Iglesias
 </h3>
 
 <div class="contact-item">
+📍 Carlos Casares, Buenos Aires
+</div>
+
+<div class="contact-item">
 📧 Email profesional
 </div>
 
@@ -1511,11 +2033,7 @@ Estudio Contable Iglesias
 </div>
 
 <div class="contact-item">
-📍 Buenos Aires, Argentina
-</div>
-
-<div class="contact-item">
-💼 Atención profesional
+💼 Atención presencial y remota
 </div>
 
 </div>
@@ -1543,14 +2061,17 @@ Contadora Pública
 
 <script>
 
+
 /* ================= GRAFICO INGRESOS ================= */
 
-const ingresos = document.getElementById('ingresosChart');
+new Chart(
+document.getElementById('ingresosChart'),
+{
 
-new Chart(ingresos,{
 type:'bar',
 
 data:{
+
 labels:[
 'Enero',
 'Febrero',
@@ -1563,7 +2084,9 @@ labels:[
 ],
 
 datasets:[{
+
 label:'Ingresos facturados',
+
 data:[
 5200000,
 6100000,
@@ -1576,11 +2099,13 @@ data:[
 ],
 
 backgroundColor:'#102a43'
+
 }]
 
 },
 
 options:{
+
 responsive:true,
 maintainAspectRatio:false,
 
@@ -1598,17 +2123,20 @@ beginAtZero:true
 
 }
 
-});
+}
+);
 
 
 /* ================= GRAFICO GASTOS ================= */
 
-const gastos = document.getElementById('gastosChart');
+new Chart(
+document.getElementById('gastosChart'),
+{
 
-new Chart(gastos,{
 type:'bar',
 
 data:{
+
 labels:[
 'Enero',
 'Febrero',
@@ -1621,7 +2149,9 @@ labels:[
 ],
 
 datasets:[{
+
 label:'Gastos',
+
 data:[
 2100000,
 2500000,
@@ -1634,11 +2164,13 @@ data:[
 ],
 
 backgroundColor:'#b89452'
+
 }]
 
 },
 
 options:{
+
 responsive:true,
 maintainAspectRatio:false,
 
@@ -1656,7 +2188,8 @@ beginAtZero:true
 
 }
 
-});
+}
+);
 
 
 /* ================= FORMULARIOS ================= */
@@ -1668,7 +2201,7 @@ event.preventDefault();
 if(tipo === 'cliente'){
 
 alert(
-'¡Solicitud recibida! En la versión final este formulario enviará la información directamente al Estudio Contable Iglesias.'
+'¡Solicitud recibida! En la versión final esta información será enviada directamente al Estudio Contable Iglesias.'
 );
 
 }else{
@@ -1682,6 +2215,7 @@ alert(
 }
 
 </script>
+
 
 </body>
 </html>
