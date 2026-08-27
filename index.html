@@ -1,5 +1,5 @@
-```html
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -11,13 +11,17 @@
 <meta
 name="description"
 content="Estudio Contable Iglesias — María Sol Iglesias. Contabilidad, impuestos, empresas y asesoramiento especializado para productores agropecuarios."
+
 >
 
-<title>Estudio Contable Iglesias | María Sol Iglesias</title>
+<title>
+Estudio Contable Iglesias | María Sol Iglesias
+</title>
 
 <style>
 
 :root{
+
 --navy:#102a43;
 --navy-dark:#071b2d;
 --gold:#b89452;
@@ -27,6 +31,7 @@ content="Estudio Contable Iglesias — María Sol Iglesias. Contabilidad, impues
 --text:#263746;
 --muted:#718096;
 --border:#e7e1d5;
+
 }
 
 *{
@@ -40,837 +45,1433 @@ scroll-behavior:smooth;
 }
 
 body{
-font-family:"Segoe UI",Arial,sans-serif;
+
+font-family:
+"Segoe UI",
+Arial,
+sans-serif;
+
 color:var(--text);
+
 background:var(--white);
+
 line-height:1.6;
+
 }
 
 a{
+
 color:inherit;
+
 text-decoration:none;
+
 }
 
 .container{
+
 width:min(1180px,92%);
+
 margin:auto;
+
 }
 
-/* HEADER */
+/* =========================================================
+HEADER
+========================================================= */
 
 header{
+
 position:sticky;
+
 top:0;
+
 z-index:1000;
+
 background:rgba(255,255,255,.97);
+
 border-bottom:1px solid var(--border);
+
 backdrop-filter:blur(12px);
+
 }
 
 .nav{
+
 min-height:82px;
+
 display:flex;
+
 align-items:center;
+
 justify-content:space-between;
+
 gap:25px;
+
 }
 
+/* =========================================================
+NUEVO LOGO — SOLO ESTUDIO IGLESIAS
+========================================================= */
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+}
+
+.logo-text{
+
+display:flex;
+
+flex-direction:column;
+
+line-height:1.15;
+
+}
 
 .logo-text strong{
+
 font-size:18px;
-color:var(--navy);
-letter-spacing:.4px;
+
+color:var(--gold);
+
+letter-spacing:1.8px;
+
 font-weight:700;
+
 }
 
+/* =========================================================
+NAVEGACIÓN
+========================================================= */
+
 nav{
+
 display:flex;
+
 align-items:center;
+
 gap:25px;
+
 }
 
 nav a{
+
 font-size:14px;
+
 font-weight:600;
+
 color:var(--navy);
+
 transition:.25s;
+
 text-decoration:none;
+
 border-bottom:none;
+
 }
 
 nav a:hover{
+
 color:var(--gold);
+
 text-decoration:none;
+
 border-bottom:none;
+
 }
 
 .language{
+
 border:1px solid var(--border);
+
 background:white;
+
 padding:9px 12px;
+
 border-radius:8px;
+
 color:var(--navy);
+
 font-weight:600;
+
 cursor:pointer;
+
 }
 
 .menu-button{
+
 display:none;
+
 border:none;
+
 background:none;
+
 font-size:25px;
+
 color:var(--navy);
+
 cursor:pointer;
+
 }
 
-/* BUTTONS */
+/* =========================================================
+BOTONES
+========================================================= */
 
 .btn{
+
 display:inline-flex;
+
 align-items:center;
+
 justify-content:center;
+
 padding:13px 22px;
+
 border-radius:8px;
+
 font-weight:700;
+
 font-size:14px;
+
 transition:.25s;
+
 cursor:pointer;
+
 text-decoration:none;
+
 border:none;
+
 }
 
 .btn.gold{
+
 background:var(--gold);
+
 color:white;
+
 }
 
 .btn.gold:hover{
+
 background:#9f7d40;
+
 transform:translateY(-2px);
+
 }
 
 .btn.navy{
+
 background:var(--navy);
+
 color:white;
+
 }
 
 .btn.navy:hover{
+
 background:var(--navy-dark);
+
 transform:translateY(-2px);
+
 }
 
-/* HERO */
+/* =========================================================
+HERO
+========================================================= */
 
 .hero{
+
 min-height:650px;
+
 display:flex;
+
 align-items:center;
+
 background:
+
 linear-gradient(
 90deg,
 rgba(7,27,45,.98),
 rgba(16,42,67,.91),
 rgba(16,42,67,.70)
 ),
+
 url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=85");
+
 background-size:cover;
+
 background-position:center;
+
 color:white;
+
 }
 
 .hero-content{
+
 max-width:780px;
+
 padding:100px 0;
+
 }
 
 .eyebrow{
+
 font-size:12px;
+
 text-transform:uppercase;
+
 letter-spacing:2.5px;
+
 font-weight:800;
+
 color:var(--gold);
+
 margin-bottom:15px;
+
 }
 
 .hero h1{
+
 font-family:Georgia,serif;
+
 font-size:clamp(42px,6vw,72px);
+
 line-height:1.05;
+
 margin-bottom:25px;
+
 font-weight:500;
+
 }
 
 .hero h1 span{
+
 color:var(--gold-light);
+
 }
 
 .hero p{
+
 font-size:18px;
+
 max-width:680px;
+
 color:#edf2f7;
+
 margin-bottom:32px;
+
 }
 
 .hero-actions{
+
 display:flex;
+
 gap:14px;
+
 flex-wrap:wrap;
+
 }
 
-/* SECTION TITLES */
+/* =========================================================
+TÍTULOS
+========================================================= */
 
 section{
+
 padding:95px 0;
+
 }
 
 .section-title{
+
 max-width:760px;
+
 margin-bottom:50px;
+
 }
 
 .section-title h2{
+
 font-family:Georgia,serif;
+
 font-size:clamp(32px,4vw,48px);
+
 line-height:1.15;
+
 color:var(--navy);
+
 font-weight:500;
+
 margin-bottom:17px;
+
 }
 
 .section-title p{
+
 color:var(--muted);
+
 font-size:16px;
+
 }
 
-/* SOBRE */
+/* =========================================================
+SOBRE
+========================================================= */
 
 .about{
+
 background:var(--cream);
+
 }
 
 .about-grid{
+
 display:grid;
+
 grid-template-columns:1fr 1fr;
+
 gap:70px;
+
 align-items:center;
+
 }
 
 .about h2{
+
 font-family:Georgia,serif;
+
 font-size:46px;
+
 font-weight:500;
+
 color:var(--navy);
+
 line-height:1.15;
+
 margin-bottom:22px;
+
 }
 
 .about p{
+
 color:var(--muted);
+
 margin-bottom:18px;
+
 }
 
 .about-card{
+
 background:white;
+
 padding:40px;
+
 border-radius:15px;
+
 box-shadow:0 20px 50px rgba(16,42,67,.08);
+
 border:1px solid var(--border);
+
 }
 
 .about-card h3{
+
 font-family:Georgia,serif;
+
 font-size:25px;
+
 color:var(--navy);
+
 margin-bottom:18px;
+
 }
 
 .about-card div{
+
 padding:16px 0;
+
 border-bottom:1px solid var(--border);
+
 }
 
 .about-card div:last-child{
+
 border-bottom:none;
+
 }
 
 .about-card strong{
+
 display:block;
+
 color:var(--navy);
+
 margin-bottom:5px;
+
 }
 
 .about-card span{
+
 font-size:14px;
+
 color:var(--muted);
+
 }
 
-/* HISTORIA */
+/* =========================================================
+HISTORIA
+========================================================= */
 
 .history{
+
 background:white;
+
 }
 
 .history-grid{
+
 display:grid;
+
 grid-template-columns:repeat(3,1fr);
+
 gap:25px;
+
 }
 
 .history-card{
+
 padding:32px;
+
 border:1px solid var(--border);
+
 border-radius:14px;
+
 background:white;
+
 transition:.25s;
+
 }
 
 .history-card:hover{
+
 transform:translateY(-5px);
+
 box-shadow:0 18px 40px rgba(16,42,67,.08);
+
 }
 
 .history-card .number{
+
 font-family:Georgia,serif;
+
 font-size:38px;
+
 color:var(--gold);
+
 margin-bottom:15px;
+
 }
 
 .history-card h3{
+
 color:var(--navy);
+
 margin-bottom:10px;
+
 }
 
 .history-card p{
+
 font-size:14px;
+
 color:var(--muted);
+
 }
 
-/* VALORES */
+/* =========================================================
+VALORES
+========================================================= */
 
 .values{
+
 background:var(--navy);
+
 color:white;
+
 }
 
 .values .section-title h2{
+
 color:white;
+
 }
 
 .values .section-title p{
+
 color:#cbd5e0;
+
 }
 
 .values-grid{
+
 display:grid;
+
 grid-template-columns:repeat(3,1fr);
+
 gap:25px;
+
 }
 
 .value-card{
+
 padding:35px;
+
 border:1px solid rgba(255,255,255,.14);
+
 border-radius:14px;
+
 background:rgba(255,255,255,.04);
+
 }
 
 .value-card .icon{
+
 font-size:30px;
+
 margin-bottom:20px;
+
 }
 
 .value-card h3{
+
 font-family:Georgia,serif;
+
 font-size:25px;
+
 color:var(--gold-light);
+
 margin-bottom:12px;
+
 }
 
 .value-card p{
+
 font-size:14px;
+
 color:#d9e2ec;
+
 }
 
-/* SUSTENTABILIDAD */
+/* =========================================================
+SUSTENTABILIDAD
+========================================================= */
 
 .sustainability{
+
 background:var(--cream);
+
 }
 
 .sustainability-grid{
+
 display:grid;
+
 grid-template-columns:1.1fr .9fr;
+
 gap:60px;
+
 align-items:center;
+
 }
 
 .sustainability h2{
+
 font-family:Georgia,serif;
+
 font-size:44px;
+
 font-weight:500;
+
 color:var(--navy);
+
 line-height:1.15;
+
 margin-bottom:20px;
+
 }
 
 .sustainability p{
+
 color:var(--muted);
+
 margin-bottom:18px;
+
 }
 
 .sustainability-box{
+
 background:white;
+
 padding:38px;
+
 border-radius:15px;
+
 border-left:5px solid var(--gold);
+
 box-shadow:0 15px 40px rgba(16,42,67,.07);
+
 }
 
 .sustainability-box h3{
+
 color:var(--navy);
+
 margin-bottom:18px;
+
 }
 
 .sustainability-box ul{
+
 list-style:none;
+
 }
 
 .sustainability-box li{
+
 padding:10px 0;
+
 border-bottom:1px solid var(--border);
+
 font-size:14px;
+
 }
 
 .sustainability-box li:last-child{
+
 border:none;
+
 }
 
-/* SERVICIOS */
+/* =========================================================
+SERVICIOS
+========================================================= */
 
 .services{
+
 background:white;
+
 }
 
 .services-grid{
+
 display:grid;
+
 grid-template-columns:repeat(3,1fr);
+
 gap:25px;
+
 }
 
 .service-card{
+
 padding:35px;
+
 border-radius:14px;
+
 background:white;
+
 border:1px solid var(--border);
+
 transition:.25s;
+
 }
 
 .service-card:hover{
+
 transform:translateY(-5px);
+
 box-shadow:0 20px 45px rgba(16,42,67,.08);
+
 }
 
 .service-icon{
+
 font-size:30px;
+
 margin-bottom:18px;
+
 }
 
 .service-card h3{
+
 font-family:Georgia,serif;
+
 font-size:24px;
+
 color:var(--navy);
+
 margin-bottom:12px;
+
 }
 
 .service-card p{
+
 font-size:14px;
+
 color:var(--muted);
+
 }
 
-/* AGRO */
+/* =========================================================
+AGRO
+========================================================= */
 
 .agro{
+
 background:var(--cream);
+
 }
 
 .agro-grid{
+
 display:grid;
+
 grid-template-columns:1fr 1fr;
+
 gap:60px;
+
 align-items:center;
+
 }
 
 .agro h2{
+
 font-family:Georgia,serif;
+
 font-size:46px;
+
 font-weight:500;
+
 color:var(--navy);
+
 line-height:1.15;
+
 margin-bottom:20px;
+
 }
 
 .agro p{
+
 color:var(--muted);
+
 }
 
 .agro-panel{
+
 background:var(--navy);
+
 color:white;
+
 padding:40px;
+
 border-radius:16px;
+
 box-shadow:0 25px 60px rgba(16,42,67,.18);
+
 }
 
 .agro-panel h3{
+
 font-family:Georgia,serif;
+
 font-size:27px;
+
 color:var(--gold-light);
+
 margin-bottom:22px;
+
 }
 
 .agro-list{
+
 display:grid;
+
 grid-template-columns:1fr 1fr;
+
 gap:10px 25px;
+
 list-style:none;
+
 }
 
 .agro-list li{
+
 font-size:13px;
+
 padding:10px 0;
+
 border-bottom:1px solid rgba(255,255,255,.1);
+
 }
 
-/* PORTAL */
+/* =========================================================
+PORTAL
+========================================================= */
 
 .portal-preview{
+
 background:white;
+
 }
 
 .portal-box{
+
 background:
+
 linear-gradient(
 135deg,
 var(--navy),
 #173f60
 );
+
 color:white;
+
 padding:55px;
+
 border-radius:20px;
+
 display:grid;
+
 grid-template-columns:1.2fr .8fr;
+
 gap:50px;
+
 align-items:center;
+
 box-shadow:0 25px 60px rgba(16,42,67,.16);
+
 }
 
 .portal-box h2{
+
 font-family:Georgia,serif;
+
 font-size:42px;
+
 font-weight:500;
+
 margin-bottom:17px;
+
 }
 
 .portal-box p{
+
 color:#d9e2ec;
+
 margin-bottom:25px;
+
 }
 
 .portal-features{
+
 display:grid;
+
 grid-template-columns:1fr 1fr;
+
 gap:12px;
+
 }
 
 .portal-feature{
+
 padding:15px;
+
 background:rgba(255,255,255,.07);
+
 border:1px solid rgba(255,255,255,.1);
+
 border-radius:10px;
+
 font-size:13px;
+
 }
 
-/* NOVEDADES */
+/* =========================================================
+NOVEDADES
+========================================================= */
 
 .news{
+
 background:var(--cream);
+
 }
 
 .news-grid{
+
 display:grid;
+
 grid-template-columns:repeat(3,1fr);
+
 gap:25px;
+
 }
 
 .news-card{
+
 background:white;
+
 border:1px solid var(--border);
+
 border-radius:14px;
+
 padding:30px;
+
 transition:.25s;
+
 }
 
 .news-card:hover{
+
 transform:translateY(-5px);
+
 box-shadow:0 18px 40px rgba(16,42,67,.08);
+
 }
 
 .news-card span{
+
 font-size:11px;
+
 text-transform:uppercase;
+
 letter-spacing:1.5px;
+
 font-weight:800;
+
 color:var(--gold);
+
 }
 
 .news-card h3{
+
 font-family:Georgia,serif;
+
 font-size:24px;
+
 color:var(--navy);
+
 margin:12px 0;
+
 }
 
 .news-card p{
+
 font-size:14px;
+
 color:var(--muted);
+
 }
 
-/* VENCIMIENTOS */
+/* =========================================================
+VENCIMIENTOS
+========================================================= */
 
 .calendar{
+
 background:white;
+
 }
 
 .calendar-table{
+
 width:100%;
+
 border-collapse:collapse;
+
 border:1px solid var(--border);
+
 border-radius:12px;
+
 overflow:hidden;
+
 }
 
 .calendar-table th{
+
 background:var(--navy);
+
 color:white;
+
 padding:16px;
+
 text-align:left;
+
 font-size:13px;
+
 }
 
 .calendar-table td{
+
 padding:17px 16px;
+
 border-bottom:1px solid var(--border);
+
 font-size:14px;
+
 }
 
 .calendar-table tr:last-child td{
+
 border-bottom:none;
+
 }
 
 .tag{
+
 display:inline-block;
+
 padding:5px 10px;
+
 border-radius:30px;
+
 background:#f4ead5;
+
 color:#80632e;
+
 font-size:11px;
+
 font-weight:700;
+
 }
 
-/* FORMULARIOS */
+/* =========================================================
+FORMULARIOS
+========================================================= */
 
 .forms{
+
 background:var(--cream);
+
 }
 
 .form-grid{
+
 display:grid;
+
 grid-template-columns:1fr 1fr;
+
 gap:30px;
+
 }
 
 .form-box{
+
 background:white;
+
 padding:35px;
+
 border-radius:15px;
+
 border:1px solid var(--border);
+
 }
 
 .form-box h3{
+
 font-family:Georgia,serif;
+
 font-size:27px;
+
 color:var(--navy);
+
 margin-bottom:25px;
+
 }
 
 label{
+
 display:block;
+
 font-size:13px;
+
 font-weight:700;
+
 color:var(--navy);
+
 margin:15px 0 7px;
+
 }
 
 input,
 select,
 textarea{
+
 width:100%;
+
 padding:13px 14px;
+
 border:1px solid #d8dfe6;
+
 border-radius:8px;
+
 font-family:inherit;
+
 font-size:14px;
+
 outline:none;
+
 background:white;
+
 }
 
 input:focus,
 select:focus,
 textarea:focus{
+
 border-color:var(--gold);
+
 }
 
 textarea{
+
 min-height:120px;
+
 resize:vertical;
+
 }
 
 .form-box button{
+
 margin-top:20px;
+
 }
 
-/* AGENDA */
+/* =========================================================
+AGENDA
+========================================================= */
 
 .agenda{
+
 background:var(--navy);
+
 color:white;
+
 }
 
 .agenda .section-title h2{
+
 color:white;
+
 }
 
 .agenda .section-title p{
+
 color:#d9e2ec;
+
 }
 
 .agenda-box{
+
 background:rgba(255,255,255,.06);
+
 border:1px solid rgba(255,255,255,.12);
+
 border-radius:16px;
+
 padding:40px;
+
 max-width:700px;
+
 }
 
 .agenda-box h3{
+
 font-family:Georgia,serif;
+
 font-size:28px;
+
 color:var(--gold-light);
+
 margin-bottom:12px;
+
 }
 
 .agenda-box p{
+
 color:#d9e2ec;
+
 margin-bottom:25px;
+
 }
 
-/* CONTACTO */
+/* =========================================================
+CONTACTO
+========================================================= */
 
 .contact{
+
 background:white;
+
 }
 
 .contact-grid{
+
 display:grid;
+
 grid-template-columns:1fr 1fr;
+
 gap:70px;
+
 align-items:center;
+
 }
 
 .contact h2{
+
 font-family:Georgia,serif;
+
 font-size:46px;
+
 font-weight:500;
+
 color:var(--navy);
+
 line-height:1.15;
+
 margin-bottom:20px;
+
 }
 
 .contact p{
+
 color:var(--muted);
+
 margin-bottom:25px;
+
 }
 
 .contact-box{
+
 padding:40px;
+
 border-radius:16px;
+
 background:var(--cream);
+
 border:1px solid var(--border);
+
 }
 
 .contact-box h3{
+
 font-family:Georgia,serif;
+
 font-size:27px;
+
 color:var(--navy);
+
 margin-bottom:20px;
+
 }
 
 .contact-item{
+
 padding:13px 0;
+
 border-bottom:1px solid var(--border);
+
 font-size:14px;
+
 }
 
 .contact-item:last-child{
+
 border-bottom:none;
+
 }
 
 .contact-item a{
+
 color:var(--navy);
+
 font-weight:600;
+
 }
 
 .contact-item a:hover{
+
 color:var(--gold);
+
 }
 
-/* FOOTER */
+/* =========================================================
+FOOTER
+========================================================= */
 
 footer{
+
 background:var(--navy-dark);
+
 color:#cbd5e0;
+
 text-align:center;
+
 padding:35px 20px;
+
 font-size:13px;
+
 }
 
 footer strong{
+
 color:var(--gold-light);
+
 }
 
-/* RESPONSIVE */
+/* =========================================================
+RESPONSIVE
+========================================================= */
 
 @media(max-width:950px){
 
 nav{
+
 display:none;
+
 position:absolute;
+
 top:82px;
+
 left:0;
+
 right:0;
+
 background:white;
+
 padding:25px;
+
 flex-direction:column;
+
 align-items:flex-start;
+
 border-bottom:1px solid var(--border);
+
 }
 
 nav.active{
+
 display:flex;
+
 }
 
 .menu-button{
+
 display:block;
+
 }
 
 .about-grid,
@@ -878,14 +1479,18 @@ display:block;
 .agro-grid,
 .portal-box,
 .contact-grid{
+
 grid-template-columns:1fr;
+
 }
 
 .history-grid,
 .values-grid,
 .services-grid,
 .news-grid{
+
 grid-template-columns:1fr 1fr;
+
 }
 
 }
@@ -893,26 +1498,36 @@ grid-template-columns:1fr 1fr;
 @media(max-width:650px){
 
 section{
+
 padding:70px 0;
+
 }
 
 .hero{
+
 min-height:600px;
+
 }
 
 .hero-content{
+
 padding:80px 0;
+
 }
 
 .hero h1{
+
 font-size:43px;
+
 }
 
 .about h2,
 .agro h2,
 .sustainability h2,
 .contact h2{
+
 font-size:35px;
+
 }
 
 .history-grid,
@@ -920,29 +1535,49 @@ font-size:35px;
 .services-grid,
 .news-grid,
 .form-grid{
+
 grid-template-columns:1fr;
+
 }
 
 .portal-features,
 .agro-list{
+
 grid-template-columns:1fr;
+
 }
 
 .portal-box{
+
 padding:30px;
+
 }
 
 .portal-box h2{
+
 font-size:32px;
+
 }
 
 .calendar-table{
+
 font-size:12px;
+
 }
 
 .calendar-table th,
 .calendar-table td{
+
 padding:11px 8px;
+
+}
+
+.logo-text strong{
+
+font-size:16px;
+
+letter-spacing:1.5px;
+
 }
 
 }
@@ -953,17 +1588,25 @@ padding:11px 8px;
 
 <body>
 
-<!-- HEADER -->
+<!-- =====================================================
+HEADER
+===================================================== -->
 
 <header>
 
 <div class="container nav">
 
-<a href="#inicio" class="logo">
+<a
+href="#inicio"
+class="logo"
+
+>
 
 <div class="logo-text">
 
-<strong>ESTUDIO CONTABLE IGLESIAS</strong>
+<strong>
+ESTUDIO IGLESIAS
+</strong>
 
 </div>
 
@@ -973,28 +1616,51 @@ padding:11px 8px;
 class="menu-button"
 onclick="toggleMenu()"
 aria-label="Abrir menú"
+
 >
+
 ☰
+
 </button>
 
 <nav id="mainNav">
 
-<a href="#inicio">Inicio</a>
+<a href="#inicio">
+Inicio
+</a>
 
-<a href="#sobre">Sobre nosotros</a>
+<a href="#sobre">
+Sobre nosotros
+</a>
 
-<a href="#servicios">Servicios</a>
+<a href="#servicios">
+Servicios
+</a>
 
-<a href="#agro">Agro</a>
+<a href="#agro">
+Agro
+</a>
 
-<a href="#novedades">Novedades</a>
+<a href="#novedades">
+Novedades
+</a>
 
-<a href="#vencimientos">Vencimientos</a>
+<a href="#vencimientos">
+Vencimientos
+</a>
 
-<a href="#contacto">Contacto</a>
+<a href="#contacto">
+Contacto
+</a>
 
-<a href="/portal/" class="btn gold">
+<a
+href="/portal/"
+class="btn gold"
+
+>
+
 Portal clientes
+
 </a>
 
 <select
@@ -1002,14 +1668,32 @@ class="language"
 id="language"
 onchange="changeLanguage(this.value)"
 aria-label="Seleccionar idioma"
+
 >
 
-<option value="es">🇦🇷 Español</option>
-<option value="en">🇬🇧 English</option>
-<option value="pt">🇧🇷 Português</option>
-<option value="fr">🇫🇷 Français</option>
-<option value="it">🇮🇹 Italiano</option>
-<option value="de">🇩🇪 Deutsch</option>
+<option value="es">
+🇦🇷 Español
+</option>
+
+<option value="en">
+🇬🇧 English
+</option>
+
+<option value="pt">
+🇧🇷 Português
+</option>
+
+<option value="fr">
+🇫🇷 Français
+</option>
+
+<option value="it">
+🇮🇹 Italiano
+</option>
+
+<option value="de">
+🇩🇪 Deutsch
+</option>
 
 </select>
 
@@ -1019,27 +1703,40 @@ aria-label="Seleccionar idioma"
 
 </header>
 
-<!-- HERO -->
+<!-- =====================================================
+HERO
+===================================================== -->
 
-<section class="hero" id="inicio">
+<section
+class="hero"
+id="inicio"
+>
 
 <div class="container">
 
 <div class="hero-content">
 
-<div class="eyebrow" data-i18n="heroEyebrow">
+<div class="eyebrow"
+data-i18n="heroEyebrow"
+>
+
 Estudio Contable
+
 </div>
 
 <h1 data-i18n="heroTitle">
-Contabilidad con
-<span>visión de futuro.</span>
+
+Contabilidad con <span>
+visión de futuro. </span>
+
 </h1>
 
 <p data-i18n="heroText">
+
 Un estudio contable moderno, cercano y estratégico,
 creado para acompañar personas, empresas y productores
 agropecuarios en cada etapa de su crecimiento.
+
 </p>
 
 <div class="hero-actions">
@@ -1048,8 +1745,11 @@ agropecuarios en cada etapa de su crecimiento.
 href="#ser-cliente"
 class="btn gold"
 data-i18n="heroButton"
+
 >
+
 Quiero ser cliente
+
 </a>
 
 <a
@@ -1057,8 +1757,11 @@ href="#sobre"
 class="btn"
 style="border:1px solid rgba(255,255,255,.4);color:white"
 data-i18n="heroSecondary"
+
 >
+
 Conocé el estudio
+
 </a>
 
 </div>
@@ -1069,9 +1772,14 @@ Conocé el estudio
 
 </section>
 
-<!-- SOBRE NOSOTROS -->
+<!-- =====================================================
+SOBRE NOSOTROS
+===================================================== -->
 
-<section class="about" id="sobre">
+<section
+class="about"
+id="sobre"
+>
 
 <div class="container about-grid">
 
@@ -1086,7 +1794,9 @@ Una forma diferente de hacer contabilidad.
 </h2>
 
 <p>
-<strong>Estudio Contable Iglesias</strong>
+<strong>
+Estudio Contable Iglesias
+</strong>
 nace de una visión profesional que busca combinar
 la rigurosidad de la contabilidad con una atención
 cercana, clara y personalizada.
@@ -1094,7 +1804,9 @@ cercana, clara y personalizada.
 
 <p>
 Detrás del estudio está
-<strong>María Sol Iglesias</strong>,
+<strong>
+María Sol Iglesias
+</strong>,
 Contadora Pública, con una mirada orientada a la
 transformación, la tecnología y el crecimiento
 sostenible de sus clientes.
@@ -1106,8 +1818,14 @@ solamente una obligación y se convierta en una herramienta
 para tomar mejores decisiones.
 </p>
 
-<a href="#contacto" class="btn navy">
+<a
+href="#contacto"
+class="btn navy"
+
+>
+
 Conocé nuestra propuesta
+
 </a>
 
 </div>
@@ -1120,7 +1838,9 @@ La historia del estudio
 
 <div>
 
-<strong>El comienzo</strong>
+<strong>
+El comienzo
+</strong>
 
 <span>
 Un proyecto profesional construido desde la vocación
@@ -1132,7 +1852,9 @@ propio.
 
 <div>
 
-<strong>El presente</strong>
+<strong>
+El presente
+</strong>
 
 <span>
 Una propuesta moderna que integra contabilidad,
@@ -1143,7 +1865,9 @@ impuestos, tecnología y acompañamiento personalizado.
 
 <div>
 
-<strong>El futuro</strong>
+<strong>
+El futuro
+</strong>
 
 <span>
 Una plataforma digital propia para simplificar la
@@ -1158,7 +1882,9 @@ relación entre el estudio y sus clientes.
 
 </section>
 
-<!-- HISTORIA -->
+<!-- =====================================================
+HISTORIA
+===================================================== -->
 
 <section class="history">
 
@@ -1185,9 +1911,13 @@ como un camino de crecimiento, innovación y cercanía.
 
 <div class="history-card">
 
-<div class="number">01</div>
+<div class="number">
+01
+</div>
 
-<h3>Vocación</h3>
+<h3>
+Vocación
+</h3>
 
 <p>
 La profesión como punto de partida y la búsqueda
@@ -1198,9 +1928,13 @@ constante de excelencia como motor.
 
 <div class="history-card">
 
-<div class="number">02</div>
+<div class="number">
+02
+</div>
 
-<h3>Innovación</h3>
+<h3>
+Innovación
+</h3>
 
 <p>
 Incorporar herramientas digitales para hacer que la
@@ -1211,9 +1945,13 @@ información sea más accesible y útil.
 
 <div class="history-card">
 
-<div class="number">03</div>
+<div class="number">
+03
+</div>
 
-<h3>Crecimiento</h3>
+<h3>
+Crecimiento
+</h3>
 
 <p>
 Acompañar a cada cliente para que pueda tomar decisiones
@@ -1228,7 +1966,9 @@ con información clara y confiable.
 
 </section>
 
-<!-- MISIÓN VISIÓN COMPROMISO -->
+<!-- =====================================================
+VALORES
+===================================================== -->
 
 <section class="values">
 
@@ -1254,9 +1994,13 @@ Tres pilares que orientan cada decisión del estudio.
 
 <div class="value-card">
 
-<div class="icon">🎯</div>
+<div class="icon">
+🎯
+</div>
 
-<h3>Misión</h3>
+<h3>
+Misión
+</h3>
 
 <p>
 Brindar servicios contables e impositivos profesionales,
@@ -1269,9 +2013,13 @@ decisiones de nuestros clientes.
 
 <div class="value-card">
 
-<div class="icon">✨</div>
+<div class="icon">
+✨
+</div>
 
-<h3>Visión</h3>
+<h3>
+Visión
+</h3>
 
 <p>
 Construir un estudio contable moderno, innovador y
@@ -1284,9 +2032,13 @@ tecnología.
 
 <div class="value-card">
 
-<div class="icon">🤝</div>
+<div class="icon">
+🤝
+</div>
 
-<h3>Compromiso</h3>
+<h3>
+Compromiso
+</h3>
 
 <p>
 Trabajar con responsabilidad, confidencialidad,
@@ -1303,7 +2055,9 @@ un proyecto.
 
 </section>
 
-<!-- SUSTENTABILIDAD -->
+<!-- =====================================================
+SUSTENTABILIDAD
+===================================================== -->
 
 <section class="sustainability">
 
@@ -1347,12 +2101,29 @@ Nuestro compromiso
 
 <ul>
 
-<li>🌱 Digitalización de procesos</li>
-<li>📄 Reducción del uso de papel</li>
-<li>💻 Gestión documental digital</li>
-<li>🌾 Información para una gestión agropecuaria responsable</li>
-<li>♻️ Uso eficiente de recursos</li>
-<li>🤝 Crecimiento sostenible</li>
+<li>
+🌱 Digitalización de procesos
+</li>
+
+<li>
+📄 Reducción del uso de papel
+</li>
+
+<li>
+💻 Gestión documental digital
+</li>
+
+<li>
+🌾 Información para una gestión agropecuaria responsable
+</li>
+
+<li>
+♻️ Uso eficiente de recursos
+</li>
+
+<li>
+🤝 Crecimiento sostenible
+</li>
 
 </ul>
 
@@ -1362,9 +2133,14 @@ Nuestro compromiso
 
 </section>
 
-<!-- SERVICIOS -->
+<!-- =====================================================
+SERVICIOS
+===================================================== -->
 
-<section class="services" id="servicios">
+<section
+class="services"
+id="servicios"
+>
 
 <div class="container">
 
@@ -1389,9 +2165,13 @@ realidad profesional y empresarial.
 
 <div class="service-card">
 
-<div class="service-icon">📊</div>
+<div class="service-icon">
+📊
+</div>
 
-<h3>Contabilidad</h3>
+<h3>
+Contabilidad
+</h3>
 
 <p>
 Información contable organizada para comprender la
@@ -1402,9 +2182,13 @@ realidad económica y acompañar la toma de decisiones.
 
 <div class="service-card">
 
-<div class="service-icon">🧾</div>
+<div class="service-icon">
+🧾
+</div>
 
-<h3>Impuestos</h3>
+<h3>
+Impuestos
+</h3>
 
 <p>
 Planificación y cumplimiento de obligaciones tributarias
@@ -1415,9 +2199,13 @@ con seguimiento personalizado.
 
 <div class="service-card">
 
-<div class="service-icon">🏢</div>
+<div class="service-icon">
+🏢
+</div>
 
-<h3>Empresas</h3>
+<h3>
+Empresas
+</h3>
 
 <p>
 Acompañamiento contable y financiero para empresas,
@@ -1428,9 +2216,13 @@ emprendimientos y proyectos en crecimiento.
 
 <div class="service-card">
 
-<div class="service-icon">🌾</div>
+<div class="service-icon">
+🌾
+</div>
 
-<h3>Agro</h3>
+<h3>
+Agro
+</h3>
 
 <p>
 Gestión contable y seguimiento de información
@@ -1441,9 +2233,13 @@ económica y productiva para productores agropecuarios.
 
 <div class="service-card">
 
-<div class="service-icon">👤</div>
+<div class="service-icon">
+👤
+</div>
 
-<h3>Monotributo</h3>
+<h3>
+Monotributo
+</h3>
 
 <p>
 Seguimiento de facturación, categoría, obligaciones
@@ -1454,9 +2250,13 @@ y situación impositiva.
 
 <div class="service-card">
 
-<div class="service-icon">💡</div>
+<div class="service-icon">
+💡
+</div>
 
-<h3>Asesoramiento</h3>
+<h3>
+Asesoramiento
+</h3>
 
 <p>
 Análisis profesional para ayudarte a comprender tus
@@ -1471,9 +2271,14 @@ números y tomar decisiones con mayor información.
 
 </section>
 
-<!-- AGRO -->
+<!-- =====================================================
+AGRO
+===================================================== -->
 
-<section class="agro" id="agro">
+<section
+class="agro"
+id="agro"
+>
 
 <div class="container agro-grid">
 
@@ -1503,8 +2308,14 @@ caravanas, movimientos y resultados.
 
 <br>
 
-<a href="#ser-cliente" class="btn navy">
+<a
+href="#ser-cliente"
+class="btn navy"
+
+>
+
 Consultar por Agro
+
 </a>
 
 </div>
@@ -1517,18 +2328,53 @@ Gestión Agro
 
 <ul class="agro-list">
 
-<li>🌾 Campos y establecimientos</li>
-<li>📐 Superficie y lotes</li>
-<li>🚜 Campañas agrícolas</li>
-<li>🌱 Cultivos</li>
-<li>🐄 Hacienda</li>
-<li>🏷️ Caravanas</li>
-<li>📋 SISA</li>
-<li>🚚 Movimientos</li>
-<li>💰 Ingresos</li>
-<li>📉 Gastos</li>
-<li>📊 Comparativos</li>
-<li>📁 Documentación</li>
+<li>
+🌾 Campos y establecimientos
+</li>
+
+<li>
+📐 Superficie y lotes
+</li>
+
+<li>
+🚜 Campañas agrícolas
+</li>
+
+<li>
+🌱 Cultivos
+</li>
+
+<li>
+🐄 Hacienda
+</li>
+
+<li>
+🏷️ Caravanas
+</li>
+
+<li>
+📋 SISA
+</li>
+
+<li>
+🚚 Movimientos
+</li>
+
+<li>
+💰 Ingresos
+</li>
+
+<li>
+📉 Gastos
+</li>
+
+<li>
+📊 Comparativos
+</li>
+
+<li>
+📁 Documentación
+</li>
 
 </ul>
 
@@ -1538,9 +2384,13 @@ Gestión Agro
 
 </section>
 
-<!-- PORTAL -->
+<!-- =====================================================
+PORTAL
+===================================================== -->
 
-<section class="portal-preview">
+<section
+class="portal-preview"
+>
 
 <div class="container">
 
@@ -1562,8 +2412,14 @@ consultar su información contable, impositiva y,
 cuando corresponda, agropecuaria.
 </p>
 
-<a href="/portal/" class="btn gold">
+<a
+href="/portal/"
+class="btn gold"
+
+>
+
 Ingresar al portal
+
 </a>
 
 </div>
@@ -1602,9 +2458,14 @@ Ingresar al portal
 
 </section>
 
-<!-- NOVEDADES -->
+<!-- =====================================================
+NOVEDADES
+===================================================== -->
 
-<section class="news" id="novedades">
+<section
+class="news"
+id="novedades"
+>
 
 <div class="container">
 
@@ -1629,7 +2490,9 @@ actualizaciones y participación de María Sol Iglesias.
 
 <div class="news-card">
 
-<span>Actualidad tributaria</span>
+<span>
+Actualidad tributaria
+</span>
 
 <h3>
 Novedades impositivas
@@ -1644,7 +2507,9 @@ actualizaciones tributarias y profesionales.
 
 <div class="news-card">
 
-<span>Entrevistas</span>
+<span>
+Entrevistas
+</span>
 
 <h3>
 María Sol Iglesias
@@ -1659,7 +2524,9 @@ participaciones y contenidos profesionales.
 
 <div class="news-card">
 
-<span>Sector agropecuario</span>
+<span>
+Sector agropecuario
+</span>
 
 <h3>
 Actualidad del agro
@@ -1678,9 +2545,14 @@ agropecuarios y empresas del sector.
 
 </section>
 
-<!-- VENCIMIENTOS -->
+<!-- =====================================================
+VENCIMIENTOS
+===================================================== -->
 
-<section class="calendar" id="vencimientos">
+<section
+class="calendar"
+id="vencimientos"
+>
 
 <div class="container">
 
@@ -1708,10 +2580,21 @@ estarán disponibles dentro de su portal privado.
 
 <tr>
 
-<th>Fecha</th>
-<th>Obligación</th>
-<th>Período</th>
-<th>Estado</th>
+<th>
+Fecha
+</th>
+
+<th>
+Obligación
+</th>
+
+<th>
+Período
+</th>
+
+<th>
+Estado
+</th>
 
 </tr>
 
@@ -1721,36 +2604,72 @@ estarán disponibles dentro de su portal privado.
 
 <tr>
 
-<td>10/09/2026</td>
-<td>IVA</td>
-<td>08/2026</td>
+<td>
+10/09/2026
+</td>
 
 <td>
-<span class="tag">Próximo</span>
+IVA
+</td>
+
+<td>
+08/2026
+</td>
+
+<td>
+
+<span class="tag">
+Próximo
+</span>
+
 </td>
 
 </tr>
 
 <tr>
 
-<td>15/09/2026</td>
-<td>IIBB</td>
-<td>08/2026</td>
+<td>
+15/09/2026
+</td>
 
 <td>
-<span class="tag">Próximo</span>
+IIBB
+</td>
+
+<td>
+08/2026
+</td>
+
+<td>
+
+<span class="tag">
+Próximo
+</span>
+
 </td>
 
 </tr>
 
 <tr>
 
-<td>20/09/2026</td>
-<td>Ganancias</td>
-<td>Anticipo</td>
+<td>
+20/09/2026
+</td>
 
 <td>
-<span class="tag">Próximo</span>
+Ganancias
+</td>
+
+<td>
+Anticipo
+</td>
+
+<td>
+
+<span class="tag">
+Próximo
+</span>
+
 </td>
 
 </tr>
@@ -1763,9 +2682,14 @@ estarán disponibles dentro de su portal privado.
 
 </section>
 
-<!-- FORMULARIOS -->
+<!-- =====================================================
+FORMULARIOS
+===================================================== -->
 
-<section class="forms" id="ser-cliente">
+<section
+class="forms"
+id="ser-cliente"
+>
 
 <div class="container">
 
@@ -1802,19 +2726,30 @@ onsubmit="submitForm(event,'Solicitud para ser cliente')"
 Nombre y apellido
 </label>
 
-<input type="text" required>
+<input
+type="text"
+required
+
+>
 
 <label>
 Email
 </label>
 
-<input type="email" required>
+<input
+type="email"
+required
+
+>
 
 <label>
 Teléfono
 </label>
 
-<input type="tel">
+<input
+type="tel"
+
+>
 
 <label>
 Actividad
@@ -1826,12 +2761,29 @@ Actividad
 Seleccionar
 </option>
 
-<option>Empresa</option>
-<option>Emprendedor</option>
-<option>Productor agropecuario</option>
-<option>Profesional</option>
-<option>Monotributista</option>
-<option>Otro</option>
+<option>
+Empresa
+</option>
+
+<option>
+Emprendedor
+</option>
+
+<option>
+Productor agropecuario
+</option>
+
+<option>
+Profesional
+</option>
+
+<option>
+Monotributista
+</option>
+
+<option>
+Otro
+</option>
 
 </select>
 
@@ -1843,8 +2795,14 @@ Mensaje
 placeholder="Contanos brevemente sobre tu actividad."
 ></textarea>
 
-<button type="submit" class="btn gold">
+<button
+type="submit"
+class="btn gold"
+
+>
+
 Solicitar contacto
+
 </button>
 
 </form>
@@ -1865,13 +2823,21 @@ onsubmit="submitForm(event,'Consulta')"
 Nombre
 </label>
 
-<input type="text" required>
+<input
+type="text"
+required
+
+>
 
 <label>
 Email
 </label>
 
-<input type="email" required>
+<input
+type="email"
+required
+
+>
 
 <label>
 Tema
@@ -1883,12 +2849,29 @@ Tema
 Seleccionar
 </option>
 
-<option>Contabilidad</option>
-<option>Impuestos</option>
-<option>Agro</option>
-<option>Monotributo</option>
-<option>Empresas</option>
-<option>Otro</option>
+<option>
+Contabilidad
+</option>
+
+<option>
+Impuestos
+</option>
+
+<option>
+Agro
+</option>
+
+<option>
+Monotributo
+</option>
+
+<option>
+Empresas
+</option>
+
+<option>
+Otro
+</option>
 
 </select>
 
@@ -1896,10 +2879,18 @@ Seleccionar
 Consulta
 </label>
 
-<textarea required></textarea>
+<textarea
+required
+></textarea>
 
-<button type="submit" class="btn gold">
+<button
+type="submit"
+class="btn gold"
+
+>
+
 Enviar consulta
+
 </button>
 
 </form>
@@ -1912,9 +2903,14 @@ Enviar consulta
 
 </section>
 
-<!-- AGENDA -->
+<!-- =====================================================
+AGENDA
+===================================================== -->
 
-<section class="agenda" id="agenda">
+<section
+class="agenda"
+id="agenda"
+>
 
 <div class="container">
 
@@ -1952,8 +2948,11 @@ href="https://calendar.google.com/"
 target="_blank"
 rel="noopener"
 class="btn gold"
+
 >
+
 Abrir agenda
+
 </a>
 
 </div>
@@ -1962,9 +2961,14 @@ Abrir agenda
 
 </section>
 
-<!-- CONTACTO -->
+<!-- =====================================================
+CONTACTO
+===================================================== -->
 
-<section class="contact" id="contacto">
+<section
+class="contact"
+id="contacto"
+>
 
 <div class="container contact-grid">
 
@@ -1984,8 +2988,14 @@ nuestros servicios o realizar una consulta,
 podés comunicarte con el estudio.
 </p>
 
-<a href="#ser-cliente" class="btn gold">
+<a
+href="#ser-cliente"
+class="btn gold"
+
+>
+
 Quiero ser cliente
+
 </a>
 
 </div>
@@ -2016,9 +3026,12 @@ Carlos Casares, Buenos Aires
 
 📧
 
-<a href="mailto:econtablesoliglesias@gmail.com">
+<a
+href="mailto:econtablesoliglesias@gmail.com"
 
-econtablesoliglesias@gmail.com
+>
+
+[econtablesoliglesias@gmail.com](mailto:econtablesoliglesias@gmail.com)
 
 </a>
 
@@ -2028,7 +3041,10 @@ econtablesoliglesias@gmail.com
 
 📱
 
-<a href="tel:+542395472873">
+<a
+href="tel:+542395472873"
+
+>
 
 2395 472873
 
@@ -2044,6 +3060,7 @@ econtablesoliglesias@gmail.com
 href="https://www.instagram.com/contadora.soliglesias/"
 target="_blank"
 rel="noopener"
+
 >
 
 @contadora.soliglesias
@@ -2060,6 +3077,7 @@ rel="noopener"
 href="https://www.google.com/maps/search/?api=1&query=Monse%C3%B1or+D+Andrea+363%2C+Carlos+Casares%2C+Buenos+Aires"
 target="_blank"
 rel="noopener"
+
 >
 
 Ver ubicación en Google Maps
@@ -2074,7 +3092,9 @@ Ver ubicación en Google Maps
 
 </section>
 
-<!-- FOOTER -->
+<!-- =====================================================
+FOOTER
+===================================================== -->
 
 <footer>
 
@@ -2097,6 +3117,10 @@ Contadora Pública
 Carlos Casares · Buenos Aires · Argentina
 
 </footer>
+
+<!-- =====================================================
+JAVASCRIPT
+===================================================== -->
 
 <script>
 
@@ -2238,7 +3262,9 @@ const data=
 translations[language];
 
 if(!data){
+
 return;
+
 }
 
 document
@@ -2267,4 +3293,3 @@ language;
 </body>
 
 </html>
-```
