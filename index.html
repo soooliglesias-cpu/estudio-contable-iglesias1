@@ -4435,83 +4435,75 @@ errorMessage:"حدث خطأ أثناء الإرسال. يرجى المحاولة
 
 let currentLanguage = localStorage.getItem("preferredLanguage") || "es";
 
-
 function changeLanguage(language){
 
-if(!translations[language]){
-language = "es";
+    if(!translations[language]){
+        language = "es";
+    }
+
+    currentLanguage = language;
+
+    const texts = translations[language];
+
+    /* Textos normales */
+
+    document.querySelectorAll("[data-i18n]").forEach(element => {
+
+        const key = element.getAttribute("data-i18n");
+
+        if(texts[key] !== undefined){
+            element.innerHTML = texts[key];
+        }
+
+    });
+
+    /* Placeholders */
+
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
+
+        const key = element.getAttribute("data-i18n-placeholder");
+
+        if(texts[key] !== undefined){
+            element.placeholder = texts[key];
+        }
+
+    });
+
+    /* Idioma del documento */
+
+    document.documentElement.lang = language;
+
+    /* Dirección para árabe */
+
+    if(language === "ar"){
+        document.documentElement.dir = "rtl";
+    }else{
+        document.documentElement.dir = "ltr";
+    }
+
+    /* Guardar */
+
+    localStorage.setItem("preferredLanguage", language);
+
+    /* Selector */
+
+    const selector = document.getElementById("language");
+
+    if(selector){
+        selector.value = language;
+    }
+
 }
 
-currentLanguage = language;
+/* =========================================================
+   APLICAR IDIOMA GUARDADO AL CARGAR LA PÁGINA
+   ========================================================= */
 
-const texts = translations[language];
+document.addEventListener("DOMContentLoaded", function(){
 
-
-/* Textos normales */
-
-document.querySelectorAll("[data-i18n]").forEach(element => {
-
-const key = element.getAttribute("data-i18n");
-
-if(texts[key] !== undefined){
-
-element.innerHTML = texts[key];
-
-}
+    changeLanguage(currentLanguage);
 
 });
-
-
-/* Placeholders */
-
-document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
-
-const key = element.getAttribute("data-i18n-placeholder");
-
-if(texts[key] !== undefined){
-
-element.placeholder = texts[key];
-
-}
-
-});
-
-
-/* Idioma del documento */
-
-document.documentElement.lang = language;
-
-
-/* Dirección para árabe */
-
-if(language === "ar"){
-
-document.documentElement.dir = "rtl";
-
-}else{
-
-document.documentElement.dir = "ltr";
-
-}
-
-
-/* Guardar */
-
-localStorage.setItem("preferredLanguage", language);
-
-
-/* Selector */
-
-const selector = document.getElementById("language");
-
-if(selector){
-
-selector.value = language;
-
-}
-
-}
-
 
 /* =========================================================
    MENÚ MOBILE
