@@ -5170,7 +5170,6 @@ async function submitClientForm(event) {
 /* =========================================================
    FORMULARIO DE CONSULTAS
 ========================================================= */
-
 async function submitQuestionForm(event) {
 
     event.preventDefault();
@@ -5181,42 +5180,28 @@ async function submitQuestionForm(event) {
         return;
     }
 
-
-    const data =
-        getFormData(form);
-
+    /* =====================================================
+       OBTENER DATOS DIRECTAMENTE DEL FORMULARIO
+       ===================================================== */
 
     const name =
-        data.name ||
-        data.nombre ||
-        "";
-
+        form.querySelector('[name="nombre"]')?.value.trim() || "";
 
     const email =
-        data.email ||
-        data.correo ||
-        "";
-
+        form.querySelector('[name="email"]')?.value.trim() || "";
 
     const topic =
-        data.topic ||
-        data.tema ||
-        "";
-
+        form.querySelector('[name="tema"]')?.value.trim() || "";
 
     const question =
-        data.question ||
-        data.pregunta ||
-        data.message ||
-        "";
+        form.querySelector('[name="consulta"]')?.value.trim() || "";
 
 
-    if (
-        !name ||
-        !email ||
-        !topic ||
-        !question
-    ) {
+    /* =====================================================
+       VALIDACIÓN
+       ===================================================== */
+
+    if (!name || !email || !topic || !question) {
 
         showFormMessage(
             form,
@@ -5225,7 +5210,6 @@ async function submitQuestionForm(event) {
         );
 
         return;
-
     }
 
 
@@ -5238,21 +5222,27 @@ async function submitQuestionForm(event) {
         );
 
         return;
-
     }
 
+
+    /* =====================================================
+       BOTÓN
+       ===================================================== */
 
     const button =
         form.querySelector(
             'button[type="submit"], input[type="submit"]'
         );
 
-
     setButtonLoading(
         button,
         true
     );
 
+
+    /* =====================================================
+       SUPABASE
+       ===================================================== */
 
     try {
 
@@ -5264,11 +5254,6 @@ async function submitQuestionForm(event) {
 
         }
 
-
-        /*
-           TABLA:
-           questions
-        */
 
         const { error } =
             await supabaseClient
@@ -5283,19 +5268,23 @@ async function submitQuestionForm(event) {
 
                     question: question,
 
-                    language:
-                        currentLanguage,
+                    language: currentLanguage,
 
-                    status:
-                        "new"
+                    status: "new"
 
                 });
 
 
         if (error) {
+
             throw error;
+
         }
 
+
+        /* =================================================
+           ÉXITO
+           ================================================= */
 
         showFormMessage(
             form,
@@ -5326,6 +5315,7 @@ async function submitQuestionForm(event) {
             "error"
         );
 
+
     } finally {
 
         setButtonLoading(
@@ -5336,7 +5326,6 @@ async function submitQuestionForm(event) {
     }
 
 }
-
 
 /* =========================================================
    BUSCAR FORMULARIOS AUTOMÁTICAMENTE
