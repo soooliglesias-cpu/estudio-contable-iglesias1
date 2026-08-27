@@ -1914,63 +1914,85 @@ con el estudio o realizar una consulta profesional.
 
 <div class="form-grid">
 
+<!-- =========================
+FORMULARIO CLIENTES
+========================= -->
+
 <div class="form-box">
 
 <h3 data-i18n="clientFormTitle">
 Quiero ser cliente
 </h3>
 
-<form onsubmit="submitForm(event,'Solicitud para ser cliente')">
+<form onsubmit="submitClientForm(event)">
 
 <label data-i18n="nameLabel">
 Nombre y apellido
 </label>
 
-<input type="text" required>
+<input
+type="text"
+name="nombre"
+required
+
+>
 
 <label data-i18n="emailLabel">
 Email
 </label>
 
-<input type="email" required>
+<input
+type="email"
+name="email"
+required
+
+>
 
 <label data-i18n="phoneLabel">
 Teléfono
 </label>
 
-<input type="tel">
+<input
+type="tel"
+name="telefono"
+
+>
 
 <label data-i18n="activityLabel">
 Actividad
 </label>
 
-<select required>
+<select
+name="actividad"
+required
+
+>
 
 <option value="" data-i18n="selectActivity">
 Seleccionar
 </option>
 
-<option data-i18n="activityCompany">
+<option value="Empresa" data-i18n="activityCompany">
 Empresa
 </option>
 
-<option data-i18n="activityEntrepreneur">
+<option value="Emprendedor" data-i18n="activityEntrepreneur">
 Emprendedor
 </option>
 
-<option data-i18n="activityAgro">
+<option value="Productor agropecuario" data-i18n="activityAgro">
 Productor agropecuario
 </option>
 
-<option data-i18n="activityProfessional">
+<option value="Profesional" data-i18n="activityProfessional">
 Profesional
 </option>
 
-<option data-i18n="activityMono">
+<option value="Monotributista" data-i18n="activityMono">
 Monotributista
 </option>
 
-<option data-i18n="activityOther">
+<option value="Otro" data-i18n="activityOther">
 Otro
 </option>
 
@@ -1981,6 +2003,7 @@ Mensaje
 </label>
 
 <textarea
+name="mensaje"
 data-i18n-placeholder="activityPlaceholder"
 placeholder="Contanos brevemente sobre tu actividad."
 ></textarea>
@@ -1989,13 +2012,18 @@ placeholder="Contanos brevemente sobre tu actividad."
 type="submit"
 class="btn gold"
 data-i18n="contactRequestButton"
+
 >
-Solicitar contacto
-</button>
+
+Solicitar contacto </button>
 
 </form>
 
 </div>
+
+<!-- =========================
+FORMULARIO CONSULTAS
+========================= -->
 
 <div class="form-box">
 
@@ -2003,51 +2031,65 @@ Solicitar contacto
 Hacer una consulta
 </h3>
 
-<form onsubmit="submitForm(event,'Consulta')">
+<form onsubmit="submitQuestionForm(event)">
 
 <label data-i18n="nameLabelShort">
 Nombre
 </label>
 
-<input type="text" required>
+<input
+type="text"
+name="nombre"
+required
+
+>
 
 <label data-i18n="emailLabel">
 Email
 </label>
 
-<input type="email" required>
+<input
+type="email"
+name="email"
+required
+
+>
 
 <label data-i18n="topicLabel">
 Tema
 </label>
 
-<select required>
+<select
+name="tema"
+required
+
+>
 
 <option value="" data-i18n="selectTopic">
 Seleccionar
 </option>
 
-<option data-i18n="topicAccounting">
+<option value="Contabilidad" data-i18n="topicAccounting">
 Contabilidad
 </option>
 
-<option data-i18n="topicTaxes">
+<option value="Impuestos" data-i18n="topicTaxes">
 Impuestos
 </option>
 
-<option data-i18n="topicAgro">
+<option value="Agro" data-i18n="topicAgro">
 Agro
 </option>
 
-<option data-i18n="topicMono">
+<option value="Monotributo" data-i18n="topicMono">
 Monotributo
 </option>
 
-<option data-i18n="topicCompanies">
+<option value="Empresas" data-i18n="topicCompanies">
 Empresas
 </option>
 
-<option data-i18n="topicOther">
+<option value="Otro" data-i18n="topicOther">
 Otro
 </option>
 
@@ -2057,15 +2099,19 @@ Otro
 Consulta
 </label>
 
-<textarea required></textarea>
+<textarea
+name="consulta"
+required
+></textarea>
 
 <button
 type="submit"
 class="btn gold"
 data-i18n="sendQuestionButton"
+
 >
-Enviar consulta
-</button>
+
+Enviar consulta </button>
 
 </form>
 
