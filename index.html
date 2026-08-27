@@ -2326,7 +2326,7 @@ const SUPABASE_URL = "https://lpjzhjftgmlcpjyrkqfl.supabase.co";
    NO colocar nunca sb_secret_...
 */
 
-const SUPABASE_ANON_KEY = "PEGAR_AQUI_TU_SB_PUBLISHABLE";
+const SUPABASE_ANON_KEY = "sb_publishable_XJPVuprbVeoyev-rv7WsZg_h-D63Xf2";
 
 let supabaseClient = null;
 
@@ -2335,7 +2335,7 @@ try {
     if (
         SUPABASE_URL &&
         SUPABASE_ANON_KEY &&
-        SUPABASE_ANON_KEY !== "PEGAR_AQUI_TU_SB_PUBLISHABLE"
+        SUPABASE_ANON_KEY !== "sb_publishable_XJPVuprbVeoyev-rv7WsZg_h-D63Xf2"
     ) {
 
         supabaseClient = window.supabase.createClient(
