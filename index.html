@@ -3528,3 +3528,1370 @@ event.target.reset();
 </body>
 
 </html>
+<!-- =========================
+PARTE 2 — IDIOMAS + FUNCIONES
+========================= -->
+
+<script>
+
+/* =========================
+MENÚ MOBILE
+========================= */
+
+function toggleMenu(){
+
+const nav = document.getElementById("mainNav");
+
+nav.classList.toggle("active");
+
+}
+
+
+/* =========================
+TRADUCCIONES
+========================= */
+
+const translations = {
+
+es: {
+
+navHome:"Inicio",
+navAbout:"Sobre nosotros",
+navServices:"Servicios",
+navAgro:"Agro",
+navNews:"Novedades",
+navCalendar:"Vencimientos",
+navContact:"Contacto",
+navPortal:"Portal clientes",
+
+heroEyebrow:"Estudio Contable",
+heroTitle:'Contabilidad con <span>visión de futuro.</span>',
+heroText:"Un estudio contable moderno, cercano y estratégico, creado para acompañar personas, empresas y productores agropecuarios en cada etapa de su crecimiento.",
+heroButton:"Quiero ser cliente",
+heroSecondary:"Conocé el estudio",
+
+aboutEyebrow:"Sobre nosotros",
+aboutTitle:"Una forma diferente de hacer contabilidad.",
+aboutP1:"<strong>Estudio Contable Iglesias</strong> nace de una visión profesional que busca combinar la rigurosidad de la contabilidad con una atención cercana, clara y personalizada.",
+aboutP2:"Detrás del estudio está <strong>María Sol Iglesias</strong>, Contadora Pública, con una mirada orientada a la transformación, la tecnología y el crecimiento sostenible de sus clientes.",
+aboutP3:"El objetivo es que la información contable deje de ser solamente una obligación y se convierta en una herramienta para tomar mejores decisiones.",
+aboutButton:"Conocé nuestra propuesta",
+
+historyTitle:"La historia del estudio",
+historyStartTitle:"El comienzo",
+historyStartText:"Un proyecto profesional construido desde la vocación por la contabilidad y el deseo de crear un estudio propio.",
+historyPresentTitle:"El presente",
+historyPresentText:"Una propuesta moderna que integra contabilidad, impuestos, tecnología y acompañamiento personalizado.",
+historyFutureTitle:"El futuro",
+historyFutureText:"Una plataforma digital propia para simplificar la relación entre el estudio y sus clientes.",
+
+evolutionEyebrow:"Nuestra evolución",
+evolutionTitle:"Un estudio construido con propósito.",
+evolutionText:"La historia de Estudio Contable Iglesias está pensada como un camino de crecimiento, innovación y cercanía.",
+
+vocacionTitle:"Vocación",
+vocacionText:"La profesión como punto de partida y la búsqueda constante de excelencia como motor.",
+innovationTitle:"Innovación",
+innovationText:"Incorporar herramientas digitales para hacer que la información sea más accesible y útil.",
+growthTitle:"Crecimiento",
+growthText:"Acompañar a cada cliente para que pueda tomar decisiones con información clara y confiable.",
+
+valuesEyebrow:"Nuestros valores",
+valuesTitle:"Misión, visión y compromiso.",
+valuesText:"Tres pilares que orientan cada decisión del estudio.",
+
+missionTitle:"Misión",
+missionText:"Brindar servicios contables e impositivos profesionales, claros y personalizados, utilizando la tecnología como herramienta para mejorar la experiencia y la toma de decisiones de nuestros clientes.",
+
+visionTitle:"Visión",
+visionText:"Construir un estudio contable moderno, innovador y cercano, reconocido por la calidad profesional, la especialización y la incorporación responsable de tecnología.",
+
+commitmentTitle:"Compromiso",
+commitmentText:"Trabajar con responsabilidad, confidencialidad, transparencia y dedicación, entendiendo que detrás de cada número existe una persona, una empresa o un proyecto.",
+
+sustainabilityEyebrow:"Sustentabilidad",
+sustainabilityTitle:"Crecer también es cuidar.",
+sustainabilityP1:"El compromiso del Estudio Contable Iglesias con la sustentabilidad forma parte de una visión profesional de largo plazo.",
+sustainabilityP2:"Buscamos reducir el uso innecesario de papel, digitalizar procesos y promover herramientas que permitan trabajar de manera más eficiente.",
+sustainabilityP3:"En el sector agropecuario, además, creemos en la importancia de acompañar una gestión responsable de la información productiva y económica.",
+
+sustainabilityBoxTitle:"Nuestro compromiso",
+sustainability1:"🌱 Digitalización de procesos",
+sustainability2:"📄 Reducción del uso de papel",
+sustainability3:"💻 Gestión documental digital",
+sustainability4:"🌾 Información para una gestión agropecuaria responsable",
+sustainability5:"♻️ Uso eficiente de recursos",
+sustainability6:"🤝 Crecimiento sostenible",
+
+servicesEyebrow:"Servicios",
+servicesTitle:"Una mirada integral sobre tu actividad.",
+servicesText:"Soluciones contables e impositivas adaptadas a cada realidad profesional y empresarial.",
+
+serviceAccountingTitle:"Contabilidad",
+serviceAccountingText:"Información contable organizada para comprender la realidad económica y acompañar la toma de decisiones.",
+
+serviceTaxesTitle:"Impuestos",
+serviceTaxesText:"Planificación y cumplimiento de obligaciones tributarias con seguimiento personalizado.",
+
+serviceCompaniesTitle:"Empresas",
+serviceCompaniesText:"Acompañamiento contable y financiero para empresas, emprendimientos y proyectos en crecimiento.",
+
+serviceAgroTitle:"Agro",
+serviceAgroText:"Gestión contable y seguimiento de información económica y productiva para productores agropecuarios.",
+
+serviceMonoTitle:"Monotributo",
+serviceMonoText:"Seguimiento de facturación, categoría, obligaciones y situación impositiva.",
+
+serviceAdviceTitle:"Asesoramiento",
+serviceAdviceText:"Análisis profesional para ayudarte a comprender tus números y tomar decisiones con mayor información.",
+
+agroEyebrow:"Especialización agropecuaria",
+agroTitle:"El campo también necesita información.",
+agroText1:"Una propuesta pensada para productores que necesitan tener organizada la información económica, productiva y documental de sus establecimientos.",
+agroText2:"El futuro portal permitirá consultar en un único espacio información de campos, lotes, campañas, hacienda, SISA, caravanas, movimientos y resultados.",
+agroButton:"Consultar por Agro",
+
+agroPanelTitle:"Gestión Agro",
+agro1:"🌾 Campos y establecimientos",
+agro2:"📐 Superficie y lotes",
+agro3:"🚜 Campañas agrícolas",
+agro4:"🌱 Cultivos",
+agro5:"🐄 Hacienda",
+agro6:"🏷️ Caravanas",
+agro7:"📋 SISA",
+agro8:"🚚 Movimientos",
+agro9:"💰 Ingresos",
+agro10:"📉 Gastos",
+agro11:"📊 Comparativos",
+agro12:"📁 Documentación",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"Tu información, siempre a tu alcance.",
+portalText:"Un espacio digital privado donde cada cliente podrá consultar su información contable, impositiva y, cuando corresponda, agropecuaria.",
+portalButton:"Ingresar al portal",
+
+portalFeature1:"📊 Ingresos y gastos",
+portalFeature2:"🧾 Estado impositivo",
+portalFeature3:"📅 Vencimientos",
+portalFeature4:"🌾 Información Agro",
+portalFeature5:"📈 Comparativos",
+portalFeature6:"📁 Documentación",
+
+newsEyebrow:"Novedades",
+newsTitle:"Actualidad del estudio.",
+newsText:"Información profesional, novedades tributarias, actualizaciones y participación de María Sol Iglesias.",
+
+newsCategory1:"Actualidad tributaria",
+newsTitle1:"Novedades impositivas",
+newsText1:"Este espacio estará destinado a comunicar actualizaciones tributarias y profesionales.",
+
+newsCategory2:"Entrevistas",
+newsTitle2:"María Sol Iglesias",
+newsText2:"Un espacio para compartir entrevistas, notas, participaciones y contenidos profesionales.",
+
+newsCategory3:"Sector agropecuario",
+newsTitle3:"Actualidad del agro",
+newsText3:"Información de interés para productores agropecuarios y empresas del sector.",
+
+calendarEyebrow:"Calendario",
+calendarTitle:"Vencimientos y fechas importantes.",
+calendarText:"El calendario público ofrece información general. Los vencimientos particulares de cada cliente estarán disponibles dentro de su portal privado.",
+
+calendarDate:"Fecha",
+calendarObligation:"Obligación",
+calendarPeriod:"Período",
+calendarStatus:"Estado",
+calendarNext:"Próximo",
+incomeTax:"Ganancias",
+advance:"Anticipo",
+
+formsEyebrow:"Contacto profesional",
+formsTitle:"Comencemos a trabajar juntos.",
+formsText:"Podés solicitar información para comenzar a trabajar con el estudio o realizar una consulta profesional.",
+
+clientFormTitle:"Quiero ser cliente",
+nameLabel:"Nombre y apellido",
+emailLabel:"Email",
+phoneLabel:"Teléfono",
+activityLabel:"Actividad",
+selectActivity:"Seleccionar",
+activityCompany:"Empresa",
+activityEntrepreneur:"Emprendedor",
+activityAgro:"Productor agropecuario",
+activityProfessional:"Profesional",
+activityMono:"Monotributista",
+activityOther:"Otro",
+messageLabel:"Mensaje",
+activityPlaceholder:"Contanos brevemente sobre tu actividad.",
+contactRequestButton:"Solicitar contacto",
+
+questionFormTitle:"Hacer una consulta",
+nameLabelShort:"Nombre",
+topicLabel:"Tema",
+selectTopic:"Seleccionar",
+topicAccounting:"Contabilidad",
+topicTaxes:"Impuestos",
+topicAgro:"Agro",
+topicMono:"Monotributo",
+topicCompanies:"Empresas",
+topicOther:"Otro",
+questionLabel:"Consulta",
+sendQuestionButton:"Enviar consulta",
+
+agendaEyebrow:"Agenda",
+agendaTitle:"Agendá una reunión con María Sol.",
+agendaText:"Reservá una reunión con el estudio seleccionando el día y horario que mejor se adapte a tu disponibilidad.",
+agendaBoxTitle:"📅 Reuniones profesionales",
+agendaBoxText:"Elegí un día y horario disponible para reunirte con María Sol Iglesias.",
+agendaButton:"Reservar una reunión",
+
+contactEyebrow:"Contacto",
+contactTitle:"Hablemos de tu proyecto.",
+contactText:"Si querés ordenar tu situación contable, conocer nuestros servicios o realizar una consulta, podés comunicarte con el estudio.",
+contactButton:"Quiero ser cliente",
+accountant:"Contadora Pública",
+maps:"Ver ubicación en Google Maps",
+
+footerLocation:"Carlos Casares · Buenos Aires · Argentina"
+
+},
+
+
+/* =========================
+ENGLISH
+========================= */
+
+en: {
+
+navHome:"Home",
+navAbout:"About us",
+navServices:"Services",
+navAgro:"Agriculture",
+navNews:"News",
+navCalendar:"Deadlines",
+navContact:"Contact",
+navPortal:"Client portal",
+
+heroEyebrow:"Accounting Firm",
+heroTitle:'Accounting with <span>a vision for the future.</span>',
+heroText:"A modern, approachable and strategic accounting firm created to support individuals, companies and agricultural producers throughout every stage of their growth.",
+heroButton:"Become a client",
+heroSecondary:"Discover the firm",
+
+aboutEyebrow:"About us",
+aboutTitle:"A different way of doing accounting.",
+aboutP1:"<strong>Estudio Contable Iglesias</strong> was created with a professional vision that combines accounting rigor with close, clear and personalized attention.",
+aboutP2:"Behind the firm is <strong>María Sol Iglesias</strong>, Public Accountant, with a focus on transformation, technology and sustainable growth.",
+aboutP3:"Our goal is for accounting information to become more than an obligation: a tool for making better decisions.",
+aboutButton:"Discover our approach",
+
+historyTitle:"The history of the firm",
+historyStartTitle:"The beginning",
+historyStartText:"A professional project built from a passion for accounting and the desire to create an independent firm.",
+historyPresentTitle:"The present",
+historyPresentText:"A modern approach combining accounting, taxation, technology and personalized support.",
+historyFutureTitle:"The future",
+historyFutureText:"A digital platform designed to simplify the relationship between the firm and its clients.",
+
+evolutionEyebrow:"Our evolution",
+evolutionTitle:"A firm built with purpose.",
+evolutionText:"The story of Estudio Contable Iglesias is a journey of growth, innovation and closeness.",
+
+vocacionTitle:"Professional vocation",
+vocacionText:"The profession as a starting point and the constant pursuit of excellence as our driving force.",
+innovationTitle:"Innovation",
+innovationText:"Digital tools that make information more accessible and useful.",
+growthTitle:"Growth",
+growthText:"Supporting every client with clear and reliable information for better decisions.",
+
+valuesEyebrow:"Our values",
+valuesTitle:"Mission, vision and commitment.",
+valuesText:"Three pillars that guide every decision we make.",
+
+missionTitle:"Mission",
+missionText:"To provide professional, clear and personalized accounting and tax services, using technology to improve our clients' experience and decision-making.",
+
+visionTitle:"Vision",
+visionText:"To build a modern, innovative and approachable accounting firm recognized for professional quality, specialization and responsible use of technology.",
+
+commitmentTitle:"Commitment",
+commitmentText:"To work with responsibility, confidentiality, transparency and dedication, understanding that behind every number there is a person, company or project.",
+
+sustainabilityEyebrow:"Sustainability",
+sustainabilityTitle:"Growing also means caring.",
+sustainabilityP1:"Our commitment to sustainability is part of a long-term professional vision.",
+sustainabilityP2:"We seek to reduce unnecessary paper use, digitize processes and promote more efficient ways of working.",
+sustainabilityP3:"In agriculture, we also believe in supporting responsible management of productive and economic information.",
+
+sustainabilityBoxTitle:"Our commitment",
+sustainability1:"🌱 Process digitalization",
+sustainability2:"📄 Reduced paper usage",
+sustainability3:"💻 Digital document management",
+sustainability4:"🌾 Information for responsible agricultural management",
+sustainability5:"♻️ Efficient use of resources",
+sustainability6:"🤝 Sustainable growth",
+
+servicesEyebrow:"Services",
+servicesTitle:"A comprehensive view of your activity.",
+servicesText:"Accounting and tax solutions adapted to each professional and business reality.",
+
+serviceAccountingTitle:"Accounting",
+serviceAccountingText:"Organized accounting information to understand your economic situation and support decision-making.",
+
+serviceTaxesTitle:"Taxation",
+serviceTaxesText:"Tax planning and compliance with personalized follow-up.",
+
+serviceCompaniesTitle:"Companies",
+serviceCompaniesText:"Accounting and financial support for companies, entrepreneurs and growing projects.",
+
+serviceAgroTitle:"Agriculture",
+serviceAgroText:"Accounting management and monitoring of economic and productive information for agricultural producers.",
+
+serviceMonoTitle:"Simplified taxation",
+serviceMonoText:"Monitoring of invoicing, tax category, obligations and tax status.",
+
+serviceAdviceTitle:"Professional advice",
+serviceAdviceText:"Professional analysis to help you understand your numbers and make better-informed decisions.",
+
+agroEyebrow:"Agricultural specialization",
+agroTitle:"Agriculture also needs information.",
+agroText1:"A proposal designed for producers who need organized economic, productive and documentary information.",
+agroText2:"The future portal will allow clients to access information about fields, lots, campaigns, livestock, SISA, identification tags, movements and results in one place.",
+agroButton:"Ask about Agriculture",
+
+agroPanelTitle:"Agricultural Management",
+agro1:"🌾 Fields and establishments",
+agro2:"📐 Surface area and lots",
+agro3:"🚜 Agricultural campaigns",
+agro4:"🌱 Crops",
+agro5:"🐄 Livestock",
+agro6:"🏷️ Identification tags",
+agro7:"📋 SISA",
+agro8:"🚚 Movements",
+agro9:"💰 Income",
+agro10:"📉 Expenses",
+agro11:"📊 Comparisons",
+agro12:"📁 Documentation",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"Your information, always within reach.",
+portalText:"A private digital space where each client can access accounting, tax and, when applicable, agricultural information.",
+portalButton:"Enter the portal",
+
+portalFeature1:"📊 Income and expenses",
+portalFeature2:"🧾 Tax status",
+portalFeature3:"📅 Deadlines",
+portalFeature4:"🌾 Agricultural information",
+portalFeature5:"📈 Comparisons",
+portalFeature6:"📁 Documentation",
+
+newsEyebrow:"News",
+newsTitle:"Firm updates.",
+newsText:"Professional information, tax news, updates and participation by María Sol Iglesias.",
+
+newsCategory1:"Tax updates",
+newsTitle1:"Tax news",
+newsText1:"This space will be used to share tax and professional updates.",
+
+newsCategory2:"Interviews",
+newsTitle2:"María Sol Iglesias",
+newsText2:"A space for interviews, articles, professional participation and content.",
+
+newsCategory3:"Agricultural sector",
+newsTitle3:"Agricultural news",
+newsText3:"Relevant information for agricultural producers and companies.",
+
+calendarEyebrow:"Calendar",
+calendarTitle:"Deadlines and important dates.",
+calendarText:"The public calendar provides general information. Individual client deadlines will be available inside the private portal.",
+
+calendarDate:"Date",
+calendarObligation:"Tax obligation",
+calendarPeriod:"Period",
+calendarStatus:"Status",
+calendarNext:"Upcoming",
+incomeTax:"Income Tax",
+advance:"Advance payment",
+
+formsEyebrow:"Professional contact",
+formsTitle:"Let's start working together.",
+formsText:"Request information to start working with the firm or send us a professional inquiry.",
+
+clientFormTitle:"Become a client",
+nameLabel:"Full name",
+emailLabel:"Email",
+phoneLabel:"Phone",
+activityLabel:"Activity",
+selectActivity:"Select",
+activityCompany:"Company",
+activityEntrepreneur:"Entrepreneur",
+activityAgro:"Agricultural producer",
+activityProfessional:"Professional",
+activityMono:"Simplified taxpayer",
+activityOther:"Other",
+messageLabel:"Message",
+activityPlaceholder:"Briefly tell us about your activity.",
+contactRequestButton:"Request contact",
+
+questionFormTitle:"Ask a question",
+nameLabelShort:"Name",
+topicLabel:"Topic",
+selectTopic:"Select",
+topicAccounting:"Accounting",
+topicTaxes:"Taxation",
+topicAgro:"Agriculture",
+topicMono:"Simplified taxation",
+topicCompanies:"Companies",
+topicOther:"Other",
+questionLabel:"Question",
+sendQuestionButton:"Send inquiry",
+
+agendaEyebrow:"Schedule",
+agendaTitle:"Schedule a meeting with María Sol.",
+agendaText:"Book a meeting with the firm by selecting the day and time that best fits your availability.",
+agendaBoxTitle:"📅 Professional meetings",
+agendaBoxText:"Choose an available day and time to meet with María Sol Iglesias.",
+agendaButton:"Book a meeting",
+
+contactEyebrow:"Contact",
+contactTitle:"Let's talk about your project.",
+contactText:"If you want to organize your accounting situation, learn about our services or ask a question, contact the firm.",
+contactButton:"Become a client",
+accountant:"Public Accountant",
+maps:"View location on Google Maps",
+
+footerLocation:"Carlos Casares · Buenos Aires · Argentina"
+
+},
+
+
+/* =========================
+PORTUGUÊS
+========================= */
+
+pt: {
+
+navHome:"Início",
+navAbout:"Sobre nós",
+navServices:"Serviços",
+navAgro:"Agro",
+navNews:"Novidades",
+navCalendar:"Vencimentos",
+navContact:"Contato",
+navPortal:"Portal do cliente",
+
+heroEyebrow:"Escritório Contábil",
+heroTitle:'Contabilidade com <span>visão de futuro.</span>',
+heroText:"Um escritório contábil moderno, próximo e estratégico, criado para acompanhar pessoas, empresas e produtores rurais em cada etapa de seu crescimento.",
+heroButton:"Quero ser cliente",
+heroSecondary:"Conheça o escritório",
+
+aboutEyebrow:"Sobre nós",
+aboutTitle:"Uma forma diferente de fazer contabilidade.",
+aboutP1:"O <strong>Estudio Contable Iglesias</strong> nasceu de uma visão profissional que combina o rigor da contabilidade com um atendimento próximo, claro e personalizado.",
+aboutP2:"À frente do escritório está <strong>María Sol Iglesias</strong>, Contadora Pública, com foco em transformação, tecnologia e crescimento sustentável.",
+aboutP3:"O objetivo é transformar a informação contábil em uma ferramenta para tomar melhores decisões.",
+aboutButton:"Conheça nossa proposta",
+
+historyTitle:"A história do escritório",
+historyStartTitle:"O começo",
+historyStartText:"Um projeto profissional construído a partir da paixão pela contabilidade e do desejo de criar um escritório próprio.",
+historyPresentTitle:"O presente",
+historyPresentText:"Uma proposta moderna que integra contabilidade, impostos, tecnologia e acompanhamento personalizado.",
+historyFutureTitle:"O futuro",
+historyFutureText:"Uma plataforma digital própria para simplificar a relação entre o escritório e seus clientes.",
+
+evolutionEyebrow:"Nossa evolução",
+evolutionTitle:"Um escritório construído com propósito.",
+evolutionText:"A história do Estudio Contable Iglesias é um caminho de crescimento, inovação e proximidade.",
+
+vocacionTitle:"Vocação",
+vocacionText:"A profissão como ponto de partida e a busca constante pela excelência.",
+innovationTitle:"Inovação",
+innovationText:"Ferramentas digitais para tornar as informações mais acessíveis e úteis.",
+growthTitle:"Crescimento",
+growthText:"Acompanhar cada cliente com informações claras e confiáveis.",
+
+valuesEyebrow:"Nossos valores",
+valuesTitle:"Missão, visão e compromisso.",
+valuesText:"Três pilares que orientam cada decisão do escritório.",
+
+missionTitle:"Missão",
+missionText:"Oferecer serviços contábeis e tributários profissionais, claros e personalizados, utilizando a tecnologia para melhorar a experiência e a tomada de decisões dos clientes.",
+
+visionTitle:"Visão",
+visionText:"Construir um escritório contábil moderno, inovador e próximo, reconhecido pela qualidade profissional, especialização e uso responsável da tecnologia.",
+
+commitmentTitle:"Compromisso",
+commitmentText:"Trabalhar com responsabilidade, confidencialidade, transparência e dedicação.",
+
+sustainabilityEyebrow:"Sustentabilidade",
+sustainabilityTitle:"Crescer também é cuidar.",
+sustainabilityP1:"Nosso compromisso com a sustentabilidade faz parte de uma visão profissional de longo prazo.",
+sustainabilityP2:"Buscamos reduzir o uso desnecessário de papel, digitalizar processos e trabalhar de forma mais eficiente.",
+sustainabilityP3:"No setor agropecuário, apoiamos uma gestão responsável das informações produtivas e econômicas.",
+
+sustainabilityBoxTitle:"Nosso compromisso",
+sustainability1:"🌱 Digitalização de processos",
+sustainability2:"📄 Redução do uso de papel",
+sustainability3:"💻 Gestão documental digital",
+sustainability4:"🌾 Gestão agropecuária responsável",
+sustainability5:"♻️ Uso eficiente dos recursos",
+sustainability6:"🤝 Crescimento sustentável",
+
+servicesEyebrow:"Serviços",
+servicesTitle:"Uma visão integral da sua atividade.",
+servicesText:"Soluções contábeis e tributárias adaptadas a cada realidade profissional e empresarial.",
+
+serviceAccountingTitle:"Contabilidade",
+serviceAccountingText:"Informações contábeis organizadas para compreender a realidade econômica e apoiar decisões.",
+
+serviceTaxesTitle:"Impostos",
+serviceTaxesText:"Planejamento e cumprimento das obrigações tributárias com acompanhamento personalizado.",
+
+serviceCompaniesTitle:"Empresas",
+serviceCompaniesText:"Acompanhamento contábil e financeiro para empresas e projetos em crescimento.",
+
+serviceAgroTitle:"Agro",
+serviceAgroText:"Gestão contábil e acompanhamento das informações econômicas e produtivas de produtores rurais.",
+
+serviceMonoTitle:"Tributação simplificada",
+serviceMonoText:"Acompanhamento do faturamento, categoria, obrigações e situação tributária.",
+
+serviceAdviceTitle:"Assessoria",
+serviceAdviceText:"Análise profissional para ajudar você a compreender seus números e tomar melhores decisões.",
+
+agroEyebrow:"Especialização agropecuária",
+agroTitle:"O campo também precisa de informação.",
+agroText1:"Uma proposta para produtores que precisam organizar suas informações econômicas, produtivas e documentais.",
+agroText2:"O futuro portal permitirá consultar informações de campos, lotes, campanhas, gado, SISA, identificações, movimentações e resultados.",
+agroButton:"Consultar sobre Agro",
+
+agroPanelTitle:"Gestão Agro",
+agro1:"🌾 Campos e estabelecimentos",
+agro2:"📐 Superfície e lotes",
+agro3:"🚜 Campanhas agrícolas",
+agro4:"🌱 Cultivos",
+agro5:"🐄 Gado",
+agro6:"🏷️ Identificações",
+agro7:"📋 SISA",
+agro8:"🚚 Movimentações",
+agro9:"💰 Receitas",
+agro10:"📉 Despesas",
+agro11:"📊 Comparativos",
+agro12:"📁 Documentação",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"Suas informações sempre ao seu alcance.",
+portalText:"Um espaço digital privado onde cada cliente poderá consultar suas informações contábeis, tributárias e, quando aplicável, agropecuárias.",
+portalButton:"Entrar no portal",
+
+portalFeature1:"📊 Receitas e despesas",
+portalFeature2:"🧾 Situação tributária",
+portalFeature3:"📅 Vencimentos",
+portalFeature4:"🌾 Informações Agro",
+portalFeature5:"📈 Comparativos",
+portalFeature6:"📁 Documentação",
+
+newsEyebrow:"Novidades",
+newsTitle:"Atualidades do escritório.",
+newsText:"Informações profissionais, novidades tributárias e conteúdos de María Sol Iglesias.",
+
+newsCategory1:"Atualidade tributária",
+newsTitle1:"Novidades fiscais",
+newsText1:"Este espaço será destinado a comunicar atualizações tributárias e profissionais.",
+
+newsCategory2:"Entrevistas",
+newsTitle2:"María Sol Iglesias",
+newsText2:"Um espaço para compartilhar entrevistas, artigos e conteúdos profissionais.",
+
+newsCategory3:"Setor agropecuário",
+newsTitle3:"Atualidade do agro",
+newsText3:"Informações de interesse para produtores rurais e empresas do setor.",
+
+calendarEyebrow:"Calendário",
+calendarTitle:"Vencimentos e datas importantes.",
+calendarText:"O calendário público oferece informações gerais. Os vencimentos individuais estarão disponíveis no portal privado.",
+
+calendarDate:"Data",
+calendarObligation:"Obrigação",
+calendarPeriod:"Período",
+calendarStatus:"Status",
+calendarNext:"Próximo",
+incomeTax:"Imposto de Renda",
+advance:"Antecipação",
+
+formsEyebrow:"Contato profissional",
+formsTitle:"Vamos começar a trabalhar juntos.",
+formsText:"Solicite informações para começar a trabalhar com o escritório ou faça uma consulta profissional.",
+
+clientFormTitle:"Quero ser cliente",
+nameLabel:"Nome completo",
+emailLabel:"E-mail",
+phoneLabel:"Telefone",
+activityLabel:"Atividade",
+selectActivity:"Selecionar",
+activityCompany:"Empresa",
+activityEntrepreneur:"Empreendedor",
+activityAgro:"Produtor rural",
+activityProfessional:"Profissional",
+activityMono:"Contribuinte simplificado",
+activityOther:"Outro",
+messageLabel:"Mensagem",
+activityPlaceholder:"Conte brevemente sobre sua atividade.",
+contactRequestButton:"Solicitar contato",
+
+questionFormTitle:"Fazer uma consulta",
+nameLabelShort:"Nome",
+topicLabel:"Assunto",
+selectTopic:"Selecionar",
+topicAccounting:"Contabilidade",
+topicTaxes:"Impostos",
+topicAgro:"Agro",
+topicMono:"Tributação simplificada",
+topicCompanies:"Empresas",
+topicOther:"Outro",
+questionLabel:"Consulta",
+sendQuestionButton:"Enviar consulta",
+
+agendaEyebrow:"Agenda",
+agendaTitle:"Agende uma reunião com María Sol.",
+agendaText:"Reserve uma reunião com o escritório escolhendo o dia e horário que melhor se adapte à sua disponibilidade.",
+agendaBoxTitle:"📅 Reuniões profissionais",
+agendaBoxText:"Escolha um dia e horário disponível para se reunir com María Sol Iglesias.",
+agendaButton:"Reservar reunião",
+
+contactEyebrow:"Contato",
+contactTitle:"Vamos conversar sobre seu projeto.",
+contactText:"Se quiser organizar sua situação contábil, conhecer nossos serviços ou fazer uma consulta, entre em contato.",
+contactButton:"Quero ser cliente",
+accountant:"Contadora Pública",
+maps:"Ver localização no Google Maps",
+
+footerLocation:"Carlos Casares · Buenos Aires · Argentina"
+
+},
+
+
+/* =========================
+FRANÇAIS
+========================= */
+
+fr: {
+
+navHome:"Accueil",
+navAbout:"À propos",
+navServices:"Services",
+navAgro:"Agriculture",
+navNews:"Actualités",
+navCalendar:"Échéances",
+navContact:"Contact",
+navPortal:"Portail clients",
+
+heroEyebrow:"Cabinet comptable",
+heroTitle:'La comptabilité avec <span>une vision d’avenir.</span>',
+heroText:"Un cabinet comptable moderne, proche et stratégique, créé pour accompagner les particuliers, les entreprises et les producteurs agricoles.",
+heroButton:"Devenir client",
+heroSecondary:"Découvrir le cabinet",
+
+aboutEyebrow:"À propos",
+aboutTitle:"Une autre façon de faire de la comptabilité.",
+aboutP1:"<strong>Estudio Contable Iglesias</strong> est né d'une vision professionnelle combinant rigueur comptable et accompagnement personnalisé.",
+aboutP2:"Le cabinet est dirigé par <strong>María Sol Iglesias</strong>, experte-comptable, avec une approche tournée vers la transformation et la technologie.",
+aboutP3:"Notre objectif est de transformer l'information comptable en outil d'aide à la décision.",
+aboutButton:"Découvrir notre proposition",
+
+historyTitle:"L'histoire du cabinet",
+historyStartTitle:"Le début",
+historyStartText:"Un projet professionnel construit autour de la passion pour la comptabilité et du désir de créer son propre cabinet.",
+historyPresentTitle:"Le présent",
+historyPresentText:"Une proposition moderne intégrant comptabilité, fiscalité, technologie et accompagnement personnalisé.",
+historyFutureTitle:"L'avenir",
+historyFutureText:"Une plateforme numérique pour simplifier la relation entre le cabinet et ses clients.",
+
+evolutionEyebrow:"Notre évolution",
+evolutionTitle:"Un cabinet construit avec une vision.",
+evolutionText:"L'histoire d'Estudio Contable Iglesias est un parcours de croissance, d'innovation et de proximité.",
+
+vocacionTitle:"Vocation",
+vocacionText:"La profession comme point de départ et la recherche constante de l'excellence.",
+innovationTitle:"Innovation",
+innovationText:"Des outils numériques pour rendre l'information plus accessible et utile.",
+growthTitle:"Croissance",
+growthText:"Accompagner chaque client avec des informations claires et fiables.",
+
+valuesEyebrow:"Nos valeurs",
+valuesTitle:"Mission, vision et engagement.",
+valuesText:"Trois piliers qui guident chaque décision du cabinet.",
+
+missionTitle:"Mission",
+missionText:"Fournir des services comptables et fiscaux professionnels, clairs et personnalisés.",
+
+visionTitle:"Vision",
+visionText:"Construire un cabinet comptable moderne, innovant et proche de ses clients.",
+
+commitmentTitle:"Engagement",
+commitmentText:"Travailler avec responsabilité, confidentialité, transparence et dévouement.",
+
+sustainabilityEyebrow:"Durabilité",
+sustainabilityTitle:"Grandir, c’est aussi prendre soin.",
+sustainabilityP1:"Notre engagement envers la durabilité s'inscrit dans une vision professionnelle à long terme.",
+sustainabilityP2:"Nous cherchons à réduire l'utilisation du papier et à numériser les processus.",
+sustainabilityP3:"Dans le secteur agricole, nous favorisons également une gestion responsable de l'information.",
+
+sustainabilityBoxTitle:"Notre engagement",
+sustainability1:"🌱 Numérisation des processus",
+sustainability2:"📄 Réduction du papier",
+sustainability3:"💻 Gestion documentaire numérique",
+sustainability4:"🌾 Gestion agricole responsable",
+sustainability5:"♻️ Utilisation efficace des ressources",
+sustainability6:"🤝 Croissance durable",
+
+servicesEyebrow:"Services",
+servicesTitle:"Une vision globale de votre activité.",
+servicesText:"Des solutions comptables et fiscales adaptées à chaque réalité professionnelle et entrepreneuriale.",
+
+serviceAccountingTitle:"Comptabilité",
+serviceAccountingText:"Des informations comptables organisées pour comprendre la situation économique et prendre de meilleures décisions.",
+
+serviceTaxesTitle:"Fiscalité",
+serviceTaxesText:"Planification et respect des obligations fiscales avec un suivi personnalisé.",
+
+serviceCompaniesTitle:"Entreprises",
+serviceCompaniesText:"Accompagnement comptable et financier pour les entreprises et projets en croissance.",
+
+serviceAgroTitle:"Agriculture",
+serviceAgroText:"Gestion comptable et suivi des informations économiques et productives des producteurs agricoles.",
+
+serviceMonoTitle:"Régime simplifié",
+serviceMonoText:"Suivi de la facturation, de la catégorie et des obligations fiscales.",
+
+serviceAdviceTitle:"Conseil",
+serviceAdviceText:"Analyse professionnelle pour comprendre vos chiffres et prendre de meilleures décisions.",
+
+agroEyebrow:"Spécialisation agricole",
+agroTitle:"L'agriculture a aussi besoin d'information.",
+agroText1:"Une proposition conçue pour les producteurs qui doivent organiser leurs informations économiques et productives.",
+agroText2:"Le futur portail permettra de consulter les informations des exploitations, parcelles, campagnes, élevage et résultats.",
+agroButton:"Consulter pour l'agriculture",
+
+agroPanelTitle:"Gestion agricole",
+agro1:"🌾 Exploitations agricoles",
+agro2:"📐 Surfaces et parcelles",
+agro3:"🚜 Campagnes agricoles",
+agro4:"🌱 Cultures",
+agro5:"🐄 Élevage",
+agro6:"🏷️ Identification",
+agro7:"📋 SISA",
+agro8:"🚚 Mouvements",
+agro9:"💰 Revenus",
+agro10:"📉 Dépenses",
+agro11:"📊 Comparatifs",
+agro12:"📁 Documentation",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"Vos informations toujours à portée de main.",
+portalText:"Un espace numérique privé où chaque client peut consulter ses informations comptables et fiscales.",
+portalButton:"Accéder au portail",
+
+portalFeature1:"📊 Revenus et dépenses",
+portalFeature2:"🧾 Situation fiscale",
+portalFeature3:"📅 Échéances",
+portalFeature4:"🌾 Informations agricoles",
+portalFeature5:"📈 Comparatifs",
+portalFeature6:"📁 Documentation",
+
+newsEyebrow:"Actualités",
+newsTitle:"Actualités du cabinet.",
+newsText:"Informations professionnelles, actualités fiscales et contenus de María Sol Iglesias.",
+
+newsCategory1:"Actualité fiscale",
+newsTitle1:"Nouveautés fiscales",
+newsText1:"Cet espace sera destiné aux mises à jour fiscales et professionnelles.",
+
+newsCategory2:"Entretiens",
+newsTitle2:"María Sol Iglesias",
+newsText2:"Un espace pour partager des entretiens, articles et contenus professionnels.",
+
+newsCategory3:"Secteur agricole",
+newsTitle3:"Actualités agricoles",
+newsText3:"Informations utiles pour les producteurs agricoles et les entreprises du secteur.",
+
+calendarEyebrow:"Calendrier",
+calendarTitle:"Échéances et dates importantes.",
+calendarText:"Le calendrier public fournit des informations générales. Les échéances individuelles seront disponibles dans le portail privé.",
+
+calendarDate:"Date",
+calendarObligation:"Obligation",
+calendarPeriod:"Période",
+calendarStatus:"Statut",
+calendarNext:"À venir",
+incomeTax:"Impôt sur le revenu",
+advance:"Acompte",
+
+formsEyebrow:"Contact professionnel",
+formsTitle:"Commençons à travailler ensemble.",
+formsText:"Demandez des informations pour commencer à travailler avec le cabinet ou envoyez une demande professionnelle.",
+
+clientFormTitle:"Devenir client",
+nameLabel:"Nom et prénom",
+emailLabel:"E-mail",
+phoneLabel:"Téléphone",
+activityLabel:"Activité",
+selectActivity:"Sélectionner",
+activityCompany:"Entreprise",
+activityEntrepreneur:"Entrepreneur",
+activityAgro:"Producteur agricole",
+activityProfessional:"Professionnel",
+activityMono:"Contribuable simplifié",
+activityOther:"Autre",
+messageLabel:"Message",
+activityPlaceholder:"Parlez-nous brièvement de votre activité.",
+contactRequestButton:"Demander un contact",
+
+questionFormTitle:"Poser une question",
+nameLabelShort:"Nom",
+topicLabel:"Sujet",
+selectTopic:"Sélectionner",
+topicAccounting:"Comptabilité",
+topicTaxes:"Fiscalité",
+topicAgro:"Agriculture",
+topicMono:"Régime simplifié",
+topicCompanies:"Entreprises",
+topicOther:"Autre",
+questionLabel:"Question",
+sendQuestionButton:"Envoyer la demande",
+
+agendaEyebrow:"Agenda",
+agendaTitle:"Planifiez une réunion avec María Sol.",
+agendaText:"Réservez une réunion avec le cabinet en choisissant le jour et l'heure qui vous conviennent.",
+agendaBoxTitle:"📅 Réunions professionnelles",
+agendaBoxText:"Choisissez un jour et une heure disponibles pour rencontrer María Sol Iglesias.",
+agendaButton:"Réserver une réunion",
+
+contactEyebrow:"Contact",
+contactTitle:"Parlons de votre projet.",
+contactText:"Si vous souhaitez organiser votre situation comptable, connaître nos services ou poser une question, contactez-nous.",
+contactButton:"Devenir client",
+accountant:"Expert-comptable",
+maps:"Voir l'emplacement sur Google Maps",
+
+footerLocation:"Carlos Casares · Buenos Aires · Argentine"
+
+},
+
+
+/* =========================
+ITALIANO
+========================= */
+
+it: {
+
+navHome:"Home",
+navAbout:"Chi siamo",
+navServices:"Servizi",
+navAgro:"Agricoltura",
+navNews:"Novità",
+navCalendar:"Scadenze",
+navContact:"Contatti",
+navPortal:"Portale clienti",
+
+heroEyebrow:"Studio Commercialista",
+heroTitle:'Contabilità con <span>una visione del futuro.</span>',
+heroText:"Uno studio contabile moderno, vicino e strategico, creato per accompagnare persone, aziende e produttori agricoli.",
+heroButton:"Diventa cliente",
+heroSecondary:"Scopri lo studio",
+
+aboutEyebrow:"Chi siamo",
+aboutTitle:"Un modo diverso di fare contabilità.",
+aboutP1:"<strong>Estudio Contable Iglesias</strong> nasce da una visione professionale che combina rigore contabile e attenzione personalizzata.",
+aboutP2:"Lo studio è guidato da <strong>María Sol Iglesias</strong>, Commercialista, con una visione orientata alla trasformazione e alla tecnologia.",
+aboutP3:"L'obiettivo è trasformare le informazioni contabili in uno strumento per prendere decisioni migliori.",
+aboutButton:"Scopri la nostra proposta",
+
+historyTitle:"La storia dello studio",
+historyStartTitle:"L'inizio",
+historyStartText:"Un progetto professionale nato dalla passione per la contabilità e dal desiderio di creare uno studio proprio.",
+historyPresentTitle:"Il presente",
+historyPresentText:"Una proposta moderna che integra contabilità, imposte, tecnologia e assistenza personalizzata.",
+historyFutureTitle:"Il futuro",
+historyFutureText:"Una piattaforma digitale per semplificare il rapporto tra studio e clienti.",
+
+evolutionEyebrow:"La nostra evoluzione",
+evolutionTitle:"Uno studio costruito con uno scopo.",
+evolutionText:"La storia di Estudio Contable Iglesias è un percorso di crescita, innovazione e vicinanza.",
+
+vocacionTitle:"Vocazione",
+vocacionText:"La professione come punto di partenza e la ricerca costante dell'eccellenza.",
+innovationTitle:"Innovazione",
+innovationText:"Strumenti digitali per rendere le informazioni più accessibili e utili.",
+growthTitle:"Crescita",
+growthText:"Accompagnare ogni cliente con informazioni chiare e affidabili.",
+
+valuesEyebrow:"I nostri valori",
+valuesTitle:"Missione, visione e impegno.",
+valuesText:"Tre pilastri che guidano ogni decisione dello studio.",
+
+missionTitle:"Missione",
+missionText:"Fornire servizi contabili e fiscali professionali, chiari e personalizzati.",
+
+visionTitle:"Visione",
+visionText:"Costruire uno studio contabile moderno, innovativo e vicino ai clienti.",
+
+commitmentTitle:"Impegno",
+commitmentText:"Lavorare con responsabilità, riservatezza, trasparenza e dedizione.",
+
+sustainabilityEyebrow:"Sostenibilità",
+sustainabilityTitle:"Crescere significa anche prendersi cura.",
+sustainabilityP1:"Il nostro impegno per la sostenibilità fa parte di una visione professionale a lungo termine.",
+sustainabilityP2:"Cerchiamo di ridurre l'uso della carta e digitalizzare i processi.",
+sustainabilityP3:"Nel settore agricolo promuoviamo inoltre una gestione responsabile delle informazioni.",
+
+sustainabilityBoxTitle:"Il nostro impegno",
+sustainability1:"🌱 Digitalizzazione dei processi",
+sustainability2:"📄 Riduzione della carta",
+sustainability3:"💻 Gestione documentale digitale",
+sustainability4:"🌾 Gestione agricola responsabile",
+sustainability5:"♻️ Uso efficiente delle risorse",
+sustainability6:"🤝 Crescita sostenibile",
+
+servicesEyebrow:"Servizi",
+servicesTitle:"Una visione completa della tua attività.",
+servicesText:"Soluzioni contabili e fiscali adattate a ogni realtà professionale e aziendale.",
+
+serviceAccountingTitle:"Contabilità",
+serviceAccountingText:"Informazioni contabili organizzate per comprendere la situazione economica e prendere decisioni.",
+
+serviceTaxesTitle:"Imposte",
+serviceTaxesText:"Pianificazione e adempimento degli obblighi fiscali con assistenza personalizzata.",
+
+serviceCompaniesTitle:"Aziende",
+serviceCompaniesText:"Assistenza contabile e finanziaria per aziende e progetti in crescita.",
+
+serviceAgroTitle:"Agricoltura",
+serviceAgroText:"Gestione contabile e monitoraggio delle informazioni economiche e produttive degli agricoltori.",
+
+serviceMonoTitle:"Regime semplificato",
+serviceMonoText:"Monitoraggio della fatturazione, categoria e obblighi fiscali.",
+
+serviceAdviceTitle:"Consulenza",
+serviceAdviceText:"Analisi professionale per comprendere i tuoi numeri e prendere decisioni migliori.",
+
+agroEyebrow:"Specializzazione agricola",
+agroTitle:"Anche l'agricoltura ha bisogno di informazioni.",
+agroText1:"Una proposta pensata per i produttori che necessitano di organizzare le proprie informazioni economiche e produttive.",
+agroText2:"Il futuro portale permetterà di consultare informazioni su campi, lotti, campagne, bestiame e risultati.",
+agroButton:"Informazioni Agro",
+
+agroPanelTitle:"Gestione agricola",
+agro1:"🌾 Campi e aziende agricole",
+agro2:"📐 Superficie e lotti",
+agro3:"🚜 Campagne agricole",
+agro4:"🌱 Colture",
+agro5:"🐄 Bestiame",
+agro6:"🏷️ Identificazioni",
+agro7:"📋 SISA",
+agro8:"🚚 Movimenti",
+agro9:"💰 Entrate",
+agro10:"📉 Spese",
+agro11:"📊 Confronti",
+agro12:"📁 Documentazione",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"Le tue informazioni sempre a portata di mano.",
+portalText:"Uno spazio digitale privato dove ogni cliente può consultare le proprie informazioni contabili e fiscali.",
+portalButton:"Accedi al portale",
+
+portalFeature1:"📊 Entrate e spese",
+portalFeature2:"🧾 Situazione fiscale",
+portalFeature3:"📅 Scadenze",
+portalFeature4:"🌾 Informazioni agricole",
+portalFeature5:"📈 Confronti",
+portalFeature6:"📁 Documentazione",
+
+newsEyebrow:"Novità",
+newsTitle:"Attualità dello studio.",
+newsText:"Informazioni professionali, novità fiscali e contenuti di María Sol Iglesias.",
+
+newsCategory1:"Attualità fiscale",
+newsTitle1:"Novità fiscali",
+newsText1:"Questo spazio sarà dedicato agli aggiornamenti fiscali e professionali.",
+
+newsCategory2:"Interviste",
+newsTitle2:"María Sol Iglesias",
+newsText2:"Uno spazio per condividere interviste, articoli e contenuti professionali.",
+
+newsCategory3:"Settore agricolo",
+newsTitle3:"Attualità agricola",
+newsText3:"Informazioni di interesse per produttori agricoli e aziende del settore.",
+
+calendarEyebrow:"Calendario",
+calendarTitle:"Scadenze e date importanti.",
+calendarText:"Il calendario pubblico offre informazioni generali. Le scadenze personali saranno disponibili nel portale privato.",
+
+calendarDate:"Data",
+calendarObligation:"Obbligo",
+calendarPeriod:"Periodo",
+calendarStatus:"Stato",
+calendarNext:"Prossimo",
+incomeTax:"Imposta sul reddito",
+advance:"Acconto",
+
+formsEyebrow:"Contatto professionale",
+formsTitle:"Iniziamo a lavorare insieme.",
+formsText:"Richiedi informazioni per iniziare a lavorare con lo studio o invia una richiesta professionale.",
+
+clientFormTitle:"Diventa cliente",
+nameLabel:"Nome e cognome",
+emailLabel:"Email",
+phoneLabel:"Telefono",
+activityLabel:"Attività",
+selectActivity:"Seleziona",
+activityCompany:"Azienda",
+activityEntrepreneur:"Imprenditore",
+activityAgro:"Produttore agricolo",
+activityProfessional:"Professionista",
+activityMono:"Contribuente semplificato",
+activityOther:"Altro",
+messageLabel:"Messaggio",
+activityPlaceholder:"Raccontaci brevemente della tua attività.",
+contactRequestButton:"Richiedi contatto",
+
+questionFormTitle:"Fai una domanda",
+nameLabelShort:"Nome",
+topicLabel:"Argomento",
+selectTopic:"Seleziona",
+topicAccounting:"Contabilità",
+topicTaxes:"Imposte",
+topicAgro:"Agricoltura",
+topicMono:"Regime semplificato",
+topicCompanies:"Aziende",
+topicOther:"Altro",
+questionLabel:"Domanda",
+sendQuestionButton:"Invia richiesta",
+
+agendaEyebrow:"Agenda",
+agendaTitle:"Prenota un incontro con María Sol.",
+agendaText:"Prenota un incontro con lo studio scegliendo il giorno e l'orario più adatto.",
+agendaBoxTitle:"📅 Riunioni professionali",
+agendaBoxText:"Scegli un giorno e un orario disponibile per incontrare María Sol Iglesias.",
+agendaButton:"Prenota un incontro",
+
+contactEyebrow:"Contatti",
+contactTitle:"Parliamo del tuo progetto.",
+contactText:"Se vuoi organizzare la tua situazione contabile, conoscere i nostri servizi o fare una domanda, contattaci.",
+contactButton:"Diventa cliente",
+accountant:"Commercialista",
+maps:"Vedi posizione su Google Maps",
+
+footerLocation:"Carlos Casares · Buenos Aires · Argentina"
+
+},
+
+
+/* =========================
+DEUTSCH
+========================= */
+
+de: {
+
+navHome:"Startseite",
+navAbout:"Über uns",
+navServices:"Leistungen",
+navAgro:"Landwirtschaft",
+navNews:"Neuigkeiten",
+navCalendar:"Fristen",
+navContact:"Kontakt",
+navPortal:"Kundenportal",
+
+heroEyebrow:"Steuerberatung",
+heroTitle:'Buchhaltung mit <span>Vision für die Zukunft.</span>',
+heroText:"Eine moderne, persönliche und strategische Steuerberatung für Privatpersonen, Unternehmen und landwirtschaftliche Betriebe.",
+heroButton:"Kunde werden",
+heroSecondary:"Die Kanzlei entdecken",
+
+aboutEyebrow:"Über uns",
+aboutTitle:"Eine andere Art der Buchhaltung.",
+aboutP1:"<strong>Estudio Contable Iglesias</strong> verbindet professionelle Genauigkeit mit persönlicher, klarer und individueller Betreuung.",
+aboutP2:"Hinter der Kanzlei steht <strong>María Sol Iglesias</strong>, Steuerberaterin, mit einem Fokus auf Transformation und Technologie.",
+aboutP3:"Unser Ziel ist es, Buchhaltungsinformationen in ein Werkzeug für bessere Entscheidungen zu verwandeln.",
+aboutButton:"Unser Angebot entdecken",
+
+historyTitle:"Die Geschichte der Kanzlei",
+historyStartTitle:"Der Anfang",
+historyStartText:"Ein professionelles Projekt aus Leidenschaft für die Buchhaltung und dem Wunsch, eine eigene Kanzlei aufzubauen.",
+historyPresentTitle:"Die Gegenwart",
+historyPresentText:"Ein moderner Ansatz, der Buchhaltung, Steuern, Technologie und persönliche Betreuung verbindet.",
+historyFutureTitle:"Die Zukunft",
+historyFutureText:"Eine digitale Plattform zur Vereinfachung der Beziehung zwischen Kanzlei und Kunden.",
+
+evolutionEyebrow:"Unsere Entwicklung",
+evolutionTitle:"Eine Kanzlei mit einem klaren Ziel.",
+evolutionText:"Die Geschichte von Estudio Contable Iglesias steht für Wachstum, Innovation und Nähe.",
+
+vocacionTitle:"Berufliche Leidenschaft",
+vocacionText:"Die Profession als Ausgangspunkt und das Streben nach Exzellenz.",
+innovationTitle:"Innovation",
+innovationText:"Digitale Werkzeuge machen Informationen zugänglicher und nützlicher.",
+growthTitle:"Wachstum",
+growthText:"Jeden Kunden mit klaren und zuverlässigen Informationen begleiten.",
+
+valuesEyebrow:"Unsere Werte",
+valuesTitle:"Mission, Vision und Engagement.",
+valuesText:"Drei Säulen, die unsere Entscheidungen leiten.",
+
+missionTitle:"Mission",
+missionText:"Professionelle, klare und individuelle Buchhaltungs- und Steuerdienstleistungen anbieten.",
+
+visionTitle:"Vision",
+visionText:"Eine moderne, innovative und persönliche Steuerberatung aufzubauen.",
+
+commitmentTitle:"Engagement",
+commitmentText:"Mit Verantwortung, Vertraulichkeit, Transparenz und Engagement arbeiten.",
+
+sustainabilityEyebrow:"Nachhaltigkeit",
+sustainabilityTitle:"Wachstum bedeutet auch Verantwortung.",
+sustainabilityP1:"Unser Engagement für Nachhaltigkeit ist Teil einer langfristigen beruflichen Vision.",
+sustainabilityP2:"Wir reduzieren unnötigen Papierverbrauch und digitalisieren Prozesse.",
+sustainabilityP3:"Im Agrarsektor fördern wir ebenfalls eine verantwortungsvolle Verwaltung wirtschaftlicher und produktiver Informationen.",
+
+sustainabilityBoxTitle:"Unser Engagement",
+sustainability1:"🌱 Digitalisierung von Prozessen",
+sustainability2:"📄 Reduzierung des Papierverbrauchs",
+sustainability3:"💻 Digitale Dokumentenverwaltung",
+sustainability4:"🌾 Verantwortungsvolle landwirtschaftliche Verwaltung",
+sustainability5:"♻️ Effiziente Ressourcennutzung",
+sustainability6:"🤝 Nachhaltiges Wachstum",
+
+servicesEyebrow:"Leistungen",
+servicesTitle:"Ein umfassender Blick auf Ihre Tätigkeit.",
+servicesText:"Buchhaltungs- und Steuerlösungen für jede berufliche und unternehmerische Situation.",
+
+serviceAccountingTitle:"Buchhaltung",
+serviceAccountingText:"Organisierte Buchhaltungsinformationen für bessere Entscheidungen.",
+
+serviceTaxesTitle:"Steuern",
+serviceTaxesText:"Steuerplanung und Erfüllung steuerlicher Pflichten mit persönlicher Betreuung.",
+
+serviceCompaniesTitle:"Unternehmen",
+serviceCompaniesText:"Buchhalterische und finanzielle Begleitung für Unternehmen und wachsende Projekte.",
+
+serviceAgroTitle:"Landwirtschaft",
+serviceAgroText:"Buchhaltung und Überwachung wirtschaftlicher und produktiver Informationen für landwirtschaftliche Betriebe.",
+
+serviceMonoTitle:"Vereinfachte Besteuerung",
+serviceMonoText:"Überwachung von Rechnungen, Steuerkategorie und steuerlichen Pflichten.",
+
+serviceAdviceTitle:"Beratung",
+serviceAdviceText:"Professionelle Analyse, um Ihre Zahlen besser zu verstehen und fundierte Entscheidungen zu treffen.",
+
+agroEyebrow:"Landwirtschaftliche Spezialisierung",
+agroTitle:"Auch die Landwirtschaft braucht Informationen.",
+agroText1:"Ein Angebot für Produzenten, die ihre wirtschaftlichen und produktiven Informationen organisieren möchten.",
+agroText2:"Das zukünftige Portal ermöglicht den Zugriff auf Informationen über Felder, Parzellen, Kampagnen, Viehbestand und Ergebnisse.",
+agroButton:"Landwirtschaft anfragen",
+
+agroPanelTitle:"Landwirtschaftliche Verwaltung",
+agro1:"🌾 Felder und Betriebe",
+agro2:"📐 Flächen und Parzellen",
+agro3:"🚜 Landwirtschaftliche Kampagnen",
+agro4:"🌱 Kulturen",
+agro5:"🐄 Viehbestand",
+agro6:"🏷️ Kennzeichnungen",
+agro7:"📋 SISA",
+agro8:"🚚 Bewegungen",
+agro9:"💰 Einnahmen",
+agro10:"📉 Ausgaben",
+agro11:"📊 Vergleiche",
+agro12:"📁 Dokumentation",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"Ihre Informationen immer griffbereit.",
+portalText:"Ein privater digitaler Bereich für Buchhaltungs-, Steuer- und gegebenenfalls landwirtschaftliche Informationen.",
+portalButton:"Portal betreten",
+
+portalFeature1:"📊 Einnahmen und Ausgaben",
+portalFeature2:"🧾 Steuerstatus",
+portalFeature3:"📅 Fristen",
+portalFeature4:"🌾 Landwirtschaftliche Informationen",
+portalFeature5:"📈 Vergleiche",
+portalFeature6:"📁 Dokumentation",
+
+newsEyebrow:"Neuigkeiten",
+newsTitle:"Aktuelles aus der Kanzlei.",
+newsText:"Professionelle Informationen, Steuerneuigkeiten und Inhalte von María Sol Iglesias.",
+
+newsCategory1:"Steuerliche Aktualität",
+newsTitle1:"Steuerliche Neuigkeiten",
+newsText1:"Dieser Bereich informiert über steuerliche und berufliche Aktualisierungen.",
+
+newsCategory2:"Interviews",
+newsTitle2:"María Sol Iglesias",
+newsText2:"Ein Bereich für Interviews, Artikel und professionelle Inhalte.",
+
+newsCategory3:"Landwirtschaft",
+newsTitle3:"Aktuelles aus der Landwirtschaft",
+newsText3:"Informationen für landwirtschaftliche Produzenten und Unternehmen.",
+
+calendarEyebrow:"Kalender",
+calendarTitle:"Fristen und wichtige Termine.",
+calendarText:"Der öffentliche Kalender enthält allgemeine Informationen. Persönliche Fristen werden im privaten Portal angezeigt.",
+
+calendarDate:"Datum",
+calendarObligation:"Verpflichtung",
+calendarPeriod:"Zeitraum",
+calendarStatus:"Status",
+calendarNext:"Bevorstehend",
+incomeTax:"Einkommensteuer",
+advance:"Vorauszahlung",
+
+formsEyebrow:"Professioneller Kontakt",
+formsTitle:"Beginnen wir gemeinsam.",
+formsText:"Fordern Sie Informationen an oder senden Sie uns eine professionelle Anfrage.",
+
+clientFormTitle:"Kunde werden",
+nameLabel:"Vor- und Nachname",
+emailLabel:"E-Mail",
+phoneLabel:"Telefon",
+activityLabel:"Tätigkeit",
+selectActivity:"Auswählen",
+activityCompany:"Unternehmen",
+activityEntrepreneur:"Unternehmer",
+activityAgro:"Landwirtschaftlicher Produzent",
+activityProfessional:"Berufstätiger",
+activityMono:"Vereinfachter Steuerzahler",
+activityOther:"Andere",
+messageLabel:"Nachricht",
+activityPlaceholder:"Erzählen Sie uns kurz von Ihrer Tätigkeit.",
+contactRequestButton:"Kontakt anfordern",
+
+questionFormTitle:"Eine Frage stellen",
+nameLabelShort:"Name",
+topicLabel:"Thema",
+selectTopic:"Auswählen",
+topicAccounting:"Buchhaltung",
+topicTaxes:"Steuern",
+topicAgro:"Landwirtschaft",
+topicMono:"Vereinfachte Besteuerung",
+topicCompanies:"Unternehmen",
+topicOther:"Andere",
+questionLabel:"Frage",
+sendQuestionButton:"Anfrage senden",
+
+agendaEyebrow:"Termin",
+agendaTitle:"Vereinbaren Sie ein Gespräch mit María Sol.",
+agendaText:"Buchen Sie einen Termin mit der Kanzlei zu einem für Sie passenden Zeitpunkt.",
+agendaBoxTitle:"📅 Professionelle Termine",
+agendaBoxText:"Wählen Sie einen verfügbaren Tag und eine Uhrzeit für ein Treffen mit María Sol Iglesias.",
+agendaButton:"Termin buchen",
+
+contactEyebrow:"Kontakt",
+contactTitle:"Sprechen wir über Ihr Projekt.",
+contactText:"Wenn Sie Ihre Buchhaltung organisieren, unsere Dienstleistungen kennenlernen oder eine Frage stellen möchten, kontaktieren Sie uns.",
+contactButton:"Kunde werden",
+accountant:"Steuerberaterin",
+maps:"Standort auf Google Maps anzeigen",
+
+footerLocation:"Carlos Casares · Buenos Aires · Argentinien"
+
+}
+
+};
+
+
+/* =========================
+CAMBIAR IDIOMA
+========================= */
+
+function changeLanguage(language){
+
+const texts = translations[language];
+
+if(!texts) return;
+
+
+/* Cambiar todos los textos */
+
+document.querySelectorAll("[data-i18n]").forEach(element => {
+
+const key = element.getAttribute("data-i18n");
+
+if(texts[key] !== undefined){
+
+element.innerHTML = texts[key];
+
+}
+
+});
+
+
+/* Cambiar placeholders */
+
+document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
+
+const key = element.getAttribute("data-i18n-placeholder");
+
+if(texts[key] !== undefined){
+
+element.placeholder = texts[key];
+
+}
+
+});
+
+
+/* Cambiar idioma HTML */
+
+document.documentElement.lang = language;
+
+
+/* Guardar idioma elegido */
+
+localStorage.setItem("preferredLanguage", language);
+
+}
+
+
+/* =========================
+CARGAR IDIOMA GUARDADO
+========================= */
+
+document.addEventListener("DOMContentLoaded", function(){
+
+const savedLanguage = localStorage.getItem("preferredLanguage") || "es";
+
+const selector = document.getElementById("language");
+
+if(selector){
+
+selector.value = savedLanguage;
+
+}
+
+changeLanguage(savedLanguage);
+
+});
+
+
+/* =========================
+FORMULARIOS
+========================= */
+
+function submitForm(event,type){
+
+event.preventDefault();
+
+alert(
+"Gracias por comunicarte con Estudio Contable Iglesias. " +
+"Tu solicitud fue recibida correctamente."
+);
+
+event.target.reset();
+
+}
+
+</script>
+
+</body>
+
+</html>
