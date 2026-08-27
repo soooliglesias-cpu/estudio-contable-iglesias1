@@ -3523,11 +3523,7 @@ event.target.reset();
 
 }
 
-</script>
 
-</body>
-
-</html>
 <!-- =========================
 PARTE 2 — IDIOMAS + FUNCIONES
 ========================= -->
@@ -3551,7 +3547,6 @@ nav.classList.toggle("active");
 TRADUCCIONES
 ========================= */
 
-const translations = {
 
 es: {
 
@@ -4890,55 +4885,35 @@ event.target.reset();
 
 }
 
-</script>
-
-</body>
-
-</html>
-</script>
-
 <script>
 const SUPABASE_URL = "https://lpjzhjftgmlcpjyrkqfl.supabase.co";
 const SUPABASE_KEY = "sb_publishable_XJPVuprbVeoyev-rv7WsZg_h-D63Xf2";
 
 async function probarSupabase() {
-    try {
-        const respuesta = await fetch(
-           `${SUPABASE_URL}/rest/v1/Clientes?select=id&limit=1`
-            fetch("https://lpjzhjftgmlcpjyrkqfl.supabase.co/rest/v1/Clientes?select=id&limit=1",{
-  headers:{
-    apikey:"sb_publishable_XJPVuprbVeoyev-rv7WsZg_h-D63Xf2",
-    Authorization:"Bearer sb_publishable_XJPVuprbVeoyev-rv7WsZg_h-D63Xf2"
-  }
-}).then(r=>r.text()).then(console.log)
-            {
-                method: "GET",
-                headers: {
-                    "apikey": SUPABASE_KEY,
-                    "Authorization": `Bearer ${SUPABASE_KEY}`
-                }
-            }
-        );
-
-        if (!respuesta.ok) {
-            const error = await respuesta.text();
-            console.error("Error de Supabase:", error);
-            return;
+  try {
+    const respuesta = await fetch(
+      `${SUPABASE_URL}/rest/v1/Clientes?select=id&limit=1`,
+      {
+        method: "GET",
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`
         }
+      }
+    );
 
-        const datos = await respuesta.json();
+    const texto = await respuesta.text();
 
-        console.log("✅ SUPABASE CONECTADO");
-        console.log("Respuesta:", datos);
+    console.log("Estado:", respuesta.status);
+    console.log("Respuesta:", texto);
 
-    } catch (error) {
-        console.error("❌ Error de conexión:", error);
-    }
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 probarSupabase();
 </script>
 
 </body>
-
 </html>
