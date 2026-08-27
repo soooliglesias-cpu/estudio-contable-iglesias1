@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 
@@ -18,6 +19,12 @@ content="Iglesias Portal — Acceso privado de clientes del Estudio Contable Igl
 <title>
 Iglesias Portal | Estudio Contable Iglesias
 </title>
+
+<!-- =====================================================
+     SUPABASE
+===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <style>
@@ -149,35 +156,6 @@ display:flex;
 
 align-items:center;
 
-gap:13px;
-
-}
-
-
-.logo-mark{
-
-width:50px;
-
-height:50px;
-
-border-radius:50%;
-
-background:white;
-
-color:var(--navy);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:20px;
-
-font-weight:800;
-
-letter-spacing:1px;
-
 }
 
 
@@ -194,24 +172,25 @@ line-height:1.15;
 
 .logo-text strong{
 
-font-size:17px;
+font-size:18px;
 
-letter-spacing:.4px;
+letter-spacing:1.6px;
+
+text-transform:uppercase;
 
 }
 
 
-.logo-text span{
+.logo-text .study{
 
-font-size:10px;
+color:white;
+
+}
+
+
+.logo-text .name{
 
 color:var(--gold-light);
-
-text-transform:uppercase;
-
-letter-spacing:1.6px;
-
-margin-top:5px;
 
 }
 
@@ -308,7 +287,7 @@ margin-bottom:5px;
 
 
 /* =====================================================
-   PANEL LOGIN
+   LOGIN
 ===================================================== */
 
 .login-panel{
@@ -409,7 +388,8 @@ input:focus{
 
 border-color:var(--gold);
 
-box-shadow:0 0 0 3px rgba(184,148,82,.10);
+box-shadow:
+0 0 0 3px rgba(184,148,82,.10);
 
 }
 
@@ -463,6 +443,8 @@ margin:3px 0 25px;
 
 font-size:12px;
 
+gap:10px;
+
 }
 
 
@@ -475,6 +457,8 @@ align-items:center;
 gap:7px;
 
 color:var(--muted);
+
+font-weight:400;
 
 }
 
@@ -491,6 +475,18 @@ width:auto;
 color:var(--navy);
 
 font-weight:700;
+
+background:none;
+
+border:none;
+
+cursor:pointer;
+
+font-family:inherit;
+
+font-size:12px;
+
+padding:0;
 
 }
 
@@ -539,6 +535,74 @@ color:white;
 background:#9f7d40;
 
 transform:translateY(-2px);
+
+}
+
+
+.btn:disabled{
+
+opacity:.7;
+
+cursor:not-allowed;
+
+transform:none;
+
+}
+
+
+.status-message{
+
+display:none;
+
+margin-bottom:20px;
+
+padding:13px 14px;
+
+border-radius:9px;
+
+font-size:12px;
+
+line-height:1.5;
+
+}
+
+
+.status-message.show{
+
+display:block;
+
+}
+
+
+.status-message.error{
+
+background:#f8e4e4;
+
+color:#8a3d3d;
+
+border:1px solid #eccaca;
+
+}
+
+
+.status-message.success{
+
+background:#e7f3ed;
+
+color:#3d7158;
+
+border:1px solid #cce6d8;
+
+}
+
+
+.status-message.info{
+
+background:#edf3f8;
+
+color:#4b6478;
+
+border:1px solid #d6e3ed;
 
 }
 
@@ -624,7 +688,7 @@ color:var(--gold);
 
 
 /* =====================================================
-   AVISO 2FA
+   2FA AVISO
 ===================================================== */
 
 .twofa-notice{
@@ -714,6 +778,15 @@ font-size:32px;
 
 }
 
+
+.login-options{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
 }
 
 </style>
@@ -736,20 +809,12 @@ font-size:32px;
 
 <div class="logo">
 
-<div class="logo-mark">
-SI
-</div>
-
-
 <div class="logo-text">
 
 <strong>
-Estudio Contable Iglesias
+<span class="study">ESTUDIO</span>
+<span class="name"> IGLESIAS</span>
 </strong>
-
-<span>
-María Sol Iglesias
-</span>
 
 </div>
 
@@ -757,6 +822,7 @@ María Sol Iglesias
 
 
 <div class="brand-content">
+
 
 <div class="eyebrow">
 Iglesias Portal
@@ -789,8 +855,9 @@ la información de tu actividad agropecuaria.
 🔐 Espacio privado
 </strong>
 
-Tu información será protegida mediante
-autenticación segura y verificación en dos pasos.
+Tu información está protegida mediante
+autenticación segura. La verificación en
+dos pasos se incorporará al acceso definitivo.
 
 </div>
 
@@ -799,7 +866,7 @@ autenticación segura y verificación en dos pasos.
 
 <div style="font-size:11px;color:#aebdca;">
 
-© 2026 Estudio Contable Iglesias
+© 2026 Estudio Iglesias
 
 </div>
 
@@ -835,9 +902,17 @@ a tu información.
 </div>
 
 
+<div
+id="statusMessage"
+class="status-message"
+role="alert"
+></div>
+
+
 <form
 id="loginForm"
 onsubmit="login(event)"
+autocomplete="on"
 >
 
 
@@ -852,7 +927,7 @@ Email
 id="email"
 type="email"
 placeholder="tu@email.com"
-autocomplete="email"
+autocomplete="username"
 required
 >
 
@@ -910,15 +985,15 @@ Recordarme
 </label>
 
 
-<a
-href="#"
+<button
+type="button"
 class="forgot"
-onclick="forgotPassword(event)"
+onclick="forgotPassword()"
 >
 
 ¿Olvidaste tu contraseña?
 
-</a>
+</button>
 
 
 </div>
@@ -926,6 +1001,7 @@ onclick="forgotPassword(event)"
 
 
 <button
+id="loginButton"
 type="submit"
 class="btn gold"
 >
@@ -947,8 +1023,8 @@ Ingresar al portal
 
 <br>
 
-Por seguridad, el acceso definitivo incluirá
-un segundo factor de autenticación.
+Por seguridad, el sistema está preparado para
+incorporar un segundo factor de autenticación.
 
 </div>
 
@@ -997,6 +1073,65 @@ class="back"
 
 <script>
 
+/* =====================================================
+   CONFIGURACIÓN SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+"https://lpjzhjftgmlcpjyrkqfl.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_XJPVuprbVeoyev-rv7WsZg_h-D63Xf2";
+
+
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY,
+{
+auth:{
+autoRefreshToken:true,
+persistSession:true,
+detectSessionInUrl:true
+}
+}
+);
+
+
+/* =====================================================
+   ELEMENTOS
+===================================================== */
+
+const statusMessage =
+document.getElementById("statusMessage");
+
+const loginButton =
+document.getElementById("loginButton");
+
+
+/* =====================================================
+   MENSAJES
+===================================================== */
+
+function showMessage(message,type="info"){
+
+statusMessage.textContent=message;
+
+statusMessage.className=
+"status-message show "+type;
+
+}
+
+
+function clearMessage(){
+
+statusMessage.textContent="";
+
+statusMessage.className=
+"status-message";
+
+}
+
 
 /* =====================================================
    MOSTRAR / OCULTAR CONTRASEÑA
@@ -1021,17 +1156,202 @@ password.type="password";
 
 
 /* =====================================================
-   LOGIN PROVISORIO
+   LOGIN REAL
 ===================================================== */
 
-function login(event){
+async function login(event){
 
 event.preventDefault();
 
+clearMessage();
 
-alert(
-"El sistema de autenticación todavía está en configuración. En la versión final, este acceso estará conectado a una base de datos privada y contará con verificación en dos pasos."
+
+const email =
+document.getElementById("email")
+.value
+.trim();
+
+const password =
+document.getElementById("password")
+.value;
+
+
+if(!email || !password){
+
+showMessage(
+"Completá tu email y contraseña.",
+"error"
 );
+
+return;
+
+}
+
+
+loginButton.disabled=true;
+
+loginButton.textContent=
+"Ingresando...";
+
+
+const {
+data,
+error
+} =
+await supabaseClient.auth.signInWithPassword({
+
+email:email,
+
+password:password
+
+});
+
+
+if(error){
+
+console.error(error);
+
+showMessage(
+"No pudimos iniciar sesión. Verificá tu email y contraseña.",
+"error"
+);
+
+loginButton.disabled=false;
+
+loginButton.textContent=
+"Ingresar al portal";
+
+return;
+
+}
+
+
+/* =====================================================
+   VERIFICAR PERFIL
+===================================================== */
+
+const user =
+data.user;
+
+
+const {
+data:profile,
+error:profileError
+} =
+await supabaseClient
+
+.from("Perfiles")
+
+.select('"cliente-id","Rol",activo')
+
+.eq('"User-id"',user.id)
+
+.eq("activo",true)
+
+.maybeSingle();
+
+
+if(profileError){
+
+console.error(profileError);
+
+await supabaseClient.auth.signOut();
+
+showMessage(
+"Tu usuario se autenticó, pero todavía no pudimos validar su perfil.",
+"error"
+);
+
+loginButton.disabled=false;
+
+loginButton.textContent=
+"Ingresar al portal";
+
+return;
+
+}
+
+
+if(!profile){
+
+await supabaseClient.auth.signOut();
+
+showMessage(
+"Tu usuario no tiene un perfil de cliente habilitado.",
+"error"
+);
+
+loginButton.disabled=false;
+
+loginButton.textContent=
+"Ingresar al portal";
+
+return;
+
+}
+
+
+if(profile.Rol==="admin"){
+
+window.location.href=
+"../admin/dashboard.html";
+
+return;
+
+}
+
+
+/* =====================================================
+   CLIENTE
+===================================================== */
+
+if(
+profile.Rol==="cliente" ||
+profile.Rol==="client"
+){
+
+if(!profile["cliente-id"]){
+
+await supabaseClient.auth.signOut();
+
+showMessage(
+"Tu usuario todavía no está vinculado a una ficha de cliente.",
+"error"
+);
+
+loginButton.disabled=false;
+
+loginButton.textContent=
+"Ingresar al portal";
+
+return;
+
+}
+
+
+/*
+  El dashboard se conectará en el siguiente paso.
+*/
+
+window.location.href=
+"dashboard.html";
+
+return;
+
+}
+
+
+await supabaseClient.auth.signOut();
+
+showMessage(
+"El perfil de este usuario no tiene un rol habilitado.",
+"error"
+);
+
+loginButton.disabled=false;
+
+loginButton.textContent=
+"Ingresar al portal";
 
 }
 
@@ -1040,16 +1360,99 @@ alert(
    RECUPERAR CONTRASEÑA
 ===================================================== */
 
-function forgotPassword(event){
+async function forgotPassword(){
 
-event.preventDefault();
+const email =
+document.getElementById("email")
+.value
+.trim();
 
 
-alert(
-"En la versión final podrás recuperar tu contraseña mediante un proceso seguro de recuperación de cuenta."
+if(!email){
+
+showMessage(
+"Primero ingresá tu email y después elegí recuperar la contraseña.",
+"info"
+);
+
+document
+.getElementById("email")
+.focus();
+
+return;
+
+}
+
+
+showMessage(
+"Estamos enviando el correo de recuperación...",
+"info"
+);
+
+
+const {
+error
+} =
+await supabaseClient.auth.resetPasswordForEmail(
+email
+);
+
+
+if(error){
+
+console.error(error);
+
+showMessage(
+"No pudimos solicitar la recuperación en este momento.",
+"error"
+);
+
+return;
+
+}
+
+
+showMessage(
+"Si existe una cuenta asociada a ese email, recibirás las instrucciones para restablecer la contraseña.",
+"success"
 );
 
 }
+
+
+/* =====================================================
+   SI YA HAY SESIÓN
+===================================================== */
+
+async function checkExistingSession(){
+
+const {
+data
+} =
+await supabaseClient.auth.getSession();
+
+
+const session =
+data.session;
+
+
+if(!session){
+
+return;
+
+}
+
+
+/*
+  Hay una sesión activa.
+  No redirigimos automáticamente todavía para que
+  puedas comprobar el login visualmente.
+*/
+
+}
+
+
+checkExistingSession();
 
 </script>
 
@@ -1057,3 +1460,4 @@ alert(
 </body>
 
 </html>
+```
