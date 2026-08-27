@@ -2315,45 +2315,26 @@ FIN DE PARTE 1
 /* =========================================================
    CONFIGURACIÓN SUPABASE
    ========================================================= */
-
 const SUPABASE_URL = "https://lpjzhjftgmlcpjyrkqfl.supabase.co";
-
-/*
-   IMPORTANTE:
-   Utilizar solamente la clave PÚBLICA.
-
-   Pegá acá tu sb_publishable_...
-   NO colocar nunca sb_secret_...
-*/
 
 const SUPABASE_ANON_KEY = "sb_publishable_XJPVuprbVeoyev-rv7WsZg_h-D63Xf2";
 
 let supabaseClient = null;
 
 try {
-
-    if (
-        SUPABASE_URL &&
-        SUPABASE_ANON_KEY &&
-        SUPABASE_ANON_KEY !== "sb_publishable_XJPVuprbVeoyev-rv7WsZg_h-D63Xf2"
-    ) {
-
+    if (typeof window.supabase === "undefined") {
+        console.error("❌ La librería de Supabase NO está cargada.");
+    } else {
         supabaseClient = window.supabase.createClient(
             SUPABASE_URL,
             SUPABASE_ANON_KEY
         );
 
+        console.log("✓ Cliente Supabase creado correctamente.");
     }
-
 } catch (error) {
-
-    console.error(
-        "No se pudo inicializar Supabase:",
-        error
-    );
-
+    console.error("❌ Error creando cliente Supabase:", error);
 }
-
 
 /* =========================================================
    TRADUCCIONES
