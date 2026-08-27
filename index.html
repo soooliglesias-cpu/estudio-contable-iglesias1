@@ -1,0 +1,2070 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+name="description"
+content="Estudio Contable Iglesias — María Sol Iglesias. Contabilidad, impuestos, empresas y asesoramiento especializado para productores agropecuarios."
+>
+
+<title>Estudio Iglesias | María Sol Iglesias</title>
+
+<style>
+
+:root{
+--navy:#102a43;
+--navy-dark:#071b2d;
+--gold:#b89452;
+--gold-light:#d4b978;
+--white:#ffffff;
+--cream:#f7f4ee;
+--text:#263746;
+--muted:#718096;
+--border:#e7e1d5;
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+font-family:"Segoe UI",Arial,sans-serif;
+color:var(--text);
+background:var(--white);
+line-height:1.6;
+}
+
+a{
+color:inherit;
+text-decoration:none;
+}
+
+.container{
+width:min(1180px,92%);
+margin:auto;
+}
+
+/* HEADER */
+
+header{
+position:sticky;
+top:0;
+z-index:1000;
+background:rgba(255,255,255,.97);
+border-bottom:1px solid var(--border);
+backdrop-filter:blur(12px);
+}
+
+.nav{
+min-height:82px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:25px;
+}
+
+/* NUEVO NOMBRE DEL ESTUDIO */
+
+.logo{
+display:flex;
+align-items:center;
+text-decoration:none;
+}
+
+.logo-text{
+font-size:20px;
+font-weight:800;
+letter-spacing:1.5px;
+text-transform:uppercase;
+line-height:1;
+}
+
+.logo-text .study{
+color:var(--navy);
+}
+
+.logo-text .name{
+color:var(--gold);
+}
+
+/* MENU */
+
+nav{
+display:flex;
+align-items:center;
+gap:25px;
+}
+
+nav a{
+font-size:14px;
+font-weight:600;
+color:var(--navy);
+transition:.25s;
+text-decoration:none;
+border-bottom:none;
+}
+
+nav a:hover{
+color:var(--gold);
+text-decoration:none;
+border-bottom:none;
+}
+
+.language{
+border:1px solid var(--border);
+background:white;
+padding:9px 12px;
+border-radius:8px;
+color:var(--navy);
+font-weight:600;
+cursor:pointer;
+}
+
+.menu-button{
+display:none;
+border:none;
+background:none;
+font-size:25px;
+color:var(--navy);
+cursor:pointer;
+}
+
+/* BUTTONS */
+
+.btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:13px 22px;
+border-radius:8px;
+font-weight:700;
+font-size:14px;
+transition:.25s;
+cursor:pointer;
+text-decoration:none;
+border:none;
+}
+
+.btn.gold{
+background:var(--gold);
+color:white;
+}
+
+.btn.gold:hover{
+background:#9f7d40;
+transform:translateY(-2px);
+}
+
+.btn.navy{
+background:var(--navy);
+color:white;
+}
+
+.btn.navy:hover{
+background:var(--navy-dark);
+transform:translateY(-2px);
+}
+
+/* HERO */
+
+.hero{
+min-height:650px;
+display:flex;
+align-items:center;
+background:
+linear-gradient(
+90deg,
+rgba(7,27,45,.98),
+rgba(16,42,67,.91),
+rgba(16,42,67,.70)
+),
+url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=85");
+background-size:cover;
+background-position:center;
+color:white;
+}
+
+.hero-content{
+max-width:780px;
+padding:100px 0;
+}
+
+.eyebrow{
+font-size:12px;
+text-transform:uppercase;
+letter-spacing:2.5px;
+font-weight:800;
+color:var(--gold);
+margin-bottom:15px;
+}
+
+.hero h1{
+font-family:Georgia,serif;
+font-size:clamp(42px,6vw,72px);
+line-height:1.05;
+margin-bottom:25px;
+font-weight:500;
+}
+
+.hero h1 span{
+color:var(--gold-light);
+}
+
+.hero p{
+font-size:18px;
+max-width:680px;
+color:#edf2f7;
+margin-bottom:32px;
+}
+
+.hero-actions{
+display:flex;
+gap:14px;
+flex-wrap:wrap;
+}
+
+/* SECTION TITLES */
+
+section{
+padding:95px 0;
+}
+
+.section-title{
+max-width:760px;
+margin-bottom:50px;
+}
+
+.section-title h2{
+font-family:Georgia,serif;
+font-size:clamp(32px,4vw,48px);
+line-height:1.15;
+color:var(--navy);
+font-weight:500;
+margin-bottom:17px;
+}
+
+.section-title p{
+color:var(--muted);
+font-size:16px;
+}
+
+/* ABOUT */
+
+.about{
+background:var(--cream);
+}
+
+.about-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:70px;
+align-items:center;
+}
+
+.about h2{
+font-family:Georgia,serif;
+font-size:46px;
+font-weight:500;
+color:var(--navy);
+line-height:1.15;
+margin-bottom:22px;
+}
+
+.about p{
+color:var(--muted);
+margin-bottom:18px;
+}
+
+.about-card{
+background:white;
+padding:40px;
+border-radius:15px;
+box-shadow:0 20px 50px rgba(16,42,67,.08);
+border:1px solid var(--border);
+}
+
+.about-card h3{
+font-family:Georgia,serif;
+font-size:25px;
+color:var(--navy);
+margin-bottom:18px;
+}
+
+.about-card div{
+padding:16px 0;
+border-bottom:1px solid var(--border);
+}
+
+.about-card div:last-child{
+border-bottom:none;
+}
+
+.about-card strong{
+display:block;
+color:var(--navy);
+margin-bottom:5px;
+}
+
+.about-card span{
+font-size:14px;
+color:var(--muted);
+}
+
+/* HISTORY */
+
+.history{
+background:white;
+}
+
+.history-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:25px;
+}
+
+.history-card{
+padding:32px;
+border:1px solid var(--border);
+border-radius:14px;
+background:white;
+transition:.25s;
+}
+
+.history-card:hover{
+transform:translateY(-5px);
+box-shadow:0 18px 40px rgba(16,42,67,.08);
+}
+
+.history-card .number{
+font-family:Georgia,serif;
+font-size:38px;
+color:var(--gold);
+margin-bottom:15px;
+}
+
+.history-card h3{
+color:var(--navy);
+margin-bottom:10px;
+}
+
+.history-card p{
+font-size:14px;
+color:var(--muted);
+}
+
+/* VALUES */
+
+.values{
+background:var(--navy);
+color:white;
+}
+
+.values .section-title h2{
+color:white;
+}
+
+.values .section-title p{
+color:#cbd5e0;
+}
+
+.values-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:25px;
+}
+
+.value-card{
+padding:35px;
+border:1px solid rgba(255,255,255,.14);
+border-radius:14px;
+background:rgba(255,255,255,.04);
+}
+
+.value-card .icon{
+font-size:30px;
+margin-bottom:20px;
+}
+
+.value-card h3{
+font-family:Georgia,serif;
+font-size:25px;
+color:var(--gold-light);
+margin-bottom:12px;
+}
+
+.value-card p{
+font-size:14px;
+color:#d9e2ec;
+}
+
+/* SUSTAINABILITY */
+
+.sustainability{
+background:var(--cream);
+}
+
+.sustainability-grid{
+display:grid;
+grid-template-columns:1.1fr .9fr;
+gap:60px;
+align-items:center;
+}
+
+.sustainability h2{
+font-family:Georgia,serif;
+font-size:44px;
+font-weight:500;
+color:var(--navy);
+line-height:1.15;
+margin-bottom:20px;
+}
+
+.sustainability p{
+color:var(--muted);
+margin-bottom:18px;
+}
+
+.sustainability-box{
+background:white;
+padding:38px;
+border-radius:15px;
+border-left:5px solid var(--gold);
+box-shadow:0 15px 40px rgba(16,42,67,.07);
+}
+
+.sustainability-box h3{
+color:var(--navy);
+margin-bottom:18px;
+}
+
+.sustainability-box ul{
+list-style:none;
+}
+
+.sustainability-box li{
+padding:10px 0;
+border-bottom:1px solid var(--border);
+font-size:14px;
+}
+
+.sustainability-box li:last-child{
+border:none;
+}
+
+/* SERVICES */
+
+.services{
+background:white;
+}
+
+.services-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:25px;
+}
+
+.service-card{
+padding:35px;
+border-radius:14px;
+background:white;
+border:1px solid var(--border);
+transition:.25s;
+}
+
+.service-card:hover{
+transform:translateY(-5px);
+box-shadow:0 20px 45px rgba(16,42,67,.08);
+}
+
+.service-icon{
+font-size:30px;
+margin-bottom:18px;
+}
+
+.service-card h3{
+font-family:Georgia,serif;
+font-size:24px;
+color:var(--navy);
+margin-bottom:12px;
+}
+
+.service-card p{
+font-size:14px;
+color:var(--muted);
+}
+
+/* AGRO */
+
+.agro{
+background:var(--cream);
+}
+
+.agro-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:60px;
+align-items:center;
+}
+
+.agro h2{
+font-family:Georgia,serif;
+font-size:46px;
+font-weight:500;
+color:var(--navy);
+line-height:1.15;
+margin-bottom:20px;
+}
+
+.agro p{
+color:var(--muted);
+}
+
+.agro-panel{
+background:var(--navy);
+color:white;
+padding:40px;
+border-radius:16px;
+box-shadow:0 25px 60px rgba(16,42,67,.18);
+}
+
+.agro-panel h3{
+font-family:Georgia,serif;
+font-size:27px;
+color:var(--gold-light);
+margin-bottom:22px;
+}
+
+.agro-list{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px 25px;
+list-style:none;
+}
+
+.agro-list li{
+font-size:13px;
+padding:10px 0;
+border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+/* PORTAL */
+
+.portal-preview{
+background:white;
+}
+
+.portal-box{
+background:
+linear-gradient(
+135deg,
+var(--navy),
+#173f60
+);
+color:white;
+padding:55px;
+border-radius:20px;
+display:grid;
+grid-template-columns:1.2fr .8fr;
+gap:50px;
+align-items:center;
+box-shadow:0 25px 60px rgba(16,42,67,.16);
+}
+
+.portal-box h2{
+font-family:Georgia,serif;
+font-size:42px;
+font-weight:500;
+margin-bottom:17px;
+}
+
+.portal-box p{
+color:#d9e2ec;
+margin-bottom:25px;
+}
+
+.portal-features{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.portal-feature{
+padding:15px;
+background:rgba(255,255,255,.07);
+border:1px solid rgba(255,255,255,.1);
+border-radius:10px;
+font-size:13px;
+}
+
+/* NEWS */
+
+.news{
+background:var(--cream);
+}
+
+.news-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:25px;
+}
+
+.news-card{
+background:white;
+border:1px solid var(--border);
+border-radius:14px;
+padding:30px;
+transition:.25s;
+}
+
+.news-card:hover{
+transform:translateY(-5px);
+box-shadow:0 18px 40px rgba(16,42,67,.08);
+}
+
+.news-card span{
+font-size:11px;
+text-transform:uppercase;
+letter-spacing:1.5px;
+font-weight:800;
+color:var(--gold);
+}
+
+.news-card h3{
+font-family:Georgia,serif;
+font-size:24px;
+color:var(--navy);
+margin:12px 0;
+}
+
+.news-card p{
+font-size:14px;
+color:var(--muted);
+}
+
+/* CALENDAR */
+
+.calendar{
+background:white;
+}
+
+.calendar-table{
+width:100%;
+border-collapse:collapse;
+border:1px solid var(--border);
+border-radius:12px;
+overflow:hidden;
+}
+
+.calendar-table th{
+background:var(--navy);
+color:white;
+padding:16px;
+text-align:left;
+font-size:13px;
+}
+
+.calendar-table td{
+padding:17px 16px;
+border-bottom:1px solid var(--border);
+font-size:14px;
+}
+
+.calendar-table tr:last-child td{
+border-bottom:none;
+}
+
+.tag{
+display:inline-block;
+padding:5px 10px;
+border-radius:30px;
+background:#f4ead5;
+color:#80632e;
+font-size:11px;
+font-weight:700;
+}
+
+/* FORMS */
+
+.forms{
+background:var(--cream);
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+}
+
+.form-box{
+background:white;
+padding:35px;
+border-radius:15px;
+border:1px solid var(--border);
+}
+
+.form-box h3{
+font-family:Georgia,serif;
+font-size:27px;
+color:var(--navy);
+margin-bottom:25px;
+}
+
+label{
+display:block;
+font-size:13px;
+font-weight:700;
+color:var(--navy);
+margin:15px 0 7px;
+}
+
+input,
+select,
+textarea{
+width:100%;
+padding:13px 14px;
+border:1px solid #d8dfe6;
+border-radius:8px;
+font-family:inherit;
+font-size:14px;
+outline:none;
+background:white;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+border-color:var(--gold);
+}
+
+textarea{
+min-height:120px;
+resize:vertical;
+}
+
+.form-box button{
+margin-top:20px;
+}
+
+/* AGENDA */
+
+.agenda{
+background:var(--navy);
+color:white;
+}
+
+.agenda .section-title h2{
+color:white;
+}
+
+.agenda .section-title p{
+color:#d9e2ec;
+}
+
+.agenda-box{
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.12);
+border-radius:16px;
+padding:40px;
+max-width:700px;
+}
+
+.agenda-box h3{
+font-family:Georgia,serif;
+font-size:28px;
+color:var(--gold-light);
+margin-bottom:12px;
+}
+
+.agenda-box p{
+color:#d9e2ec;
+margin-bottom:25px;
+}
+
+/* CONTACT */
+
+.contact{
+background:white;
+}
+
+.contact-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:70px;
+align-items:center;
+}
+
+.contact h2{
+font-family:Georgia,serif;
+font-size:46px;
+font-weight:500;
+color:var(--navy);
+line-height:1.15;
+margin-bottom:20px;
+}
+
+.contact p{
+color:var(--muted);
+margin-bottom:25px;
+}
+
+.contact-box{
+padding:40px;
+border-radius:16px;
+background:var(--cream);
+border:1px solid var(--border);
+}
+
+.contact-box h3{
+font-family:Georgia,serif;
+font-size:27px;
+color:var(--navy);
+margin-bottom:20px;
+}
+
+.contact-item{
+padding:13px 0;
+border-bottom:1px solid var(--border);
+font-size:14px;
+}
+
+.contact-item:last-child{
+border-bottom:none;
+}
+
+.contact-item a{
+color:var(--navy);
+font-weight:600;
+}
+
+.contact-item a:hover{
+color:var(--gold);
+}
+
+/* FOOTER */
+
+footer{
+background:var(--navy-dark);
+color:#cbd5e0;
+text-align:center;
+padding:35px 20px;
+font-size:13px;
+}
+
+footer strong{
+color:var(--gold-light);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:950px){
+
+nav{
+display:none;
+position:absolute;
+top:82px;
+left:0;
+right:0;
+background:white;
+padding:25px;
+flex-direction:column;
+align-items:flex-start;
+border-bottom:1px solid var(--border);
+}
+
+nav.active{
+display:flex;
+}
+
+.menu-button{
+display:block;
+}
+
+.about-grid,
+.sustainability-grid,
+.agro-grid,
+.portal-box,
+.contact-grid{
+grid-template-columns:1fr;
+}
+
+.history-grid,
+.values-grid,
+.services-grid,
+.news-grid{
+grid-template-columns:1fr 1fr;
+}
+
+}
+
+@media(max-width:650px){
+
+section{
+padding:70px 0;
+}
+
+.hero{
+min-height:600px;
+}
+
+.hero-content{
+padding:80px 0;
+}
+
+.hero h1{
+font-size:43px;
+}
+
+.logo-text{
+font-size:17px;
+letter-spacing:1.2px;
+}
+
+.about h2,
+.agro h2,
+.sustainability h2,
+.contact h2{
+font-size:35px;
+}
+
+.history-grid,
+.values-grid,
+.services-grid,
+.news-grid,
+.form-grid{
+grid-template-columns:1fr;
+}
+
+.portal-features,
+.agro-list{
+grid-template-columns:1fr;
+}
+
+.portal-box{
+padding:30px;
+}
+
+.portal-box h2{
+font-size:32px;
+}
+
+.calendar-table{
+font-size:12px;
+}
+
+.calendar-table th,
+.calendar-table td{
+padding:11px 8px;
+}
+
+}
+
+/* JAVASCRIPT */
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="container nav">
+
+<a href="#inicio" class="logo">
+
+<div class="logo-text">
+<span class="study">ESTUDIO</span>
+<span class="name"> IGLESIAS</span>
+</div>
+
+</a>
+
+<button
+class="menu-button"
+onclick="toggleMenu()"
+aria-label="Abrir menú"
+>
+☰
+</button>
+
+<nav id="mainNav">
+
+<a href="#inicio">Inicio</a>
+<a href="#sobre">Sobre nosotros</a>
+<a href="#servicios">Servicios</a>
+<a href="#agro">Agro</a>
+<a href="#novedades">Novedades</a>
+<a href="#vencimientos">Vencimientos</a>
+<a href="#contacto">Contacto</a>
+
+<a href="/portal/" class="btn gold">
+Portal clientes
+</a>
+
+<select
+class="language"
+id="language"
+onchange="changeLanguage(this.value)"
+aria-label="Seleccionar idioma"
+>
+
+<option value="es">🇦🇷 Español</option>
+<option value="en">🇬🇧 English</option>
+<option value="pt">🇧🇷 Português</option>
+<option value="fr">🇫🇷 Français</option>
+<option value="it">🇮🇹 Italiano</option>
+<option value="de">🇩🇪 Deutsch</option>
+
+</select>
+
+</nav>
+
+</div>
+
+</header>
+
+<section class="hero" id="inicio">
+
+<div class="container">
+
+<div class="hero-content">
+
+<div class="eyebrow" data-i18n="heroEyebrow">
+Estudio Contable
+</div>
+
+<h1 data-i18n="heroTitle">
+Contabilidad con
+<span>visión de futuro.</span>
+</h1>
+
+<p data-i18n="heroText">
+Un estudio contable moderno, cercano y estratégico,
+creado para acompañar personas, empresas y productores
+agropecuarios en cada etapa de su crecimiento.
+</p>
+
+<div class="hero-actions">
+
+<a
+href="#ser-cliente"
+class="btn gold"
+data-i18n="heroButton"
+>
+Quiero ser cliente
+</a>
+
+<a
+href="#sobre"
+class="btn"
+style="border:1px solid rgba(255,255,255,.4);color:white"
+data-i18n="heroSecondary"
+>
+Conocé el estudio
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="about" id="sobre">
+
+<div class="container about-grid">
+
+<div>
+
+<div class="eyebrow">
+Sobre nosotros
+</div>
+
+<h2>
+Una forma diferente de hacer contabilidad.
+</h2>
+
+<p>
+<strong>Estudio Contable Iglesias</strong>
+nace de una visión profesional que busca combinar
+la rigurosidad de la contabilidad con una atención
+cercana, clara y personalizada.
+</p>
+
+<p>
+Detrás del estudio está
+<strong>María Sol Iglesias</strong>,
+Contadora Pública, con una mirada orientada a la
+transformación, la tecnología y el crecimiento
+sostenible de sus clientes.
+</p>
+
+<p>
+El objetivo es que la información contable deje de ser
+solamente una obligación y se convierta en una herramienta
+para tomar mejores decisiones.
+</p>
+
+<a href="#contacto" class="btn navy">
+Conocé nuestra propuesta
+</a>
+
+</div>
+
+<div class="about-card">
+
+<h3>
+La historia del estudio
+</h3>
+
+<div>
+<strong>El comienzo</strong>
+<span>
+Un proyecto profesional construido desde la vocación
+por la contabilidad y el deseo de crear un estudio
+propio.
+</span>
+</div>
+
+<div>
+<strong>El presente</strong>
+<span>
+Una propuesta moderna que integra contabilidad,
+impuestos, tecnología y acompañamiento personalizado.
+</span>
+</div>
+
+<div>
+<strong>El futuro</strong>
+<span>
+Una plataforma digital propia para simplificar la
+relación entre el estudio y sus clientes.
+</span>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="history">
+
+<div class="container">
+
+<div class="section-title">
+
+<div class="eyebrow">
+Nuestra evolución
+</div>
+
+<h2>
+Un estudio construido con propósito.
+</h2>
+
+<p>
+La historia de Estudio Contable Iglesias está pensada
+como un camino de crecimiento, innovación y cercanía.
+</p>
+
+</div>
+
+<div class="history-grid">
+
+<div class="history-card">
+<div class="number">01</div>
+<h3>Vocación</h3>
+<p>
+La profesión como punto de partida y la búsqueda
+constante de excelencia como motor.
+</p>
+</div>
+
+<div class="history-card">
+<div class="number">02</div>
+<h3>Innovación</h3>
+<p>
+Incorporar herramientas digitales para hacer que la
+información sea más accesible y útil.
+</p>
+</div>
+
+<div class="history-card">
+<div class="number">03</div>
+<h3>Crecimiento</h3>
+<p>
+Acompañar a cada cliente para que pueda tomar decisiones
+con información clara y confiable.
+</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="values">
+
+<div class="container">
+
+<div class="section-title">
+
+<div class="eyebrow">
+Nuestros valores
+</div>
+
+<h2>
+Misión, visión y compromiso.
+</h2>
+
+<p>
+Tres pilares que orientan cada decisión del estudio.
+</p>
+
+</div>
+
+<div class="values-grid">
+
+<div class="value-card">
+
+<div class="icon">🎯</div>
+
+<h3>Misión</h3>
+
+<p>
+Brindar servicios contables e impositivos profesionales,
+claros y personalizados, utilizando la tecnología como
+herramienta para mejorar la experiencia y la toma de
+decisiones de nuestros clientes.
+</p>
+
+</div>
+
+<div class="value-card">
+
+<div class="icon">✨</div>
+
+<h3>Visión</h3>
+
+<p>
+Construir un estudio contable moderno, innovador y
+cercano, reconocido por la calidad profesional, la
+especialización y la incorporación responsable de
+tecnología.
+</p>
+
+</div>
+
+<div class="value-card">
+
+<div class="icon">🤝</div>
+
+<h3>Compromiso</h3>
+
+<p>
+Trabajar con responsabilidad, confidencialidad,
+transparencia y dedicación, entendiendo que detrás
+de cada número existe una persona, una empresa o
+un proyecto.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="sustainability">
+
+<div class="container sustainability-grid">
+
+<div>
+
+<div class="eyebrow">
+Sustentabilidad
+</div>
+
+<h2>
+Crecer también es cuidar.
+</h2>
+
+<p>
+El compromiso del Estudio Contable Iglesias con la
+sustentabilidad forma parte de una visión profesional
+de largo plazo.
+</p>
+
+<p>
+Buscamos reducir el uso innecesario de papel,
+digitalizar procesos y promover herramientas que
+permitan trabajar de manera más eficiente.
+</p>
+
+<p>
+En el sector agropecuario, además, creemos en la
+importancia de acompañar una gestión responsable
+de la información productiva y económica.
+</p>
+
+</div>
+
+<div class="sustainability-box">
+
+<h3>
+Nuestro compromiso
+</h3>
+
+<ul>
+
+<li>🌱 Digitalización de procesos</li>
+<li>📄 Reducción del uso de papel</li>
+<li>💻 Gestión documental digital</li>
+<li>🌾 Información para una gestión agropecuaria responsable</li>
+<li>♻️ Uso eficiente de recursos</li>
+<li>🤝 Crecimiento sostenible</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="services" id="servicios">
+
+<div class="container">
+
+<div class="section-title">
+
+<div class="eyebrow">
+Servicios
+</div>
+
+<h2>
+Una mirada integral sobre tu actividad.
+</h2>
+
+<p>
+Soluciones contables e impositivas adaptadas a cada
+realidad profesional y empresarial.
+</p>
+
+</div>
+
+<div class="services-grid">
+
+<div class="service-card">
+<div class="service-icon">📊</div>
+<h3>Contabilidad</h3>
+<p>
+Información contable organizada para comprender la
+realidad económica y acompañar la toma de decisiones.
+</p>
+</div>
+
+<div class="service-card">
+<div class="service-icon">🧾</div>
+<h3>Impuestos</h3>
+<p>
+Planificación y cumplimiento de obligaciones tributarias
+con seguimiento personalizado.
+</p>
+</div>
+
+<div class="service-card">
+<div class="service-icon">🏢</div>
+<h3>Empresas</h3>
+<p>
+Acompañamiento contable y financiero para empresas,
+emprendimientos y proyectos en crecimiento.
+</p>
+</div>
+
+<div class="service-card">
+<div class="service-icon">🌾</div>
+<h3>Agro</h3>
+<p>
+Gestión contable y seguimiento de información
+económica y productiva para productores agropecuarios.
+</p>
+</div>
+
+<div class="service-card">
+<div class="service-icon">👤</div>
+<h3>Monotributo</h3>
+<p>
+Seguimiento de facturación, categoría, obligaciones
+y situación impositiva.
+</p>
+</div>
+
+<div class="service-card">
+<div class="service-icon">💡</div>
+<h3>Asesoramiento</h3>
+<p>
+Análisis profesional para ayudarte a comprender tus
+números y tomar decisiones con mayor información.
+</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="agro" id="agro">
+
+<div class="container agro-grid">
+
+<div>
+
+<div class="eyebrow">
+Especialización agropecuaria
+</div>
+
+<h2>
+El campo también necesita información.
+</h2>
+
+<p>
+Una propuesta pensada para productores que necesitan
+tener organizada la información económica, productiva
+y documental de sus establecimientos.
+</p>
+
+<br>
+
+<p>
+El futuro portal permitirá consultar en un único espacio
+información de campos, lotes, campañas, hacienda, SISA,
+caravanas, movimientos y resultados.
+</p>
+
+<br>
+
+<a href="#ser-cliente" class="btn navy">
+Consultar por Agro
+</a>
+
+</div>
+
+<div class="agro-panel">
+
+<h3>
+Gestión Agro
+</h3>
+
+<ul class="agro-list">
+
+<li>🌾 Campos y establecimientos</li>
+<li>📐 Superficie y lotes</li>
+<li>🚜 Campañas agrícolas</li>
+<li>🌱 Cultivos</li>
+<li>🐄 Hacienda</li>
+<li>🏷️ Caravanas</li>
+<li>📋 SISA</li>
+<li>🚚 Movimientos</li>
+<li>💰 Ingresos</li>
+<li>📉 Gastos</li>
+<li>📊 Comparativos</li>
+<li>📁 Documentación</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="portal-preview">
+
+<div class="container">
+
+<div class="portal-box">
+
+<div>
+
+<div class="eyebrow">
+Iglesias Portal
+</div>
+
+<h2>
+Tu información, siempre a tu alcance.
+</h2>
+
+<p>
+Un espacio digital privado donde cada cliente podrá
+consultar su información contable, impositiva y,
+cuando corresponda, agropecuaria.
+</p>
+
+<a href="/portal/" class="btn gold">
+Ingresar al portal
+</a>
+
+</div>
+
+<div class="portal-features">
+
+<div class="portal-feature">📊 Ingresos y gastos</div>
+<div class="portal-feature">🧾 Estado impositivo</div>
+<div class="portal-feature">📅 Vencimientos</div>
+<div class="portal-feature">🌾 Información Agro</div>
+<div class="portal-feature">📈 Comparativos</div>
+<div class="portal-feature">📁 Documentación</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="news" id="novedades">
+
+<div class="container">
+
+<div class="section-title">
+
+<div class="eyebrow">
+Novedades
+</div>
+
+<h2>
+Actualidad del estudio.
+</h2>
+
+<p>
+Información profesional, novedades tributarias,
+actualizaciones y participación de María Sol Iglesias.
+</p>
+
+</div>
+
+<div class="news-grid">
+
+<div class="news-card">
+
+<span>
+Actualidad tributaria
+</span>
+
+<h3>
+Novedades impositivas
+</h3>
+
+<p>
+Este espacio estará destinado a comunicar
+actualizaciones tributarias y profesionales.
+</p>
+
+</div>
+
+<div class="news-card">
+
+<span>
+Entrevistas
+</span>
+
+<h3>
+María Sol Iglesias
+</h3>
+
+<p>
+Un espacio para compartir entrevistas, notas,
+participaciones y contenidos profesionales.
+</p>
+
+</div>
+
+<div class="news-card">
+
+<span>
+Sector agropecuario
+</span>
+
+<h3>
+Actualidad del agro
+</h3>
+
+<p>
+Información de interés para productores
+agropecuarios y empresas del sector.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="calendar" id="vencimientos">
+
+<div class="container">
+
+<div class="section-title">
+
+<div class="eyebrow">
+Calendario
+</div>
+
+<h2>
+Vencimientos y fechas importantes.
+</h2>
+
+<p>
+El calendario público ofrece información general.
+Los vencimientos particulares de cada cliente
+estarán disponibles dentro de su portal privado.
+</p>
+
+</div>
+
+<table class="calendar-table">
+
+<thead>
+
+<tr>
+<th>Fecha</th>
+<th>Obligación</th>
+<th>Período</th>
+<th>Estado</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>10/09/2026</td>
+<td>IVA</td>
+<td>08/2026</td>
+<td><span class="tag">Próximo</span></td>
+</tr>
+
+<tr>
+<td>15/09/2026</td>
+<td>IIBB</td>
+<td>08/2026</td>
+<td><span class="tag">Próximo</span></td>
+</tr>
+
+<tr>
+<td>20/09/2026</td>
+<td>Ganancias</td>
+<td>Anticipo</td>
+<td><span class="tag">Próximo</span></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+<section class="forms" id="ser-cliente">
+
+<div class="container">
+
+<div class="section-title">
+
+<div class="eyebrow">
+Contacto profesional
+</div>
+
+<h2>
+Comencemos a trabajar juntos.
+</h2>
+
+<p>
+Podés solicitar información para comenzar a trabajar
+con el estudio o realizar una consulta profesional.
+</p>
+
+</div>
+
+<div class="form-grid">
+
+<div class="form-box">
+
+<h3>
+Quiero ser cliente
+</h3>
+
+<form onsubmit="submitForm(event,'Solicitud para ser cliente')">
+
+<label>Nombre y apellido</label>
+<input type="text" required>
+
+<label>Email</label>
+<input type="email" required>
+
+<label>Teléfono</label>
+<input type="tel">
+
+<label>Actividad</label>
+
+<select required>
+
+<option value="">Seleccionar</option>
+<option>Empresa</option>
+<option>Emprendedor</option>
+<option>Productor agropecuario</option>
+<option>Profesional</option>
+<option>Monotributista</option>
+<option>Otro</option>
+
+</select>
+
+<label>Mensaje</label>
+
+<textarea
+placeholder="Contanos brevemente sobre tu actividad."
+></textarea>
+
+<button type="submit" class="btn gold">
+Solicitar contacto
+</button>
+
+</form>
+
+</div>
+
+<div class="form-box">
+
+<h3>
+Hacer una consulta
+</h3>
+
+<form onsubmit="submitForm(event,'Consulta')">
+
+<label>Nombre</label>
+<input type="text" required>
+
+<label>Email</label>
+<input type="email" required>
+
+<label>Tema</label>
+
+<select required>
+
+<option value="">Seleccionar</option>
+<option>Contabilidad</option>
+<option>Impuestos</option>
+<option>Agro</option>
+<option>Monotributo</option>
+<option>Empresas</option>
+<option>Otro</option>
+
+</select>
+
+<label>Consulta</label>
+
+<textarea required></textarea>
+
+<button type="submit" class="btn gold">
+Enviar consulta
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="agenda" id="agenda">
+
+<div class="container">
+
+<div class="section-title">
+
+<div class="eyebrow">
+Agenda
+</div>
+
+<h2>
+Agendá una reunión con María Sol.
+</h2>
+
+<p>
+Podrás reservar una reunión con el estudio mediante
+la agenda digital.
+</p>
+
+</div>
+
+<div class="agenda-box">
+
+<h3>
+📅 Reuniones profesionales
+</h3>
+
+<p>
+La agenda quedará conectada con Google Calendar en
+la versión final del portal, permitiendo consultar
+disponibilidad y reservar horarios.
+</p>
+
+<a
+href="https://calendar.google.com/"
+target="_blank"
+rel="noopener"
+class="btn gold"
+>
+Abrir agenda
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="contact" id="contacto">
+
+<div class="container contact-grid">
+
+<div>
+
+<div class="eyebrow">
+Contacto
+</div>
+
+<h2>
+Hablemos de tu proyecto.
+</h2>
+
+<p>
+Si querés ordenar tu situación contable, conocer
+nuestros servicios o realizar una consulta,
+podés comunicarte con el estudio.
+</p>
+
+<a href="#ser-cliente" class="btn gold">
+Quiero ser cliente
+</a>
+
+</div>
+
+<div class="contact-box">
+
+<h3>
+María Sol Iglesias
+</h3>
+
+<div class="contact-item">
+<strong>Contadora Pública</strong>
+</div>
+
+<div class="contact-item">
+📍 Monseñor D Andrea 363,
+Carlos Casares, Buenos Aires
+</div>
+
+<div class="contact-item">
+
+📧
+
+<a href="mailto:econtablesoliglesias@gmail.com">
+econtablesoliglesias@gmail.com
+</a>
+
+</div>
+
+<div class="contact-item">
+
+📱
+
+<a href="tel:+542395472873">
+2395 472873
+</a>
+
+</div>
+
+<div class="contact-item">
+
+📸
+
+<a
+href="https://www.instagram.com/contadora.soliglesias/"
+target="_blank"
+rel="noopener"
+>
+@contadora.soliglesias
+</a>
+
+</div>
+
+<div class="contact-item">
+
+📍
+
+<a
+href="https://www.google.com/maps/search/?api=1&query=Monse%C3%B1or+D+Andrea+363%2C+Carlos+Casares%2C+Buenos+Aires"
+target="_blank"
+rel="noopener"
+>
+Ver ubicación en Google Maps
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+© 2026
+
+<strong>
+Estudio Contable Iglesias
+</strong>
+
+·
+
+María Sol Iglesias
+
+·
+
+Contadora Pública
+
+<br><br>
+
+Carlos Casares · Buenos Aires · Argentina
+
+</footer>
+
+<script>
+
+function toggleMenu(){
+
+const nav=document.getElementById("mainNav");
+
+nav.classList.toggle("active");
+
+}
+
+function submitForm(event,tipo){
+
+event.preventDefault();
+
+alert(
+tipo+
+" recibida correctamente. En la versión conectada, la información será enviada al Estudio Contable Iglesias."
+);
+
+}
+
+const translations={
+
+es:{
+heroEyebrow:"Estudio Contable",
+heroTitle:'Contabilidad con <span>visión de futuro.</span>',
+heroText:"Un estudio contable moderno, cercano y estratégico, creado para acompañar personas, empresas y productores agropecuarios en cada etapa de su crecimiento.",
+heroButton:"Quiero ser cliente",
+heroSecondary:"Conocé el estudio"
+},
+
+en:{
+heroEyebrow:"Accounting Firm",
+heroTitle:'Accounting with <span>a vision for the future.</span>',
+heroText:"A modern, professional and strategic accounting firm created to support individuals, companies and agricultural producers throughout their growth.",
+heroButton:"Become a client",
+heroSecondary:"Discover the firm"
+},
+
+pt:{
+heroEyebrow:"Escritório Contábil",
+heroTitle:'Contabilidade com <span>visão de futuro.</span>',
+heroText:"Um escritório contábil moderno, próximo e estratégico, criado para acompanhar pessoas, empresas e produtores rurais em cada etapa de seu crescimento.",
+heroButton:"Quero ser cliente",
+heroSecondary:"Conheça o escritório"
+},
+
+fr:{
+heroEyebrow:"Cabinet Comptable",
+heroTitle:'La comptabilité avec <span>une vision d’avenir.</span>',
+heroText:"Un cabinet comptable moderne, proche et stratégique, créé pour accompagner les particuliers, les entreprises et les producteurs agricoles.",
+heroButton:"Devenir client",
+heroSecondary:"Découvrir le cabinet"
+},
+
+it:{
+heroEyebrow:"Studio Contabile",
+heroTitle:'Contabilità con <span>una visione del futuro.</span>',
+heroText:"Uno studio contabile moderno, vicino e strategico, creato per accompagnare persone, aziende e produttori agricoli nella loro crescita.",
+heroButton:"Diventa cliente",
+heroSecondary:"Scopri lo studio"
+},
+
+de:{
+heroEyebrow:"Steuerberatung",
+heroTitle:'Buchhaltung mit <span>einer Vision für die Zukunft.</span>',
+heroText:"Eine moderne, professionelle und strategische Kanzlei zur Begleitung von Privatpersonen, Unternehmen und landwirtschaftlichen Betrieben.",
+heroButton:"Kunde werden",
+heroSecondary:"Kanzlei kennenlernen"
+}
+
+};
+
+function changeLanguage(language){
+
+const data=translations[language];
+
+if(!data){
+return;
+}
+
+document
+.querySelectorAll("[data-i18n]")
+.forEach(element=>{
+
+const key=element.getAttribute("data-i18n");
+
+if(data[key]){
+element.innerHTML=data[key];
+}
+
+});
+
+document.documentElement.lang=language;
+
+}
+
+</script>
+
+</body>
+
+</html>
+```
