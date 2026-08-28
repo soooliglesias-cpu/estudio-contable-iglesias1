@@ -5177,31 +5177,35 @@ async function submitQuestionForm(event) {
     const form = event.currentTarget;
 
     if (!form) {
+        console.error("❌ No se encontró el formulario de consulta.");
         return;
     }
 
-    /* =====================================================
-       OBTENER DATOS DIRECTAMENTE DEL FORMULARIO
-       ===================================================== */
+    const nameInput = form.querySelector('input[name="nombre"]');
+    const emailInput = form.querySelector('input[name="email"]');
+    const topicInput = form.querySelector('select[name="tema"]');
+    const questionInput = form.querySelector('textarea[name="consulta"]');
 
-    const name =
-        form.querySelector('[name="nombre"]')?.value.trim() || "";
+    console.log("FORMULARIO CONSULTA:", {
+        name: nameInput?.value,
+        email: emailInput?.value,
+        topic: topicInput?.value,
+        question: questionInput?.value
+    });
 
-    const email =
-        form.querySelector('[name="email"]')?.value.trim() || "";
-
-    const topic =
-        form.querySelector('[name="tema"]')?.value.trim() || "";
-
-    const question =
-        form.querySelector('[name="consulta"]')?.value.trim() || "";
-
-
-    /* =====================================================
-       VALIDACIÓN
-       ===================================================== */
+    const name = nameInput?.value.trim() || "";
+    const email = emailInput?.value.trim() || "";
+    const topic = topicInput?.value.trim() || "";
+    const question = questionInput?.value.trim() || "";
 
     if (!name || !email || !topic || !question) {
+
+        console.error("❌ Faltan campos:", {
+            name: !name,
+            email: !email,
+            topic: !topic,
+            question: !question
+        });
 
         showFormMessage(
             form,
@@ -5211,7 +5215,6 @@ async function submitQuestionForm(event) {
 
         return;
     }
-
 
     if (!isValidEmail(email)) {
 
@@ -5224,6 +5227,62 @@ async function submitQuestionForm(event) {
         return;
     }
 
+    const button = form.querySelector(
+        'button[type="submit"], input[type="submit"]'
+    );
+
+    setButtonLoading(button, true);
+
+    try {
+
+        if (!supabaseClient) {
+            throw new Error("Supabase no está configurado.");
+        }
+
+        const { error } = await supabaseClient
+            .from("questions")
+            .insert({
+                name: name,
+                email: email,
+                topic: topic,
+                question: question,
+                language: currentLanguage,
+                status: "new"
+            });
+
+        if (error) {
+            throw error;
+        }
+
+        showFormMessage(
+            form,
+            t("formSuccessQuestion"),
+            "success"
+        );
+
+        form.reset();
+
+        changeLanguage(currentLanguage);
+
+    } catch (error) {
+
+        console.error(
+            "❌ Error formulario consulta:",
+            error
+        );
+
+        showFormMessage(
+            form,
+            t("formError"),
+            "error"
+        );
+
+    } finally {
+
+        setButtonLoading(button, false);
+
+    }
+}
 
     /* =====================================================
        BOTÓN
