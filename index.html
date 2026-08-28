@@ -4664,7 +4664,44 @@ function changeLanguage(language) {
             return;
         }
 
+/* ==========================================
+   FIX RESPONSIVE - SELECTOR DE IDIOMAS
+   ========================================== */
 
+.language-selector,
+.language-switcher,
+.lang-selector {
+    position: relative;
+    z-index: 1000;
+}
+
+@media (max-width: 768px) {
+
+    .language-selector,
+    .language-switcher,
+    .lang-selector {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        left: auto;
+        transform: none;
+        width: auto;
+        max-width: calc(100vw - 32px);
+    }
+
+    .language-selector select,
+    .language-switcher select,
+    .lang-selector select {
+        width: 120px;
+        font-size: 14px;
+    }
+
+    /* Evita que cualquier elemento genere scroll lateral */
+    html,
+    body {
+        overflow-x: hidden;
+    }
+}
         /* -----------------------------------------
            TEXTOS
         ----------------------------------------- */
