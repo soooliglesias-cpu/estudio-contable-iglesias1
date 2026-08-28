@@ -2318,12 +2318,11 @@ Carlos Casares · Buenos Aires · Argentina
 <!-- =========================
 FIN DE PARTE 1
 ========================= -->
-```html
 <script>
 /* =========================================================
    ESTUDIO CONTABLE IGLESIAS
-   PARTE 2 — SISTEMA COMPLETO
-   IDIOMAS + SUPABASE + FORMULARIOS + PORTAL
+   PARTE 2 — SISTEMA DEFINITIVO
+   FORMULARIOS + IDIOMAS + SUPABASE
    ========================================================= */
 
 (function () {
@@ -2333,7 +2332,7 @@ FIN DE PARTE 1
 
     /* =====================================================
        CONFIGURACIÓN SUPABASE
-    ===================================================== */
+       ===================================================== */
 
     const SUPABASE_URL =
         "https://lpjzhjftgmlcpjyrkqfl.supabase.co";
@@ -2343,39 +2342,55 @@ FIN DE PARTE 1
 
 
     /* =====================================================
-       IDIOMAS SOPORTADOS
-       
-       ES = Español
-       EN = Inglés
-       IT = Italiano
-       FR = Francés
-       DE = Alemán
-       PT = Portugués
-       ZH = Chino
-       JA = Japonés
-       KO = Coreano
-       RU = Ruso
-       AR = Árabe
+       IDIOMA
        ===================================================== */
 
     const supportedLanguages = [
         "es",
         "en",
-        "it",
-        "fr",
-        "de",
         "pt",
+        "fr",
+        "it",
+        "de",
+        "nl",
+        "ca",
+        "eu",
+        "gl",
+        "sv",
+        "no",
+        "da",
+        "fi",
+        "is",
+        "pl",
+        "cs",
+        "sk",
+        "sl",
+        "hr",
+        "hu",
+        "ro",
+        "bg",
+        "el",
+        "tr",
+        "uk",
+        "ru",
+        "ar",
+        "he",
+        "fa",
+        "hi",
+        "bn",
+        "ur",
         "zh",
         "ja",
         "ko",
-        "ru",
-        "ar"
+        "th",
+        "vi",
+        "id",
+        "ms",
+        "fil",
+        "sw",
+        "af"
     ];
 
-
-    /* =====================================================
-       ESTADO
-       ===================================================== */
 
     let currentLanguage =
         localStorage.getItem("preferredLanguage") || "es";
@@ -2403,7 +2418,8 @@ FIN DE PARTE 1
 
         if (
             window.supabase &&
-            typeof window.supabase.createClient === "function"
+            typeof window.supabase.createClient ===
+                "function"
         ) {
 
             try {
@@ -2414,26 +2430,21 @@ FIN DE PARTE 1
                         SUPABASE_KEY
                     );
 
-
                 window.supabaseClient =
                     supabaseClient;
 
-
                 console.log(
-                    "✓ Supabase conectado correctamente."
+                    "✓ Supabase conectado."
                 );
 
-
                 return true;
-
 
             } catch (error) {
 
                 console.error(
-                    "❌ Error creando Supabase:",
+                    "Error creando Supabase:",
                     error
                 );
-
 
                 return false;
 
@@ -2441,51 +2452,31 @@ FIN DE PARTE 1
 
         }
 
-
-        console.warn(
-            "⚠ La librería de Supabase todavía no está cargada."
-        );
-
-
         return false;
 
     }
 
 
-    function loadSupabaseLibrary(callback) {
+    function loadSupabase() {
 
         if (
             window.supabase &&
-            typeof window.supabase.createClient === "function"
+            typeof window.supabase.createClient ===
+                "function"
         ) {
 
             startSupabase();
-
-            if (callback) callback();
 
             return;
 
         }
 
 
-        const existingScript =
+        if (
             document.querySelector(
                 'script[data-iglesias-supabase]'
-            );
-
-
-        if (existingScript) {
-
-            existingScript.addEventListener(
-                "load",
-                function () {
-
-                    startSupabase();
-
-                    if (callback) callback();
-
-                }
-            );
+            )
+        ) {
 
             return;
 
@@ -2509,15 +2500,7 @@ FIN DE PARTE 1
 
         script.onload = function () {
 
-            console.log(
-                "✓ Librería Supabase cargada."
-            );
-
-
             startSupabase();
-
-
-            if (callback) callback();
 
         };
 
@@ -2525,7 +2508,7 @@ FIN DE PARTE 1
         script.onerror = function () {
 
             console.error(
-                "❌ No se pudo cargar la librería de Supabase."
+                "No se pudo cargar Supabase."
             );
 
         };
@@ -2544,29 +2527,59 @@ FIN DE PARTE 1
 
     function getTranslations() {
 
-        return window.translations || null;
+        return window.translations || {};
 
     }
 
 
     function getTexts() {
 
-        const allTranslations =
+        const translations =
             getTranslations();
 
 
-        if (!allTranslations) {
+        return (
+            translations[currentLanguage] ||
+            translations.es ||
+            {}
+        );
 
-            return null;
+    }
+
+
+    function t(key) {
+
+        const texts =
+            getTexts();
+
+
+        if (
+            Object.prototype.hasOwnProperty.call(
+                texts,
+                key
+            )
+        ) {
+
+            return texts[key];
 
         }
 
 
-        return (
-            allTranslations[currentLanguage] ||
-            allTranslations.es ||
-            null
-        );
+        if (
+            window.translations &&
+            window.translations.es &&
+            Object.prototype.hasOwnProperty.call(
+                window.translations.es,
+                key
+            )
+        ) {
+
+            return window.translations.es[key];
+
+        }
+
+
+        return key;
 
     }
 
@@ -2582,19 +2595,11 @@ FIN DE PARTE 1
 
 
         if (!texts) {
-
-            console.warn(
-                "⚠ No se encontró window.translations."
-            );
-
             return;
-
         }
 
 
-        /* ---------------------------------------------
-           TEXTOS
-           --------------------------------------------- */
+        /* TEXTOS */
 
         document
             .querySelectorAll("[data-i18n]")
@@ -2614,7 +2619,7 @@ FIN DE PARTE 1
                     )
                 ) {
 
-                    element.innerHTML =
+                    element.textContent =
                         texts[key];
 
                 }
@@ -2622,9 +2627,7 @@ FIN DE PARTE 1
             });
 
 
-        /* ---------------------------------------------
-           PLACEHOLDERS
-           --------------------------------------------- */
+        /* PLACEHOLDERS */
 
         document
             .querySelectorAll(
@@ -2646,41 +2649,7 @@ FIN DE PARTE 1
                     )
                 ) {
 
-                    element.setAttribute(
-                        "placeholder",
-                        texts[key]
-                    );
-
-                }
-
-            });
-
-
-        /* ---------------------------------------------
-           VALUE
-           --------------------------------------------- */
-
-        document
-            .querySelectorAll(
-                "[data-i18n-value]"
-            )
-            .forEach(function (element) {
-
-                const key =
-                    element.getAttribute(
-                        "data-i18n-value"
-                    );
-
-
-                if (
-                    key &&
-                    Object.prototype.hasOwnProperty.call(
-                        texts,
-                        key
-                    )
-                ) {
-
-                    element.value =
+                    element.placeholder =
                         texts[key];
 
                 }
@@ -2688,9 +2657,7 @@ FIN DE PARTE 1
             });
 
 
-        /* ---------------------------------------------
-           ARIA
-           --------------------------------------------- */
+        /* ARIA */
 
         document
             .querySelectorAll(
@@ -2722,17 +2689,41 @@ FIN DE PARTE 1
             });
 
 
-        /* ---------------------------------------------
-           HTML LANG
-           --------------------------------------------- */
+        /* HTML */
+
+        document
+            .querySelectorAll(
+                "[data-i18n-html]"
+            )
+            .forEach(function (element) {
+
+                const key =
+                    element.getAttribute(
+                        "data-i18n-html"
+                    );
+
+
+                if (
+                    key &&
+                    Object.prototype.hasOwnProperty.call(
+                        texts,
+                        key
+                    )
+                ) {
+
+                    element.innerHTML =
+                        texts[key];
+
+                }
+
+            });
+
+
+        /* DIRECCIÓN */
 
         document.documentElement.lang =
             currentLanguage;
 
-
-        /* ---------------------------------------------
-           DIRECCIÓN
-           --------------------------------------------- */
 
         document.documentElement.dir =
             currentLanguage === "ar"
@@ -2740,19 +2731,7 @@ FIN DE PARTE 1
                 : "ltr";
 
 
-        /* ---------------------------------------------
-           GUARDAR IDIOMA
-           --------------------------------------------- */
-
-        localStorage.setItem(
-            "preferredLanguage",
-            currentLanguage
-        );
-
-
-        /* ---------------------------------------------
-           ACTUALIZAR SELECTORES
-           --------------------------------------------- */
+        /* SELECTOR DE IDIOMA */
 
         document
             .querySelectorAll(
@@ -2770,10 +2749,253 @@ FIN DE PARTE 1
             });
 
 
+        /* FORMULARIOS */
+
+        translateForms();
+
+
         console.log(
-            "✓ Idioma aplicado:",
+            "✓ Idioma:",
             currentLanguage
         );
+
+    }
+
+
+    /* =====================================================
+       TRADUCIR FORMULARIOS
+       ===================================================== */
+
+    function translateForms() {
+
+        const clientForm =
+            getClientForm();
+
+
+        const questionForm =
+            getQuestionForm();
+
+
+        if (clientForm) {
+
+            translateClientForm(
+                clientForm
+            );
+
+        }
+
+
+        if (questionForm) {
+
+            translateQuestionForm(
+                questionForm
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       FORMULARIO CLIENTE
+       ===================================================== */
+
+    function translateClientForm(form) {
+
+        const title =
+            form.querySelector(
+                '[data-form-title]'
+            );
+
+
+        if (title) {
+
+            title.textContent =
+                t("clientFormTitle");
+
+        }
+
+
+        const labels = {
+
+            name:
+                "nameLabel",
+
+            email:
+                "emailLabel",
+
+            phone:
+                "phoneLabel",
+
+            activity:
+                "activityLabel",
+
+            message:
+                "messageLabel"
+
+        };
+
+
+        Object.keys(labels)
+            .forEach(function (field) {
+
+                const element =
+                    form.querySelector(
+                        '[data-field="' +
+                        field +
+                        '"]'
+                    );
+
+
+                if (element) {
+
+                    element.textContent =
+                        t(
+                            labels[field]
+                        );
+
+                }
+
+            });
+
+
+        const message =
+            form.querySelector(
+                'textarea[name="message"], ' +
+                'textarea[name="mensaje"]'
+            );
+
+
+        if (message) {
+
+            message.placeholder =
+                t("activityPlaceholder");
+
+        }
+
+
+        translateSelectOptions(
+            form,
+            "activity"
+        );
+
+    }
+
+
+    /* =====================================================
+       FORMULARIO CONSULTA
+       ===================================================== */
+
+    function translateQuestionForm(form) {
+
+        const title =
+            form.querySelector(
+                '[data-form-title]'
+            );
+
+
+        if (title) {
+
+            title.textContent =
+                t("questionFormTitle");
+
+        }
+
+
+        const labels = {
+
+            name:
+                "nameLabelShort",
+
+            email:
+                "emailLabel",
+
+            topic:
+                "topicLabel",
+
+            question:
+                "questionLabel"
+
+        };
+
+
+        Object.keys(labels)
+            .forEach(function (field) {
+
+                const element =
+                    form.querySelector(
+                        '[data-field="' +
+                        field +
+                        '"]'
+                    );
+
+
+                if (element) {
+
+                    element.textContent =
+                        t(
+                            labels[field]
+                        );
+
+                }
+
+            });
+
+
+        translateSelectOptions(
+            form,
+            "topic"
+        );
+
+    }
+
+
+    /* =====================================================
+       OPCIONES SELECT
+       ===================================================== */
+
+    function translateSelectOptions(
+        form,
+        type
+    ) {
+
+        const select =
+            form.querySelector(
+                'select[name="' +
+                type +
+                '"], ' +
+                'select[data-select="' +
+                type +
+                '"]'
+            );
+
+
+        if (!select) {
+            return;
+        }
+
+
+        Array.from(
+            select.options
+        ).forEach(function (option) {
+
+            const key =
+                option.getAttribute(
+                    "data-i18n"
+                );
+
+
+            if (
+                key &&
+                t(key) !== key
+            ) {
+
+                option.textContent =
+                    t(key);
+
+            }
+
+        });
 
     }
 
@@ -2782,10 +3004,14 @@ FIN DE PARTE 1
        CAMBIAR IDIOMA
        ===================================================== */
 
-    function changeLanguage(language) {
+    function changeLanguage(
+        language
+    ) {
 
         language =
-            String(language || "")
+            String(
+                language || ""
+            )
                 .toLowerCase()
                 .trim();
 
@@ -2795,32 +3021,6 @@ FIN DE PARTE 1
                 language
             )
         ) {
-
-            console.warn(
-                "Idioma no disponible:",
-                language
-            );
-
-
-            language = "es";
-
-        }
-
-
-        const allTranslations =
-            getTranslations();
-
-
-        if (
-            allTranslations &&
-            !allTranslations[language]
-        ) {
-
-            console.warn(
-                "⚠ No existe traducción para:",
-                language
-            );
-
 
             language = "es";
 
@@ -2840,28 +3040,8 @@ FIN DE PARTE 1
         translatePage();
 
 
-        /* ---------------------------------------------
-           ACTUALIZAR TODOS LOS SELECTORES
-           --------------------------------------------- */
-
-        document
-            .querySelectorAll(
-                "#language, " +
-                ".language-selector select, " +
-                ".language-switcher select, " +
-                ".lang-selector select, " +
-                "select[data-language]"
-            )
-            .forEach(function (select) {
-
-                select.value =
-                    currentLanguage;
-
-            });
-
-
         console.log(
-            "✓ Idioma cambiado a:",
+            "✓ Idioma cambiado:",
             currentLanguage
         );
 
@@ -2870,67 +3050,6 @@ FIN DE PARTE 1
 
     window.changeLanguage =
         changeLanguage;
-
-
-    /* =====================================================
-       FUNCIÓN t()
-       ===================================================== */
-
-    function t(key) {
-
-        const allTranslations =
-            getTranslations();
-
-
-        if (!allTranslations) {
-
-            return key;
-
-        }
-
-
-        const languageTexts =
-            allTranslations[currentLanguage] ||
-            allTranslations.es ||
-            {};
-
-
-        if (
-            Object.prototype.hasOwnProperty.call(
-                languageTexts,
-                key
-            )
-        ) {
-
-            return languageTexts[key];
-
-        }
-
-
-        /* ---------------------------------------------
-           FALLBACK ESPAÑOL
-           --------------------------------------------- */
-
-        if (
-            allTranslations.es &&
-            Object.prototype.hasOwnProperty.call(
-                allTranslations.es,
-                key
-            )
-        ) {
-
-            return allTranslations.es[key];
-
-        }
-
-
-        return key;
-
-    }
-
-
-    window.t =
-        t;
 
 
     /* =====================================================
@@ -2949,200 +3068,38 @@ FIN DE PARTE 1
             );
 
 
-        selectors.forEach(function (selector) {
+        selectors.forEach(function (select) {
+
+            select.value =
+                currentLanguage;
+
 
             if (
-                selector.dataset.iglesiasLanguageReady ===
+                select.dataset.iglesiasLanguageReady ===
                 "true"
             ) {
-
-                selector.value =
-                    currentLanguage;
 
                 return;
 
             }
 
 
-            selector.dataset.iglesiasLanguageReady =
+            select.dataset.iglesiasLanguageReady =
                 "true";
 
 
-            selector.value =
-                currentLanguage;
-
-
-            selector.addEventListener(
+            select.addEventListener(
                 "change",
-                function (event) {
+                function () {
 
                     changeLanguage(
-                        event.target.value
+                        this.value
                     );
 
                 }
             );
 
         });
-
-    }
-
-
-    /* =====================================================
-       VALIDACIÓN EMAIL
-       ===================================================== */
-
-    function isValidEmail(email) {
-
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-            .test(
-                String(email).trim()
-            );
-
-    }
-
-
-    /* =====================================================
-       MENSAJE DE FORMULARIO
-       ===================================================== */
-
-    function showFormMessage(
-        form,
-        message,
-        type
-    ) {
-
-        if (!form) return;
-
-
-        let messageElement =
-            form.querySelector(
-                ".form-message"
-            );
-
-
-        if (!messageElement) {
-
-            messageElement =
-                document.createElement(
-                    "div"
-                );
-
-
-            messageElement.className =
-                "form-message";
-
-
-            messageElement.setAttribute(
-                "role",
-                "status"
-            );
-
-
-            form.appendChild(
-                messageElement
-            );
-
-        }
-
-
-        messageElement.textContent =
-            message;
-
-
-        messageElement.dataset.type =
-            type || "info";
-
-    }
-
-
-    /* =====================================================
-       BOTÓN CARGANDO
-       ===================================================== */
-
-    function setButtonLoading(
-        button,
-        loading
-    ) {
-
-        if (!button) return;
-
-
-        if (loading) {
-
-            if (
-                !button.dataset.originalText
-            ) {
-
-                button.dataset.originalText =
-                    button.innerHTML;
-
-            }
-
-
-            button.disabled =
-                true;
-
-
-            button.innerHTML =
-                "⏳ " +
-                t("formSending");
-
-
-        } else {
-
-            button.disabled =
-                false;
-
-
-            if (
-                button.dataset.originalText
-            ) {
-
-                button.innerHTML =
-                    button.dataset.originalText;
-
-
-                delete button.dataset.originalText;
-
-            }
-
-        }
-
-    }
-
-
-    /* =====================================================
-       OBTENER DATOS DEL FORMULARIO
-       ===================================================== */
-
-    function getFormData(form) {
-
-        const data = {};
-
-
-        if (!form) {
-
-            return data;
-
-        }
-
-
-        const formData =
-            new FormData(form);
-
-
-        formData.forEach(
-            function (value, key) {
-
-                data[key] =
-                    String(value).trim();
-
-            }
-        );
-
-
-        return data;
 
     }
 
@@ -3182,23 +3139,495 @@ FIN DE PARTE 1
 
 
     /* =====================================================
-       FORMULARIO CLIENTE
+       FORMULARIOS — CONTENEDOR
        ===================================================== */
 
-    async function submitClientForm(event) {
+    function createFormsLayout() {
+
+        const clientForm =
+            getClientForm();
+
+
+        const questionForm =
+            getQuestionForm();
+
+
+        if (
+            !clientForm ||
+            !questionForm
+        ) {
+
+            console.warn(
+                "No se encontraron ambos formularios."
+            );
+
+            return;
+
+        }
+
+
+        let wrapper =
+            document.getElementById(
+                "iglesiasFormsWrapper"
+            );
+
+
+        if (!wrapper) {
+
+            wrapper =
+                document.createElement(
+                    "div"
+                );
+
+
+            wrapper.id =
+                "iglesiasFormsWrapper";
+
+
+            wrapper.className =
+                "iglesias-forms-wrapper";
+
+
+            const commonParent =
+                clientForm.parentElement;
+
+
+            if (
+                commonParent &&
+                commonParent.contains(
+                    questionForm
+                )
+            ) {
+
+                commonParent.insertBefore(
+                    wrapper,
+                    clientForm
+                );
+
+                wrapper.appendChild(
+                    clientForm
+                );
+
+                wrapper.appendChild(
+                    questionForm
+                );
+
+            } else {
+
+                const formsParent =
+                    clientForm.parentNode;
+
+
+                if (formsParent) {
+
+                    formsParent.insertBefore(
+                        wrapper,
+                        clientForm
+                    );
+
+                    wrapper.appendChild(
+                        clientForm
+                    );
+
+
+                    wrapper.appendChild(
+                        questionForm
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        clientForm.classList.add(
+            "iglesias-client-form"
+        );
+
+
+        questionForm.classList.add(
+            "iglesias-question-form"
+        );
+
+    }
+
+
+    /* =====================================================
+       CSS DEFINITIVO
+       ===================================================== */
+
+    function installFormsCSS() {
+
+        if (
+            document.getElementById(
+                "iglesiasFormsCSS"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        const style =
+            document.createElement(
+                "style"
+            );
+
+
+        style.id =
+            "iglesiasFormsCSS";
+
+
+        style.textContent = `
+
+        /* =============================================
+           CONTENEDOR
+        ============================================= */
+
+        #iglesiasFormsWrapper {
+
+            width: 100% !important;
+
+            max-width: 1180px !important;
+
+            margin: 35px auto !important;
+
+            padding: 0 20px !important;
+
+            display: grid !important;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr)) !important;
+
+            gap: 32px !important;
+
+            align-items: stretch !important;
+
+            box-sizing: border-box !important;
+
+        }
+
+
+        /* =============================================
+           FORMULARIOS
+        ============================================= */
+
+        #iglesiasFormsWrapper form {
+
+            width: 100% !important;
+
+            max-width: none !important;
+
+            min-width: 0 !important;
+
+            margin: 0 !important;
+
+            padding: 28px !important;
+
+            box-sizing: border-box !important;
+
+            float: none !important;
+
+            clear: none !important;
+
+            grid-column: auto !important;
+
+            align-self: stretch !important;
+
+        }
+
+
+        /* =============================================
+           CAMPOS
+        ============================================= */
+
+        #iglesiasFormsWrapper input,
+        #iglesiasFormsWrapper select,
+        #iglesiasFormsWrapper textarea {
+
+            width: 100% !important;
+
+            max-width: 100% !important;
+
+            box-sizing: border-box !important;
+
+        }
+
+
+        #iglesiasFormsWrapper textarea {
+
+            min-height: 130px !important;
+
+            resize: vertical !important;
+
+        }
+
+
+        /* =============================================
+           LABELS
+        ============================================= */
+
+        #iglesiasFormsWrapper label {
+
+            display: block !important;
+
+        }
+
+
+        /* =============================================
+           MENSAJES
+        ============================================= */
+
+        #iglesiasFormsWrapper .form-message {
+
+            width: 100% !important;
+
+            box-sizing: border-box !important;
+
+            margin-top: 15px !important;
+
+            padding: 12px 15px !important;
+
+            border-radius: 10px !important;
+
+        }
+
+
+        /* =============================================
+           BOTONES
+        ============================================= */
+
+        #iglesiasFormsWrapper button[type="submit"],
+        #iglesiasFormsWrapper input[type="submit"] {
+
+            max-width: 100% !important;
+
+            box-sizing: border-box !important;
+
+            cursor: pointer !important;
+
+        }
+
+
+        /* =============================================
+           TABLET
+        ============================================= */
+
+        @media (max-width: 900px) {
+
+            #iglesiasFormsWrapper {
+
+                grid-template-columns:
+                    1fr !important;
+
+                gap: 24px !important;
+
+            }
+
+        }
+
+
+        /* =============================================
+           CELULAR
+        ============================================= */
+
+        @media (max-width: 600px) {
+
+            #iglesiasFormsWrapper {
+
+                padding:
+                    0 15px !important;
+
+                margin:
+                    25px auto !important;
+
+            }
+
+
+            #iglesiasFormsWrapper form {
+
+                padding:
+                    22px !important;
+
+            }
+
+        }
+
+        `;
+
+
+        document.head.appendChild(
+            style
+        );
+
+    }
+
+
+    /* =====================================================
+       VALIDAR EMAIL
+       ===================================================== */
+
+    function isValidEmail(
+        email
+    ) {
+
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            .test(
+                String(email)
+                    .trim()
+            );
+
+    }
+
+
+    /* =====================================================
+       DATOS FORMULARIO
+       ===================================================== */
+
+    function getFormData(
+        form
+    ) {
+
+        const data = {};
+
+
+        new FormData(form)
+            .forEach(
+                function (
+                    value,
+                    key
+                ) {
+
+                    data[key] =
+                        String(
+                            value
+                        ).trim();
+
+                }
+            );
+
+
+        return data;
+
+    }
+
+
+    /* =====================================================
+       MENSAJE
+       ===================================================== */
+
+    function showFormMessage(
+        form,
+        message,
+        type
+    ) {
+
+        let element =
+            form.querySelector(
+                ".form-message"
+            );
+
+
+        if (!element) {
+
+            element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "form-message";
+
+
+            element.setAttribute(
+                "role",
+                "status"
+            );
+
+
+            form.appendChild(
+                element
+            );
+
+        }
+
+
+        element.textContent =
+            message;
+
+
+        element.dataset.type =
+            type || "info";
+
+    }
+
+
+    /* =====================================================
+       LOADING
+       ===================================================== */
+
+    function setButtonLoading(
+        button,
+        loading
+    ) {
+
+        if (!button) {
+            return;
+        }
+
+
+        if (loading) {
+
+            button.dataset.originalText =
+                button.innerHTML;
+
+
+            button.disabled =
+                true;
+
+
+            button.innerHTML =
+                "⏳ " +
+                t("formSending");
+
+        } else {
+
+            button.disabled =
+                false;
+
+
+            if (
+                button.dataset.originalText
+            ) {
+
+                button.innerHTML =
+                    button.dataset.originalText;
+
+                delete button.dataset.originalText;
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       CLIENTE
+       ===================================================== */
+
+    async function submitClientForm(
+        event
+    ) {
 
         event.preventDefault();
 
 
         const form =
             event.currentTarget;
-
-
-        if (!form) {
-
-            return false;
-
-        }
 
 
         if (
@@ -3217,8 +3646,8 @@ FIN DE PARTE 1
 
         const name =
             data.name ||
-            data.full_name ||
             data.nombre ||
+            data.full_name ||
             "";
 
 
@@ -3246,10 +3675,6 @@ FIN DE PARTE 1
             "";
 
 
-        /* ---------------------------------------------
-           VALIDACIÓN
-           --------------------------------------------- */
-
         if (
             !name ||
             !email ||
@@ -3262,14 +3687,15 @@ FIN DE PARTE 1
                 "error"
             );
 
-
             return false;
 
         }
 
 
         if (
-            !isValidEmail(email)
+            !isValidEmail(
+                email
+            )
         ) {
 
             showFormMessage(
@@ -3277,7 +3703,6 @@ FIN DE PARTE 1
                 t("formEmail"),
                 "error"
             );
-
 
             return false;
 
@@ -3313,7 +3738,7 @@ FIN DE PARTE 1
             if (!supabaseClient) {
 
                 throw new Error(
-                    "Supabase no está disponible."
+                    "Supabase no disponible."
                 );
 
             }
@@ -3321,7 +3746,9 @@ FIN DE PARTE 1
 
             const result =
                 await supabaseClient
-                    .from("client_requests")
+                    .from(
+                        "client_requests"
+                    )
                     .insert({
 
                         name:
@@ -3348,21 +3775,20 @@ FIN DE PARTE 1
                     });
 
 
-            if (result.error) {
+            if (
+                result.error
+            ) {
 
                 throw result.error;
 
             }
 
 
-            console.log(
-                "✓ Cliente guardado en Supabase."
-            );
-
-
             showFormMessage(
                 form,
-                t("formSuccessClient"),
+                t(
+                    "formSuccessClient"
+                ),
                 "success"
             );
 
@@ -3372,11 +3798,11 @@ FIN DE PARTE 1
 
             translatePage();
 
-
-        } catch (error) {
+        } catch (
+            error
+        ) {
 
             console.error(
-                "❌ Error cliente:",
                 error
             );
 
@@ -3407,23 +3833,18 @@ FIN DE PARTE 1
 
 
     /* =====================================================
-       FORMULARIO CONSULTA
+       CONSULTA
        ===================================================== */
 
-    async function submitQuestionForm(event) {
+    async function submitQuestionForm(
+        event
+    ) {
 
         event.preventDefault();
 
 
         const form =
             event.currentTarget;
-
-
-        if (!form) {
-
-            return false;
-
-        }
 
 
         if (
@@ -3436,7 +3857,9 @@ FIN DE PARTE 1
         }
 
 
-        function value(selector) {
+        function value(
+            selector
+        ) {
 
             const element =
                 form.querySelector(
@@ -3445,7 +3868,8 @@ FIN DE PARTE 1
 
 
             return element &&
-                typeof element.value === "string"
+                typeof element.value ===
+                    "string"
                 ? element.value.trim()
                 : "";
 
@@ -3453,29 +3877,43 @@ FIN DE PARTE 1
 
 
         const name =
-            value('[name="nombre"]') ||
-            value('[name="name"]');
+            value(
+                '[name="nombre"]'
+            ) ||
+            value(
+                '[name="name"]'
+            );
 
 
         const email =
-            value('[name="email"]') ||
-            value('[name="correo"]');
+            value(
+                '[name="email"]'
+            ) ||
+            value(
+                '[name="correo"]'
+            );
 
 
         const topic =
-            value('[name="tema"]') ||
-            value('[name="topic"]');
+            value(
+                '[name="tema"]'
+            ) ||
+            value(
+                '[name="topic"]'
+            );
 
 
         const question =
-            value('[name="consulta"]') ||
-            value('[name="question"]') ||
-            value('[name="mensaje"]');
+            value(
+                '[name="consulta"]'
+            ) ||
+            value(
+                '[name="question"]'
+            ) ||
+            value(
+                '[name="mensaje"]'
+            );
 
-
-        /* ---------------------------------------------
-           VALIDACIÓN
-           --------------------------------------------- */
 
         if (
             !name ||
@@ -3490,14 +3928,15 @@ FIN DE PARTE 1
                 "error"
             );
 
-
             return false;
 
         }
 
 
         if (
-            !isValidEmail(email)
+            !isValidEmail(
+                email
+            )
         ) {
 
             showFormMessage(
@@ -3505,7 +3944,6 @@ FIN DE PARTE 1
                 t("formEmail"),
                 "error"
             );
-
 
             return false;
 
@@ -3541,7 +3979,7 @@ FIN DE PARTE 1
             if (!supabaseClient) {
 
                 throw new Error(
-                    "Supabase no está disponible."
+                    "Supabase no disponible."
                 );
 
             }
@@ -3549,7 +3987,9 @@ FIN DE PARTE 1
 
             const result =
                 await supabaseClient
-                    .from("questions")
+                    .from(
+                        "questions"
+                    )
                     .insert({
 
                         name:
@@ -3573,21 +4013,20 @@ FIN DE PARTE 1
                     });
 
 
-            if (result.error) {
+            if (
+                result.error
+            ) {
 
                 throw result.error;
 
             }
 
 
-            console.log(
-                "✓ Consulta guardada en Supabase."
-            );
-
-
             showFormMessage(
                 form,
-                t("formSuccessQuestion"),
+                t(
+                    "formSuccessQuestion"
+                ),
                 "success"
             );
 
@@ -3597,11 +4036,11 @@ FIN DE PARTE 1
 
             translatePage();
 
-
-        } catch (error) {
+        } catch (
+            error
+        ) {
 
             console.error(
-                "❌ Error consulta:",
                 error
             );
 
@@ -3640,7 +4079,7 @@ FIN DE PARTE 1
 
 
     /* =====================================================
-       INICIALIZAR FORMULARIOS
+       PREPARAR FORMULARIOS
        ===================================================== */
 
     function initializeForms() {
@@ -3671,12 +4110,6 @@ FIN DE PARTE 1
 
             }
 
-        } else {
-
-            console.warn(
-                "⚠ No se encontró formulario de cliente."
-            );
-
         }
 
 
@@ -3698,928 +4131,13 @@ FIN DE PARTE 1
 
             }
 
-        } else {
-
-            console.warn(
-                "⚠ No se encontró formulario de consultas."
-            );
-
         }
 
     }
 
 
     /* =====================================================
-       FORMULARIOS UNO AL LADO DEL OTRO
-       ===================================================== */
-
-    function initializeFormsLayout() {
-
-        const clientForm =
-            getClientForm();
-
-
-        const questionForm =
-            getQuestionForm();
-
-
-        if (
-            !clientForm ||
-            !questionForm
-        ) {
-
-            console.warn(
-                "⚠ No se pueden colocar los formularios juntos porque falta uno."
-            );
-
-
-            return;
-
-        }
-
-
-        let wrapper =
-            document.getElementById(
-                "iglesiasFormsWrapper"
-            );
-
-
-        if (!wrapper) {
-
-            wrapper =
-                document.createElement(
-                    "div"
-                );
-
-
-            wrapper.id =
-                "iglesiasFormsWrapper";
-
-
-            wrapper.className =
-                "iglesias-forms-wrapper";
-
-
-            const firstForm =
-                clientForm.compareDocumentPosition(
-                    questionForm
-                ) &
-                Node.DOCUMENT_POSITION_FOLLOWING
-                    ? clientForm
-                    : questionForm;
-
-
-            firstForm.parentNode.insertBefore(
-                wrapper,
-                firstForm
-            );
-
-
-            wrapper.appendChild(
-                clientForm
-            );
-
-
-            wrapper.appendChild(
-                questionForm
-            );
-
-        }
-
-
-        clientForm.classList.add(
-            "iglesias-client-form"
-        );
-
-
-        questionForm.classList.add(
-            "iglesias-question-form"
-        );
-
-    }
-
-<script>
-/* =========================================================
-   ESTUDIO CONTABLE IGLESIAS
-   PARTE 2 — FORMULARIOS + IDIOMAS + DISEÑO
-   ========================================================= */
-
-(function () {
-
-    "use strict";
-
-
-    /* =====================================================
-       IDIOMAS DISPONIBLES
-       ===================================================== */
-
-    const LANGUAGES = [
-        { code: "es", name: "Español", flag: "🇪🇸" },
-        { code: "en", name: "English", flag: "🇺🇸" },
-        { code: "pt", name: "Português", flag: "🇧🇷" },
-        { code: "it", name: "Italiano", flag: "🇮🇹" },
-        { code: "fr", name: "Français", flag: "🇫🇷" },
-        { code: "de", name: "Deutsch", flag: "🇩🇪" },
-        { code: "ar", name: "العربية", flag: "🇸🇦" },
-        { code: "ko", name: "한국어", flag: "🇰🇷" }
-    ];
-
-
-    /* =====================================================
-       IDIOMA ACTUAL
-       ===================================================== */
-
-    let currentLanguage =
-        localStorage.getItem("preferredLanguage") || "es";
-
-
-    if (
-        !LANGUAGES.some(function (lang) {
-            return lang.code === currentLanguage;
-        })
-    ) {
-        currentLanguage = "es";
-    }
-
-
-    /* =====================================================
-       SELECTORES DE IDIOMA
-       ===================================================== */
-
-    function getLanguageSelectors() {
-
-        return document.querySelectorAll(
-            "#language, " +
-            ".language-selector select, " +
-            ".language-switcher select, " +
-            ".lang-selector select, " +
-            "select[data-language]"
-        );
-
-    }
-
-
-    function initializeLanguageSelector() {
-
-        getLanguageSelectors().forEach(function (select) {
-
-            if (
-                select.dataset.iglesiasLanguageReady ===
-                "true"
-            ) {
-
-                select.value =
-                    currentLanguage;
-
-                return;
-
-            }
-
-
-            select.dataset.iglesiasLanguageReady =
-                "true";
-
-
-            select.value =
-                currentLanguage;
-
-
-            select.addEventListener(
-                "change",
-                function (event) {
-
-                    changeLanguage(
-                        event.target.value
-                    );
-
-                }
-            );
-
-        });
-
-    }
-
-
-    /* =====================================================
-       TRADUCCIONES
-       ===================================================== */
-
-    function getTranslations() {
-
-        return window.translations || null;
-
-    }
-
-
-    function getTexts() {
-
-        const translations =
-            getTranslations();
-
-
-        if (!translations) {
-
-            return null;
-
-        }
-
-
-        return (
-            translations[currentLanguage] ||
-            translations.es ||
-            null
-        );
-
-    }
-
-
-    function t(key) {
-
-        const translations =
-            getTranslations();
-
-
-        if (!translations) {
-
-            return key;
-
-        }
-
-
-        const currentTexts =
-            translations[currentLanguage];
-
-
-        if (
-            currentTexts &&
-            Object.prototype.hasOwnProperty.call(
-                currentTexts,
-                key
-            )
-        ) {
-
-            return currentTexts[key];
-
-        }
-
-
-        const spanishTexts =
-            translations.es;
-
-
-        if (
-            spanishTexts &&
-            Object.prototype.hasOwnProperty.call(
-                spanishTexts,
-                key
-            )
-        ) {
-
-            return spanishTexts[key];
-
-        }
-
-
-        return key;
-
-    }
-
-
-    /* =====================================================
-       APLICAR TRADUCCIÓN
-       ===================================================== */
-
-    function translatePage() {
-
-        const texts =
-            getTexts();
-
-
-        if (!texts) {
-
-            console.warn(
-                "⚠ No se encontró el diccionario de traducciones."
-            );
-
-            return;
-
-        }
-
-
-        /* ---------------------------------------------
-           TEXTOS
-        --------------------------------------------- */
-
-        document
-            .querySelectorAll("[data-i18n]")
-            .forEach(function (element) {
-
-                const key =
-                    element.getAttribute("data-i18n");
-
-
-                if (
-                    key &&
-                    Object.prototype.hasOwnProperty.call(
-                        texts,
-                        key
-                    )
-                ) {
-
-                    element.textContent =
-                        texts[key];
-
-                }
-
-            });
-
-
-        /* ---------------------------------------------
-           PLACEHOLDERS
-        --------------------------------------------- */
-
-        document
-            .querySelectorAll(
-                "[data-i18n-placeholder]"
-            )
-            .forEach(function (element) {
-
-                const key =
-                    element.getAttribute(
-                        "data-i18n-placeholder"
-                    );
-
-
-                if (
-                    key &&
-                    Object.prototype.hasOwnProperty.call(
-                        texts,
-                        key
-                    )
-                ) {
-
-                    element.setAttribute(
-                        "placeholder",
-                        texts[key]
-                    );
-
-                }
-
-            });
-
-
-        /* ---------------------------------------------
-           ARIA
-        --------------------------------------------- */
-
-        document
-            .querySelectorAll(
-                "[data-i18n-aria]"
-            )
-            .forEach(function (element) {
-
-                const key =
-                    element.getAttribute(
-                        "data-i18n-aria"
-                    );
-
-
-                if (
-                    key &&
-                    Object.prototype.hasOwnProperty.call(
-                        texts,
-                        key
-                    )
-                ) {
-
-                    element.setAttribute(
-                        "aria-label",
-                        texts[key]
-                    );
-
-                }
-
-            });
-
-
-        /* ---------------------------------------------
-           HTML LANG
-        --------------------------------------------- */
-
-        document.documentElement.lang =
-            currentLanguage;
-
-
-        /* ---------------------------------------------
-           DIRECCIÓN
-        --------------------------------------------- */
-
-        document.documentElement.dir =
-            currentLanguage === "ar"
-                ? "rtl"
-                : "ltr";
-
-
-        /* ---------------------------------------------
-           GUARDAR IDIOMA
-        --------------------------------------------- */
-
-        localStorage.setItem(
-            "preferredLanguage",
-            currentLanguage
-        );
-
-
-        /* ---------------------------------------------
-           ACTUALIZAR SELECTORES
-        --------------------------------------------- */
-
-        getLanguageSelectors()
-            .forEach(function (select) {
-
-                select.value =
-                    currentLanguage;
-
-            });
-
-
-        console.log(
-            "✓ Traducción aplicada:",
-            currentLanguage
-        );
-
-    }
-
-
-    /* =====================================================
-       CAMBIAR IDIOMA
-       ===================================================== */
-
-    function changeLanguage(language) {
-
-        language =
-            String(language || "")
-                .toLowerCase()
-                .trim();
-
-
-        const translations =
-            getTranslations();
-
-
-        if (
-            translations &&
-            translations[language]
-        ) {
-
-            currentLanguage =
-                language;
-
-        } else {
-
-            console.warn(
-                "⚠ No existe traducción para:",
-                language
-            );
-
-
-            currentLanguage =
-                "es";
-
-        }
-
-
-        localStorage.setItem(
-            "preferredLanguage",
-            currentLanguage
-        );
-
-
-        translatePage();
-
-
-        console.log(
-            "✓ Idioma cambiado:",
-            currentLanguage
-        );
-
-    }
-
-
-    window.changeLanguage =
-        changeLanguage;
-
-
-    window.translatePage =
-        translatePage;
-
-
-    window.t =
-        t;
-
-
-    /* =====================================================
-       FORMULARIOS
-       ===================================================== */
-
-    function getClientForm() {
-
-        return document.querySelector(
-            "#clientForm, " +
-            "#client-form, " +
-            "#contactForm, " +
-            "#contact-form, " +
-            'form[data-form="client"], ' +
-            'form[data-form="cliente"]'
-        );
-
-    }
-
-
-    function getQuestionForm() {
-
-        return document.querySelector(
-            "#questionForm, " +
-            "#question-form, " +
-            'form[data-form="question"], ' +
-            'form[data-form="consulta"]'
-        );
-
-    }
-
-
-    /* =====================================================
-       DISEÑO DE LOS DOS FORMULARIOS
-       ===================================================== */
-
-    function initializeFormsLayout() {
-
-        const clientForm =
-            getClientForm();
-
-
-        const questionForm =
-            getQuestionForm();
-
-
-        if (
-            !clientForm ||
-            !questionForm
-        ) {
-
-            console.warn(
-                "⚠ No se encontraron ambos formularios."
-            );
-
-            return;
-
-        }
-
-
-        let wrapper =
-            document.getElementById(
-                "iglesiasFormsWrapper"
-            );
-
-
-        /* ---------------------------------------------
-           CREAR CONTENEDOR
-           --------------------------------------------- */
-
-        if (!wrapper) {
-
-            wrapper =
-                document.createElement("div");
-
-
-            wrapper.id =
-                "iglesiasFormsWrapper";
-
-
-            wrapper.className =
-                "iglesias-forms-wrapper";
-
-
-            const parent =
-                clientForm.parentElement;
-
-
-            if (!parent) {
-
-                return;
-
-            }
-
-
-            parent.insertBefore(
-                wrapper,
-                clientForm
-            );
-
-
-            wrapper.appendChild(
-                clientForm
-            );
-
-
-            wrapper.appendChild(
-                questionForm
-            );
-
-        }
-
-
-        clientForm.classList.add(
-            "iglesias-client-form"
-        );
-
-
-        questionForm.classList.add(
-            "iglesias-question-form"
-        );
-
-    }
-
-
-    /* =====================================================
-       CSS DEFINITIVO
-       ===================================================== */
-
-    function initializeFormsCSS() {
-
-        const existing =
-            document.getElementById(
-                "iglesiasFormsCSS"
-            );
-
-
-        if (existing) {
-
-            existing.remove();
-
-        }
-
-
-        const style =
-            document.createElement("style");
-
-
-        style.id =
-            "iglesiasFormsCSS";
-
-
-        style.textContent = `
-
-        /* =================================================
-           CONTENEDOR DE FORMULARIOS
-           ================================================= */
-
-        #iglesiasFormsWrapper {
-
-            width: min(
-                calc(100% - 40px),
-                1180px
-            ) !important;
-
-            margin: 40px auto !important;
-
-            padding: 0 !important;
-
-            display: grid !important;
-
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr)) !important;
-
-            gap: 30px !important;
-
-            align-items: stretch !important;
-
-            box-sizing: border-box !important;
-
-        }
-
-
-        /* =================================================
-           FORMULARIOS
-           ================================================= */
-
-        #iglesiasFormsWrapper > form {
-
-            width: 100% !important;
-
-            max-width: none !important;
-
-            min-width: 0 !important;
-
-            margin: 0 !important;
-
-            padding: 28px !important;
-
-            box-sizing: border-box !important;
-
-            align-self: stretch !important;
-
-            float: none !important;
-
-            clear: none !important;
-
-            grid-column: auto !important;
-
-            border-radius: 12px !important;
-
-        }
-
-
-        /* =================================================
-           TÍTULOS
-           ================================================= */
-
-        #iglesiasFormsWrapper h2,
-        #iglesiasFormsWrapper h3 {
-
-            margin-top: 0 !important;
-
-        }
-
-
-        /* =================================================
-           LABELS
-           ================================================= */
-
-        #iglesiasFormsWrapper label {
-
-            display: block !important;
-
-            width: 100% !important;
-
-            margin-bottom: 7px !important;
-
-        }
-
-
-        /* =================================================
-           INPUTS
-           ================================================= */
-
-        #iglesiasFormsWrapper input,
-        #iglesiasFormsWrapper select,
-        #iglesiasFormsWrapper textarea {
-
-            width: 100% !important;
-
-            max-width: 100% !important;
-
-            min-width: 0 !important;
-
-            box-sizing: border-box !important;
-
-        }
-
-
-        /* =================================================
-           TEXTAREA
-           ================================================= */
-
-        #iglesiasFormsWrapper textarea {
-
-            min-height: 140px !important;
-
-            resize: vertical !important;
-
-        }
-
-
-        /* =================================================
-           BOTONES
-           ================================================= */
-
-        #iglesiasFormsWrapper button[type="submit"],
-        #iglesiasFormsWrapper input[type="submit"] {
-
-            max-width: 100% !important;
-
-            box-sizing: border-box !important;
-
-            cursor: pointer !important;
-
-        }
-
-
-        /* =================================================
-           MENSAJES
-           ================================================= */
-
-        #iglesiasFormsWrapper .form-message {
-
-            width: 100% !important;
-
-            margin-top: 15px !important;
-
-            padding: 12px 15px !important;
-
-            box-sizing: border-box !important;
-
-            border-radius: 10px !important;
-
-            font-size: 14px !important;
-
-            line-height: 1.5 !important;
-
-        }
-
-
-        #iglesiasFormsWrapper
-        .form-message[data-type="success"] {
-
-            border: 1px solid
-                rgba(30,120,70,.25) !important;
-
-        }
-
-
-        #iglesiasFormsWrapper
-        .form-message[data-type="error"] {
-
-            border: 1px solid
-                rgba(180,50,50,.25) !important;
-
-        }
-
-
-        /* =================================================
-           CELULAR
-           ================================================= */
-
-        @media (max-width: 768px) {
-
-            #iglesiasFormsWrapper {
-
-                width: calc(100% - 30px) !important;
-
-                grid-template-columns:
-                    1fr !important;
-
-                gap: 22px !important;
-
-                margin:
-                    30px auto !important;
-
-            }
-
-
-            #iglesiasFormsWrapper > form {
-
-                padding:
-                    22px !important;
-
-            }
-
-        }
-
-
-        /* =================================================
-           TABLET
-           ================================================= */
-
-        @media (
-            min-width: 769px
-        ) and (
-            max-width: 950px
-        ) {
-
-            #iglesiasFormsWrapper {
-
-                gap: 20px !important;
-
-            }
-
-        }
-
-
-        /* =================================================
-           ÁRABE
-           ================================================= */
-
-        html[dir="rtl"]
-        #iglesiasFormsWrapper {
-
-            direction: rtl;
-
-        }
-
-
-        `;
-
-
-        document.head.appendChild(
-            style
-        );
-
-    }
-
-
-    /* =====================================================
-       BOTONES "QUIERO SER CLIENTE"
+       BOTÓN CLIENTE
        ===================================================== */
 
     function initializeClientButtons() {
@@ -4656,9 +4174,7 @@ FIN DE PARTE 1
 
 
                         if (!form) {
-
                             return;
-
                         }
 
 
@@ -4666,30 +4182,25 @@ FIN DE PARTE 1
 
 
                         form.scrollIntoView({
-
                             behavior:
                                 "smooth",
-
                             block:
                                 "center"
-
                         });
 
 
                         setTimeout(
                             function () {
 
-                                const firstInput =
+                                const first =
                                     form.querySelector(
-                                        "input:not([type='hidden']), " +
-                                        "select, " +
-                                        "textarea"
+                                        "input:not([type='hidden']), select, textarea"
                                     );
 
 
-                                if (firstInput) {
+                                if (first) {
 
-                                    firstInput.focus();
+                                    first.focus();
 
                                 }
 
@@ -4706,176 +4217,48 @@ FIN DE PARTE 1
 
 
     /* =====================================================
-       BOTONES PORTAL
-       ===================================================== */
-
-    function initializePortalButtons() {
-
-        document
-            .querySelectorAll(
-                '[data-portal-button], ' +
-                '.portal-button'
-            )
-            .forEach(function (button) {
-
-                if (
-                    button.dataset.iglesiasPortalReady ===
-                    "true"
-                ) {
-
-                    return;
-
-                }
-
-
-                button.dataset.iglesiasPortalReady =
-                    "true";
-
-
-                button.addEventListener(
-                    "click",
-                    function () {
-
-                        console.log(
-                            "Iglesias Portal"
-                        );
-
-                    }
-                );
-
-            });
-
-    }
-
-
-    /* =====================================================
-       INICIALIZACIÓN
+       INICIALIZAR TODO
        ===================================================== */
 
     function initializeWebsite() {
 
         console.log(
-            "===================================="
+            "================================"
         );
-
 
         console.log(
             "ESTUDIO CONTABLE IGLESIAS"
         );
 
-
         console.log(
-            "Inicializando..."
+            "Iniciando..."
         );
 
 
-        /* CSS */
-
-        initializeFormsCSS();
+        installFormsCSS();
 
 
-        /* Formularios */
-
-        initializeFormsLayout();
+        createFormsLayout();
 
 
-        /* Idiomas */
+        initializeForms();
+
 
         initializeLanguageSelector();
 
 
-        /* Botones */
-
         initializeClientButtons();
 
-        initializePortalButtons();
-
-
-        /* Traducción */
 
         translatePage();
+
+
+        loadSupabase();
 
 
         console.log(
             "✓ Sistema iniciado."
         );
-
-
-        console.log(
-            "✓ Idioma:",
-            currentLanguage
-        );
-
-
-        console.log(
-            "===================================="
-        );
-
-    }
-
-
-    /* =====================================================
-       ESPERAR A QUE EXISTAN LAS TRADUCCIONES
-       ===================================================== */
-
-    function waitForTranslations() {
-
-        if (
-            window.translations
-        ) {
-
-            initializeWebsite();
-
-            return;
-
-        }
-
-
-        let attempts = 0;
-
-
-        const interval =
-            setInterval(
-                function () {
-
-                    attempts++;
-
-
-                    if (
-                        window.translations
-                    ) {
-
-                        clearInterval(
-                            interval
-                        );
-
-
-                        initializeWebsite();
-
-                    }
-
-
-                    if (
-                        attempts >= 100
-                    ) {
-
-                        clearInterval(
-                            interval
-                        );
-
-
-                        console.warn(
-                            "⚠ No se encontró window.translations."
-                        );
-
-
-                        initializeWebsite();
-
-                    }
-
-                },
-                100
-            );
 
     }
 
@@ -4891,15 +4274,30 @@ FIN DE PARTE 1
 
         document.addEventListener(
             "DOMContentLoaded",
-            waitForTranslations
+            initializeWebsite
         );
 
     } else {
 
-        waitForTranslations();
+        initializeWebsite();
 
     }
 
+
+    /* =====================================================
+       FUNCIONES GLOBALES
+       ===================================================== */
+
+    window.initializeWebsite =
+        initializeWebsite;
+
+
+    window.translatePage =
+        translatePage;
+
+
+    window.t =
+        t;
 
 })();
 </script>
