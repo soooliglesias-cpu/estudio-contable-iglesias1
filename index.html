@@ -1914,230 +1914,84 @@ con el estudio o realizar una consulta profesional.
 
 <div class="form-grid">
 
-<!-- =========================
-FORMULARIO CLIENTES
-========================= -->
+    <!-- FORMULARIO CLIENTE -->
+    <div class="form-box">
 
-<div class="form-box">
+        <h3 data-form-title data-i18n="clientFormTitle">
+            Quiero ser cliente
+        </h3>
 
-<h3 data-i18n="clientFormTitle">
-Quiero ser cliente
-</h3>
+        <form id="clientForm" data-form="client">
 
-<form id="clientForm" data-form="client">
+            <label data-field="name" data-i18n="nameLabel">Nombre y apellido</label>
+            <input type="text" name="nombre" required>
 
-<label data-i18n="nameLabel">
-Nombre y apellido
-</label>
+            <label data-field="email" data-i18n="emailLabel">Email</label>
+            <input type="email" name="email" required>
 
-<input
-type="text"
-name="nombre"
-required
+            <label data-field="phone" data-i18n="phoneLabel">Teléfono</label>
+            <input type="tel" name="telefono">
 
->
+            <label data-field="activity" data-i18n="activityLabel">Actividad</label>
+            <select name="actividad" required data-select="activity">
+                <option value="" data-i18n="selectActivity">Seleccionar</option>
+                <option value="Empresa" data-i18n="activityCompany">Empresa</option>
+                <option value="Emprendedor" data-i18n="activityEntrepreneur">Emprendedor</option>
+                <option value="Productor agropecuario" data-i18n="activityAgro">Productor agropecuario</option>
+                <option value="Profesional" data-i18n="activityProfessional">Profesional</option>
+                <option value="Monotributista" data-i18n="activityMono">Monotributista</option>
+                <option value="Otro" data-i18n="activityOther">Otro</option>
+            </select>
 
-<label data-i18n="emailLabel">
-Email
-</label>
+            <label data-field="message" data-i18n="messageLabel">Mensaje</label>
+            <textarea name="mensaje" data-i18n-placeholder="activityPlaceholder"></textarea>
 
-<input
-type="email"
-name="email"
-required
+            <button type="submit" class="btn gold" data-i18n="contactRequestButton">
+                Solicitar contacto
+            </button>
 
->
+        </form>
 
-<label data-i18n="phoneLabel">
-Teléfono
-</label>
+    </div>
 
-<input
-type="tel"
-name="telefono"
+    <!-- FORMULARIO CONSULTA -->
+    <div class="form-box">
 
->
+        <h3 data-form-title data-i18n="questionFormTitle">
+            Hacer una consulta
+        </h3>
 
-<label data-i18n="activityLabel">
-Actividad
-</label>
+        <form id="questionForm" data-form="question">
 
-<select
-name="actividad"
-required
+            <label data-field="name" data-i18n="nameLabelShort">Nombre</label>
+            <input type="text" name="nombre" required>
 
->
+            <label data-field="email" data-i18n="emailLabel">Email</label>
+            <input type="email" name="email" required>
 
-<option value="" data-i18n="selectActivity">
-Seleccionar
-</option>
+            <label data-field="topic" data-i18n="topicLabel">Tema</label>
+            <select name="tema" required data-select="topic">
+                <option value="" data-i18n="selectTopic">Seleccionar</option>
+                <option value="Contabilidad" data-i18n="topicAccounting">Contabilidad</option>
+                <option value="Impuestos" data-i18n="topicTaxes">Impuestos</option>
+                <option value="Agro" data-i18n="topicAgro">Agro</option>
+                <option value="Monotributo" data-i18n="topicMono">Monotributo</option>
+                <option value="Empresas" data-i18n="topicCompanies">Empresas</option>
+                <option value="Otro" data-i18n="topicOther">Otro</option>
+            </select>
 
-<option value="Empresa" data-i18n="activityCompany">
-Empresa
-</option>
+            <label data-field="question" data-i18n="questionLabel">Consulta</label>
+            <textarea name="consulta" required></textarea>
 
-<option value="Emprendedor" data-i18n="activityEntrepreneur">
-Emprendedor
-</option>
+            <button type="submit" class="btn gold" data-i18n="sendQuestionButton">
+                Enviar consulta
+            </button>
 
-<option value="Productor agropecuario" data-i18n="activityAgro">
-Productor agropecuario
-</option>
+        </form>
 
-<option value="Profesional" data-i18n="activityProfessional">
-Profesional
-</option>
-
-<option value="Monotributista" data-i18n="activityMono">
-Monotributista
-</option>
-
-<option value="Otro" data-i18n="activityOther">
-Otro
-</option>
-
-</select>
-
-<label data-i18n="messageLabel">
-Mensaje
-</label>
-
-<textarea
-name="mensaje"
-data-i18n-placeholder="activityPlaceholder"
-placeholder="Contanos brevemente sobre tu actividad."
-></textarea>
-
-<button
-type="submit"
-class="btn gold"
-data-i18n="contactRequestButton"
-
->
-
-Solicitar contacto </button>
-
-</form>
+    </div>
 
 </div>
-
-<!-- =========================
-FORMULARIO CONSULTAS
-========================= -->
-
-<div class="form-box">
-
-    <h3 data-i18n="questionFormTitle">
-        Hacer una consulta
-    </h3>
-
-  <form id="questionForm" data-form="question"> 
-
-        <label data-i18n="nameLabelShort">
-            Nombre
-        </label>
-
-        <input
-            type="text"
-            name="nombre"
-            required
-        >
-
-        <label data-i18n="emailLabel">
-            Email
-        </label>
-
-        <input
-            type="email"
-            name="email"
-            required
-        >
-
-        <label data-i18n="topicLabel">
-            Tema
-        </label>
-
-        <select
-            name="tema"
-            required
-        >
-
-            <option
-                value=""
-                data-i18n="selectTopic"
-            >
-                Seleccionar
-            </option>
-
-            <option
-                value="Contabilidad"
-                data-i18n="topicAccounting"
-            >
-                Contabilidad
-            </option>
-
-            <option
-                value="Impuestos"
-                data-i18n="topicTaxes"
-            >
-                Impuestos
-            </option>
-
-            <option
-                value="Agro"
-                data-i18n="topicAgro"
-            >
-                Agro
-            </option>
-
-            <option
-                value="Monotributo"
-                data-i18n="topicMono"
-            >
-                Monotributo
-            </option>
-
-            <option
-                value="Empresas"
-                data-i18n="topicCompanies"
-            >
-                Empresas
-            </option>
-
-            <option
-                value="Otro"
-                data-i18n="topicOther"
-            >
-                Otro
-            </option>
-
-        </select>
-
-        <label data-i18n="questionLabel">
-            Consulta
-        </label>
-
-        <textarea
-            name="consulta"
-            required
-        ></textarea>
-
-        <button
-            type="submit"
-            class="btn gold"
-            data-i18n="sendQuestionButton"
-        >
-            Enviar consulta
-        </button>
-
-    </form>
-
-</div>
-```
-
-
-</section>
-
 <section class="agenda" id="agenda">
 
 <div class="container">
