@@ -4636,8 +4636,6 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 };
 
 <script>
-
-```html
 <script>
 
 /* =========================================================
@@ -4649,7 +4647,36 @@ let currentLanguage =
 
 
 /* =========================================================
-   FUNCIÓN PRINCIPAL DE IDIOMA
+   OBTENER TRADUCCIÓN
+========================================================= */
+
+function t(key) {
+
+    if (
+        typeof translations === "undefined"
+    ) {
+        return key;
+    }
+
+    const languageTexts =
+        translations[currentLanguage] ||
+        translations.es ||
+        {};
+
+    return (
+        languageTexts[key] ||
+        (
+            translations.es &&
+            translations.es[key]
+        ) ||
+        key
+    );
+
+}
+
+
+/* =========================================================
+   CAMBIAR IDIOMA
 ========================================================= */
 
 function changeLanguage(language) {
@@ -4657,15 +4684,34 @@ function changeLanguage(language) {
     try {
 
         if (
-            typeof translations === "undefined" ||
-            !translations[language]
+            typeof translations === "undefined"
         ) {
-            language = "es";
+
+            console.warn(
+                "⚠ Las traducciones todavía no están cargadas."
+            );
+
+            return;
+
         }
 
-        currentLanguage = language;
 
-        const texts = translations[language];
+        if (
+            !translations[language]
+        ) {
+
+            language = "es";
+
+        }
+
+
+        currentLanguage =
+            language;
+
+
+        const texts =
+            translations[currentLanguage];
+
 
         if (!texts) {
             return;
@@ -4681,7 +4727,10 @@ function changeLanguage(language) {
             .forEach(function(element) {
 
                 const key =
-                    element.getAttribute("data-i18n");
+                    element.getAttribute(
+                        "data-i18n"
+                    );
+
 
                 if (
                     key &&
@@ -4714,6 +4763,7 @@ function changeLanguage(language) {
                         "data-i18n-placeholder"
                     );
 
+
                 if (
                     key &&
                     Object.prototype.hasOwnProperty.call(
@@ -4731,7 +4781,7 @@ function changeLanguage(language) {
 
 
         /* -----------------------------------------
-           VALUE DE BOTONES / INPUTS
+           VALUES
         ----------------------------------------- */
 
         document
@@ -4744,6 +4794,7 @@ function changeLanguage(language) {
                     element.getAttribute(
                         "data-i18n-value"
                     );
+
 
                 if (
                     key &&
@@ -4762,51 +4813,6 @@ function changeLanguage(language) {
 
 
         /* -----------------------------------------
-           HTML LANG
-        ----------------------------------------- */
-
-        document.documentElement.lang =
-            language;
-
-
-        /* -----------------------------------------
-           DIRECCIÓN
-        ----------------------------------------- */
-
-        document.documentElement.dir =
-            language === "ar"
-                ? "rtl"
-                : "ltr";
-
-
-        /* -----------------------------------------
-           GUARDAR IDIOMA
-        ----------------------------------------- */
-
-        localStorage.setItem(
-            "preferredLanguage",
-            language
-        );
-
-
-        /* -----------------------------------------
-           SELECTOR
-        ----------------------------------------- */
-
-        const selector =
-            document.getElementById(
-                "language"
-            );
-
-        if (selector) {
-
-            selector.value =
-                language;
-
-        }
-
-
-        /* -----------------------------------------
            ARIA
         ----------------------------------------- */
 
@@ -4820,6 +4826,7 @@ function changeLanguage(language) {
                     element.getAttribute(
                         "data-i18n-aria"
                     );
+
 
                 if (
                     key &&
@@ -4835,6 +4842,53 @@ function changeLanguage(language) {
 
             });
 
+
+        /* -----------------------------------------
+           HTML
+        ----------------------------------------- */
+
+        document.documentElement.lang =
+            currentLanguage;
+
+
+        document.documentElement.dir =
+            currentLanguage === "ar"
+                ? "rtl"
+                : "ltr";
+
+
+        /* -----------------------------------------
+           GUARDAR
+        ----------------------------------------- */
+
+        localStorage.setItem(
+            "preferredLanguage",
+            currentLanguage
+        );
+
+
+        /* -----------------------------------------
+           ACTUALIZAR TODOS LOS SELECTORES
+        ----------------------------------------- */
+
+        document
+            .querySelectorAll(
+                "#language, .language-selector select, .language-switcher select, .lang-selector select, select[data-language]"
+            )
+            .forEach(function(selector) {
+
+                selector.value =
+                    currentLanguage;
+
+            });
+
+
+        console.log(
+            "✓ Idioma cambiado a:",
+            currentLanguage
+        );
+
+
     } catch (error) {
 
         console.error(
@@ -4848,7 +4902,7 @@ function changeLanguage(language) {
 
 
 /* =========================================================
-   FUNCIÓN GLOBAL DE IDIOMA
+   HACER IDIOMA GLOBAL
 ========================================================= */
 
 window.changeLanguage =
@@ -4869,40 +4923,7 @@ function isValidEmail(email) {
 
 
 /* =========================================================
-   OBTENER TEXTO TRADUCIDO
-========================================================= */
-
-function t(key) {
-
-    if (
-        typeof translations === "undefined"
-    ) {
-
-        return key;
-
-    }
-
-
-    const languageTexts =
-        translations[currentLanguage] ||
-        translations.es ||
-        {};
-
-
-    return (
-        languageTexts[key] ||
-        (
-            translations.es &&
-            translations.es[key]
-        ) ||
-        key
-    );
-
-}
-
-
-/* =========================================================
-   MENSAJE VISUAL DEL FORMULARIO
+   MENSAJE DEL FORMULARIO
 ========================================================= */
 
 function showFormMessage(
@@ -4969,11 +4990,19 @@ function setButtonLoading(
 
     if (loading) {
 
-        button.dataset.originalText =
-            button.innerHTML;
+        if (
+            !button.dataset.originalText
+        ) {
+
+            button.dataset.originalText =
+                button.innerHTML;
+
+        }
+
 
         button.disabled =
             true;
+
 
         button.innerHTML =
             "⏳ " + t("formSending");
@@ -5001,12 +5030,13 @@ function setButtonLoading(
 
 
 /* =========================================================
-   OBTENER DATOS DEL FORMULARIO
+   DATOS DEL FORMULARIO
 ========================================================= */
 
 function getFormData(form) {
 
     const data = {};
+
 
     if (!form) {
         return data;
@@ -5040,8 +5070,10 @@ async function submitClientForm(event) {
 
     event.preventDefault();
 
+
     const form =
         event.currentTarget;
+
 
     if (!form) {
         return false;
@@ -5241,6 +5273,7 @@ async function submitQuestionForm(event) {
 
     event.preventDefault();
 
+
     const form =
         event.currentTarget;
 
@@ -5278,17 +5311,6 @@ async function submitQuestionForm(event) {
         form.querySelector(
             '[name="consulta"]'
         )?.value.trim() || "";
-
-
-    console.log(
-        "Datos consulta:",
-        {
-            name,
-            email,
-            topic,
-            question
-        }
-    );
 
 
     /* -----------------------------------------
@@ -5440,111 +5462,59 @@ async function submitQuestionForm(event) {
 
 
 /* =========================================================
-   BUSCAR FORMULARIOS AUTOMÁTICAMENTE
+   FORMULARIOS
 ========================================================= */
 
 function initializeForms() {
 
     /* -----------------------------------------
-       FORMULARIO CLIENTE
+       CLIENTE
     ----------------------------------------- */
 
-    const possibleClientForms = [
-
-        "#clientForm",
-        "#client-form",
-        "#contactForm",
-        "#contact-form",
-        'form[data-form="client"]',
-        'form[data-form="cliente"]'
-
-    ];
+    const clientForm =
+        document.querySelector(
+            "#clientForm, #client-form, form[data-form='client'], form[data-form='cliente']"
+        );
 
 
-    let clientForm = null;
-
-
-    for (
-        let i = 0;
-        i < possibleClientForms.length;
-        i++
+    if (
+        clientForm &&
+        !clientForm.dataset.listenerAttached
     ) {
-
-        const element =
-            document.querySelector(
-                possibleClientForms[i]
-            );
-
-
-        if (element) {
-
-            clientForm =
-                element;
-
-            break;
-
-        }
-
-    }
-
-
-    if (clientForm) {
 
         clientForm.addEventListener(
             "submit",
             submitClientForm
         );
 
+        clientForm.dataset.listenerAttached =
+            "true";
+
     }
 
 
     /* -----------------------------------------
-       FORMULARIO CONSULTAS
+       CONSULTA
     ----------------------------------------- */
 
-    const possibleQuestionForms = [
-
-        "#questionForm",
-        "#question-form",
-        'form[data-form="question"]',
-        'form[data-form="consulta"]'
-
-    ];
+    const questionForm =
+        document.querySelector(
+            "#questionForm, #question-form, form[data-form='question'], form[data-form='consulta']"
+        );
 
 
-    let questionForm = null;
-
-
-    for (
-        let i = 0;
-        i < possibleQuestionForms.length;
-        i++
+    if (
+        questionForm &&
+        !questionForm.dataset.listenerAttached
     ) {
-
-        const element =
-            document.querySelector(
-                possibleQuestionForms[i]
-            );
-
-
-        if (element) {
-
-            questionForm =
-                element;
-
-            break;
-
-        }
-
-    }
-
-
-    if (questionForm) {
 
         questionForm.addEventListener(
             "submit",
             submitQuestionForm
         );
+
+        questionForm.dataset.listenerAttached =
+            "true";
 
     }
 
@@ -5552,7 +5522,7 @@ function initializeForms() {
 
 
 /* =========================================================
-   BOTONES "QUIERO SER CLIENTE"
+   BOTONES QUIERO SER CLIENTE
 ========================================================= */
 
 function initializeClientButtons() {
@@ -5561,63 +5531,74 @@ function initializeClientButtons() {
         .querySelectorAll(
             '[data-client-action], .client-button, [href="#cliente"], [href="#client"]'
         )
-        .forEach(
-            function(button) {
+        .forEach(function(button) {
 
-                button.addEventListener(
-                    "click",
-                    function(event) {
+            if (
+                button.dataset.clientListener ===
+                "true"
+            ) {
 
-                        const target =
-                            document.querySelector(
-                                "#clientForm, #client-form, #contactForm, #contact-form"
-                            );
-
-
-                        if (target) {
-
-                            event.preventDefault();
-
-
-                            target.scrollIntoView({
-
-                                behavior:
-                                    "smooth",
-
-                                block:
-                                    "center"
-
-                            });
-
-
-                            setTimeout(
-                                function() {
-
-                                    const firstInput =
-                                        target.querySelector(
-                                            "input, select, textarea"
-                                        );
-
-
-                                    if (
-                                        firstInput
-                                    ) {
-
-                                        firstInput.focus();
-
-                                    }
-
-                                },
-                                500
-                            );
-
-                        }
-
-                    }
-                );
+                return;
 
             }
-        );
+
+
+            button.dataset.clientListener =
+                "true";
+
+
+            button.addEventListener(
+                "click",
+                function(event) {
+
+                    const target =
+                        document.querySelector(
+                            "#clientForm, #client-form, #contactForm, #contact-form"
+                        );
+
+
+                    if (!target) {
+                        return;
+                    }
+
+
+                    event.preventDefault();
+
+
+                    target.scrollIntoView({
+
+                        behavior:
+                            "smooth",
+
+                        block:
+                            "center"
+
+                    });
+
+
+                    setTimeout(
+                        function() {
+
+                            const firstInput =
+                                target.querySelector(
+                                    "input, select, textarea"
+                                );
+
+
+                            if (firstInput) {
+
+                                firstInput.focus();
+
+                            }
+
+                        },
+                        500
+                    );
+
+                }
+            );
+
+        });
 
 }
 
@@ -5628,16 +5609,18 @@ function initializeClientButtons() {
 
 function initializeLanguageSelector() {
 
-    const selector =
-        document.getElementById(
-            "language"
+    const selectors =
+        document.querySelectorAll(
+            "#language, .language-selector select, .language-switcher select, .lang-selector select, select[data-language]"
         );
 
 
-    if (!selector) {
+    if (
+        !selectors.length
+    ) {
 
         console.warn(
-            "⚠ No se encontró el selector #language."
+            "⚠ No se encontró ningún selector de idioma."
         );
 
         return;
@@ -5645,20 +5628,43 @@ function initializeLanguageSelector() {
     }
 
 
-    selector.addEventListener(
-        "change",
-        function(event) {
+    selectors.forEach(
+        function(selector) {
 
-            changeLanguage(
-                event.target.value
+            if (
+                selector.dataset.languageListener ===
+                "true"
+            ) {
+
+                selector.value =
+                    currentLanguage;
+
+                return;
+
+            }
+
+
+            selector.dataset.languageListener =
+                "true";
+
+
+            selector.value =
+                currentLanguage;
+
+
+            selector.addEventListener(
+                "change",
+                function(event) {
+
+                    changeLanguage(
+                        event.target.value
+                    );
+
+                }
             );
 
         }
     );
-
-
-    selector.value =
-        currentLanguage;
 
 }
 
@@ -5673,22 +5679,34 @@ function initializePortalButtons() {
         .querySelectorAll(
             '[data-portal-button], .portal-button'
         )
-        .forEach(
-            function(button) {
+        .forEach(function(button) {
 
-                button.addEventListener(
-                    "click",
-                    function() {
+            if (
+                button.dataset.portalListener ===
+                "true"
+            ) {
 
-                        console.log(
-                            "Iglesias Portal"
-                        );
-
-                    }
-                );
+                return;
 
             }
-        );
+
+
+            button.dataset.portalListener =
+                "true";
+
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    console.log(
+                        "Iglesias Portal"
+                    );
+
+                }
+            );
+
+        });
 
 }
 
@@ -5700,45 +5718,317 @@ function initializePortalButtons() {
 function preventDuplicateSubmissions() {
 
     document
-        .querySelectorAll(
-            "form"
-        )
-        .forEach(
-            function(form) {
+        .querySelectorAll("form")
+        .forEach(function(form) {
 
-                form.addEventListener(
-                    "submit",
-                    function() {
+            if (
+                form.dataset.duplicateProtection ===
+                "true"
+            ) {
 
-                        if (
-                            form.dataset.processing ===
-                            "true"
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        form.dataset.processing =
-                            "true";
-
-
-                        setTimeout(
-                            function() {
-
-                                form.dataset.processing =
-                                    "false";
-
-                            },
-                            5000
-                        );
-
-                    }
-                );
+                return;
 
             }
+
+
+            form.dataset.duplicateProtection =
+                "true";
+
+
+            form.addEventListener(
+                "submit",
+                function(event) {
+
+                    if (
+                        form.dataset.processing ===
+                        "true"
+                    ) {
+
+                        event.preventDefault();
+
+                        return;
+
+                    }
+
+
+                    form.dataset.processing =
+                        "true";
+
+
+                    setTimeout(
+                        function() {
+
+                            form.dataset.processing =
+                                "false";
+
+                        },
+                        5000
+                    );
+
+                }
+            );
+
+        });
+
+}
+
+
+/* =========================================================
+   ACOMODAR LOS DOS FORMULARIOS
+========================================================= */
+
+function initializeFormsLayout() {
+
+    const clientForm =
+        document.querySelector(
+            "#clientForm, #client-form, form[data-form='client'], form[data-form='cliente']"
         );
+
+
+    const questionForm =
+        document.querySelector(
+            "#questionForm, #question-form, form[data-form='question'], form[data-form='consulta']"
+        );
+
+
+    if (
+        !clientForm ||
+        !questionForm
+    ) {
+
+        console.warn(
+            "⚠ No se encontraron ambos formularios para acomodarlos."
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       BUSCAR LAS CAJAS VISUALES
+    ----------------------------------------- */
+
+    let clientBox =
+        clientForm.closest(
+            ".form-box"
+        );
+
+
+    let questionBox =
+        questionForm.closest(
+            ".form-box"
+        );
+
+
+    /*
+       Si no existe .form-box,
+       usamos directamente el formulario.
+    */
+
+    if (!clientBox) {
+        clientBox = clientForm;
+    }
+
+
+    if (!questionBox) {
+        questionBox = questionForm;
+    }
+
+
+    if (
+        clientBox === questionBox
+    ) {
+
+        console.warn(
+            "⚠ Los formularios ya comparten el mismo contenedor."
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       SI YA ESTÁN JUNTOS, NO HACER NADA
+    ----------------------------------------- */
+
+    if (
+        clientBox.parentElement &&
+        clientBox.parentElement ===
+        questionBox.parentElement
+    ) {
+
+        clientBox.parentElement.classList.add(
+            "forms-row"
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       CREAR CONTENEDOR
+    ----------------------------------------- */
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+
+    wrapper.className =
+        "forms-row";
+
+
+    /* -----------------------------------------
+       INSERTAR EN LA POSICIÓN DEL PRIMER FORM
+    ----------------------------------------- */
+
+    clientBox.parentNode.insertBefore(
+        wrapper,
+        clientBox
+    );
+
+
+    /* -----------------------------------------
+       MOVER AMBAS CAJAS
+    ----------------------------------------- */
+
+    wrapper.appendChild(
+        clientBox
+    );
+
+
+    wrapper.appendChild(
+        questionBox
+    );
+
+
+    console.log(
+        "✓ Formularios acomodados lado a lado."
+    );
+
+}
+
+
+/* =========================================================
+   CSS PARA LOS FORMULARIOS
+========================================================= */
+
+function initializeFormsCSS() {
+
+    if (
+        document.getElementById(
+            "estudioFormsLayoutCSS"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    const style =
+        document.createElement(
+            "style"
+        );
+
+
+    style.id =
+        "estudioFormsLayoutCSS";
+
+
+    style.textContent = `
+
+        /* =========================================
+           FORMULARIOS EN PC
+        ========================================= */
+
+        .forms-row {
+
+            width: 100%;
+
+            max-width: 1200px;
+
+            margin-left: auto;
+
+            margin-right: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 32px;
+
+            align-items: start;
+
+        }
+
+
+        .forms-row > * {
+
+            width: 100%;
+
+            min-width: 0;
+
+            box-sizing: border-box;
+
+        }
+
+
+        .forms-row form {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+        }
+
+
+        /* =========================================
+           CELULAR
+        ========================================= */
+
+        @media (max-width: 768px) {
+
+            .forms-row {
+
+                grid-template-columns:
+                    1fr;
+
+                gap: 24px;
+
+                width: 100%;
+
+                max-width: 100%;
+
+            }
+
+        }
+
+
+        /* =========================================
+           EVITAR DESBORDE HORIZONTAL
+        ========================================= */
+
+        html,
+        body {
+
+            max-width: 100%;
+
+            overflow-x: hidden;
+
+        }
+
+    `;
+
+
+    document.head.appendChild(
+        style
+    );
 
 }
 
@@ -5751,9 +6041,13 @@ function initializeWebsite() {
 
     try {
 
-        initializeLanguageSelector();
+        initializeFormsCSS();
 
         initializeForms();
+
+        initializeFormsLayout();
+
+        initializeLanguageSelector();
 
         initializeClientButtons();
 
@@ -5761,6 +6055,10 @@ function initializeWebsite() {
 
         preventDuplicateSubmissions();
 
+
+        /* -----------------------------------------
+           IDIOMA INICIAL
+        ----------------------------------------- */
 
         if (
             typeof translations !==
@@ -5785,6 +6083,10 @@ function initializeWebsite() {
         );
 
 
+        /* -----------------------------------------
+           SUPABASE
+        ----------------------------------------- */
+
         if (
             typeof supabaseClient !==
             "undefined" &&
@@ -5803,6 +6105,7 @@ function initializeWebsite() {
 
         }
 
+
     } catch (error) {
 
         console.error(
@@ -5819,6 +6122,17 @@ function initializeWebsite() {
    ARRANQUE
 ========================================================= */
 
+function startWebsite() {
+
+    initializeWebsite();
+
+}
+
+
+/* =========================================================
+   DOM READY
+========================================================= */
+
 if (
     document.readyState ===
     "loading"
@@ -5826,12 +6140,12 @@ if (
 
     document.addEventListener(
         "DOMContentLoaded",
-        initializeWebsite
+        startWebsite
     );
 
 } else {
 
-    initializeWebsite();
+    startWebsite();
 
 }
 
@@ -5853,4 +6167,3 @@ window.initializeWebsite =
     initializeWebsite;
 
 </script>
-```
