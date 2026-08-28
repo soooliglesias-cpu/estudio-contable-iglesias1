@@ -4634,382 +4634,501 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 }
 ```html
 <script>
-
 /* =========================================================
    ESTUDIO CONTABLE IGLESIAS
-   IDIOMAS + FORMULARIOS + SUPABASE
-   VERSION LIMPIA Y CORREGIDA
-========================================================= */
+   SISTEMA DEFINITIVO
+   IDIOMAS + FORMULARIOS + SUPABASE + LAYOUT
+   ========================================================= */
 
 
 /* =========================================================
-   IDIOMA ACTIVO
-========================================================= */
+   1. IDIOMAS DISPONIBLES
+   ========================================================= */
 
-let currentLanguage =
-    localStorage.getItem("preferredLanguage") || "es";
-
-currentLanguage =
-    String(currentLanguage).toLowerCase().trim();
-
-
-/* =========================================================
-   IDIOMAS DISPONIBLES
-========================================================= */
-
-const availableLanguages = [
+const IGLESIAS_LANGUAGES = [
     "es",
     "en",
     "it",
     "fr",
     "de",
-    "pt",
-    "ja",
-    "zh",
+    "ar",
     "ko",
-    "ar"
+    "ja",
+    "pt",
+    "zh"
 ];
 
 
-if (!availableLanguages.includes(currentLanguage)) {
+/* =========================================================
+   2. IDIOMA ACTUAL
+   ========================================================= */
+
+let currentLanguage =
+    String(
+        localStorage.getItem("preferredLanguage") || "es"
+    )
+    .toLowerCase()
+    .trim();
+
+
+if (!IGLESIAS_LANGUAGES.includes(currentLanguage)) {
     currentLanguage = "es";
 }
 
 
 /* =========================================================
-   TRADUCCIÓN
-========================================================= */
+   3. OBTENER TRADUCCIÓN
+   ========================================================= */
 
 function t(key) {
 
-    if (
-        typeof translations === "undefined" ||
-        !translations
-    ) {
+    try {
+
+        if (
+            typeof translations === "undefined" ||
+            !translations
+        ) {
+            return key;
+        }
+
+
+        const currentTexts =
+            translations[currentLanguage] ||
+            translations["es"] ||
+            {};
+
+
+        if (
+            Object.prototype.hasOwnProperty.call(
+                currentTexts,
+                key
+            )
+        ) {
+            return currentTexts[key];
+        }
+
+
+        const spanishTexts =
+            translations["es"] || {};
+
+
+        if (
+            Object.prototype.hasOwnProperty.call(
+                spanishTexts,
+                key
+            )
+        ) {
+            return spanishTexts[key];
+        }
+
+
         return key;
+
+    } catch (error) {
+
+        console.error(
+            "Error obteniendo traducción:",
+            error
+        );
+
+        return key;
+
     }
 
-    const language =
-        translations[currentLanguage] ||
-        translations.es ||
-        {};
-
-    if (
-        Object.prototype.hasOwnProperty.call(
-            language,
-            key
-        )
-    ) {
-        return language[key];
-    }
-
-    if (
-        translations.es &&
-        Object.prototype.hasOwnProperty.call(
-            translations.es,
-            key
-        )
-    ) {
-        return translations.es[key];
-    }
-
-    return key;
 }
 
 
 /* =========================================================
-   APLICAR TRADUCCIONES
-========================================================= */
+   4. APLICAR TODAS LAS TRADUCCIONES
+   ========================================================= */
 
 function applyTranslations() {
 
-    if (
-        typeof translations === "undefined" ||
-        !translations
-    ) {
-        console.warn(
-            "No se encontró el objeto translations."
-        );
-        return;
-    }
-
-    const texts =
-        translations[currentLanguage] ||
-        translations.es;
-
-    if (!texts) {
-        return;
-    }
-
-
-    /* -----------------------------------------
-       TEXTOS
-    ----------------------------------------- */
-
-    document
-        .querySelectorAll("[data-i18n]")
-        .forEach(function(element) {
-
-            const key =
-                element.getAttribute("data-i18n");
-
-            if (
-                key &&
-                Object.prototype.hasOwnProperty.call(
-                    texts,
-                    key
-                )
-            ) {
-                element.innerHTML =
-                    texts[key];
-            }
-
-        });
-
-
-    /* -----------------------------------------
-       PLACEHOLDERS
-    ----------------------------------------- */
-
-    document
-        .querySelectorAll("[data-i18n-placeholder]")
-        .forEach(function(element) {
-
-            const key =
-                element.getAttribute(
-                    "data-i18n-placeholder"
-                );
-
-            if (
-                key &&
-                Object.prototype.hasOwnProperty.call(
-                    texts,
-                    key
-                )
-            ) {
-                element.placeholder =
-                    texts[key];
-            }
-
-        });
-
-
-    /* -----------------------------------------
-       VALUE
-    ----------------------------------------- */
-
-    document
-        .querySelectorAll("[data-i18n-value]")
-        .forEach(function(element) {
-
-            const key =
-                element.getAttribute(
-                    "data-i18n-value"
-                );
-
-            if (
-                key &&
-                Object.prototype.hasOwnProperty.call(
-                    texts,
-                    key
-                )
-            ) {
-                element.value =
-                    texts[key];
-            }
-
-        });
-
-
-    /* -----------------------------------------
-       ARIA
-    ----------------------------------------- */
-
-    document
-        .querySelectorAll("[data-i18n-aria]")
-        .forEach(function(element) {
-
-            const key =
-                element.getAttribute(
-                    "data-i18n-aria"
-                );
-
-            if (
-                key &&
-                Object.prototype.hasOwnProperty.call(
-                    texts,
-                    key
-                )
-            ) {
-                element.setAttribute(
-                    "aria-label",
-                    texts[key]
-                );
-            }
-
-        });
-
-
-    /* -----------------------------------------
-       HTML
-    ----------------------------------------- */
-
-    document.documentElement.lang =
-        currentLanguage;
-
-    document.documentElement.dir =
-        currentLanguage === "ar"
-            ? "rtl"
-            : "ltr";
-
-
-    /* -----------------------------------------
-       SELECTORES
-    ----------------------------------------- */
-
-    document
-        .querySelectorAll(
-            "#language, " +
-            ".language-selector select, " +
-            ".language-switcher select, " +
-            ".lang-selector select, " +
-            "select[data-language]"
-        )
-        .forEach(function(selector) {
-
-            selector.value =
-                currentLanguage;
-
-        });
-
-
-    console.log(
-        "✓ Traducciones aplicadas:",
-        currentLanguage
-    );
-}
-
-
-/* =========================================================
-   CAMBIAR IDIOMA
-========================================================= */
-
-function changeLanguage(language) {
-
-    language =
-        String(language || "")
-            .toLowerCase()
-            .trim();
-
-
-    if (
-        !availableLanguages.includes(language)
-    ) {
-        language = "es";
-    }
-
-
-    currentLanguage =
-        language;
-
-
-    localStorage.setItem(
-        "preferredLanguage",
-        currentLanguage
-    );
-
-
-    applyTranslations();
-
-
-    console.log(
-        "✓ Idioma cambiado a:",
-        currentLanguage
-    );
-}
-
-
-/* IMPORTANTE:
-   El selector HTML puede llamar directamente
-   a changeLanguage()
-*/
-
-window.changeLanguage =
-    changeLanguage;
-
-
-/* =========================================================
-   SELECTOR DE IDIOMA
-========================================================= */
-
-function initializeLanguageSelector() {
-
-    const selectors =
-        document.querySelectorAll(
-            "#language, " +
-            ".language-selector select, " +
-            ".language-switcher select, " +
-            ".lang-selector select, " +
-            "select[data-language]"
-        );
-
-
-    selectors.forEach(function(selector) {
+    try {
 
         if (
-            selector.dataset.iglesiasLanguageReady ===
-            "true"
+            typeof translations === "undefined" ||
+            !translations
         ) {
 
-            selector.value =
-                currentLanguage;
+            console.warn(
+                "Las traducciones todavía no están cargadas."
+            );
 
-            return;
+            return false;
 
         }
 
 
-        selector.dataset.iglesiasLanguageReady =
-            "true";
+        const texts =
+            translations[currentLanguage] ||
+            translations["es"];
 
 
-        selector.value =
+        if (!texts) {
+
+            console.warn(
+                "No existe el idioma:",
+                currentLanguage
+            );
+
+            return false;
+
+        }
+
+
+        /* -----------------------------------------
+           TEXTOS
+        ----------------------------------------- */
+
+        document
+            .querySelectorAll("[data-i18n]")
+            .forEach(function(element) {
+
+                const key =
+                    element.getAttribute("data-i18n");
+
+
+                if (
+                    key &&
+                    Object.prototype.hasOwnProperty.call(
+                        texts,
+                        key
+                    )
+                ) {
+
+                    element.innerHTML =
+                        texts[key];
+
+                }
+
+            });
+
+
+        /* -----------------------------------------
+           PLACEHOLDERS
+        ----------------------------------------- */
+
+        document
+            .querySelectorAll("[data-i18n-placeholder]")
+            .forEach(function(element) {
+
+                const key =
+                    element.getAttribute(
+                        "data-i18n-placeholder"
+                    );
+
+
+                if (
+                    key &&
+                    Object.prototype.hasOwnProperty.call(
+                        texts,
+                        key
+                    )
+                ) {
+
+                    element.setAttribute(
+                        "placeholder",
+                        texts[key]
+                    );
+
+                }
+
+            });
+
+
+        /* -----------------------------------------
+           VALUE
+        ----------------------------------------- */
+
+        document
+            .querySelectorAll("[data-i18n-value]")
+            .forEach(function(element) {
+
+                const key =
+                    element.getAttribute(
+                        "data-i18n-value"
+                    );
+
+
+                if (
+                    key &&
+                    Object.prototype.hasOwnProperty.call(
+                        texts,
+                        key
+                    )
+                ) {
+
+                    element.value =
+                        texts[key];
+
+                }
+
+            });
+
+
+        /* -----------------------------------------
+           ARIA
+        ----------------------------------------- */
+
+        document
+            .querySelectorAll("[data-i18n-aria]")
+            .forEach(function(element) {
+
+                const key =
+                    element.getAttribute(
+                        "data-i18n-aria"
+                    );
+
+
+                if (
+                    key &&
+                    Object.prototype.hasOwnProperty.call(
+                        texts,
+                        key
+                    )
+                ) {
+
+                    element.setAttribute(
+                        "aria-label",
+                        texts[key]
+                    );
+
+                }
+
+            });
+
+
+        /* -----------------------------------------
+           HTML LANG
+        ----------------------------------------- */
+
+        document.documentElement.lang =
             currentLanguage;
 
 
-        selector.addEventListener(
-            "change",
-            function(event) {
+        /* -----------------------------------------
+           DIRECCIÓN
+        ----------------------------------------- */
 
-                changeLanguage(
-                    event.target.value
+        document.documentElement.dir =
+            currentLanguage === "ar"
+                ? "rtl"
+                : "ltr";
+
+
+        /* -----------------------------------------
+           TODOS LOS SELECTORES
+        ----------------------------------------- */
+
+        document
+            .querySelectorAll(
+                "#language, " +
+                ".language-selector select, " +
+                ".language-switcher select, " +
+                ".lang-selector select, " +
+                "select[data-language]"
+            )
+            .forEach(function(selector) {
+
+                selector.value =
+                    currentLanguage;
+
+            });
+
+
+        console.log(
+            "✓ Traducciones aplicadas:",
+            currentLanguage
+        );
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Error aplicando traducciones:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   5. CAMBIAR IDIOMA
+   ========================================================= */
+
+function changeLanguage(language) {
+
+    try {
+
+        language =
+            String(language || "")
+                .toLowerCase()
+                .trim();
+
+
+        if (
+            !IGLESIAS_LANGUAGES.includes(language)
+        ) {
+
+            console.warn(
+                "Idioma no válido:",
+                language
+            );
+
+            language = "es";
+
+        }
+
+
+        currentLanguage =
+            language;
+
+
+        localStorage.setItem(
+            "preferredLanguage",
+            currentLanguage
+        );
+
+
+        /* Intentar aplicar inmediatamente */
+
+        applyTranslations();
+
+
+        /* Sincronizar selectores */
+
+        document
+            .querySelectorAll(
+                "#language, " +
+                ".language-selector select, " +
+                ".language-switcher select, " +
+                ".lang-selector select, " +
+                "select[data-language]"
+            )
+            .forEach(function(selector) {
+
+                selector.value =
+                    currentLanguage;
+
+            });
+
+
+        console.log(
+            "✓ Idioma cambiado a:",
+            currentLanguage
+        );
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Error cambiando idioma:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   6. HACER LA FUNCIÓN GLOBAL
+   IMPORTANTE:
+   Esto permite que funcione:
+   onchange="changeLanguage(this.value)"
+   ========================================================= */
+
+window.currentLanguage =
+    currentLanguage;
+
+window.changeLanguage =
+    changeLanguage;
+
+window.t =
+    t;
+
+
+/* =========================================================
+   7. ESPERAR A QUE CARGUE translations
+   ========================================================= */
+
+function waitForTranslations() {
+
+    let attempts = 0;
+
+    const maxAttempts = 80;
+
+    const timer =
+        setInterval(function() {
+
+            attempts++;
+
+
+            if (
+                typeof translations !== "undefined" &&
+                translations
+            ) {
+
+                clearInterval(timer);
+
+
+                applyTranslations();
+
+
+                console.log(
+                    "✓ Sistema de idiomas listo."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                attempts >= maxAttempts
+            ) {
+
+                clearInterval(timer);
+
+
+                console.warn(
+                    "⚠ No se encontró el objeto 'translations'."
                 );
 
             }
-        );
 
-    });
+        }, 250);
 
 }
 
 
 /* =========================================================
-   VALIDACION EMAIL
-========================================================= */
+   8. VALIDAR EMAIL
+   ========================================================= */
 
 function isValidEmail(email) {
 
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        .test(
-            String(email).trim()
-        );
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+        String(email).trim()
+    );
 
 }
 
 
 /* =========================================================
-   MENSAJE FORMULARIO
-========================================================= */
+   9. MENSAJE DE FORMULARIO
+   ========================================================= */
 
 function showFormMessage(
     form,
@@ -5022,46 +5141,45 @@ function showFormMessage(
     }
 
 
-    let element =
+    let messageElement =
         form.querySelector(
             ".form-message"
         );
 
 
-    if (!element) {
+    if (!messageElement) {
 
-        element =
-            document.createElement(
-                "div"
-            );
+        messageElement =
+            document.createElement("div");
 
-        element.className =
+        messageElement.className =
             "form-message";
 
-        element.setAttribute(
+        messageElement.setAttribute(
             "role",
             "status"
         );
 
         form.appendChild(
-            element
+            messageElement
         );
 
     }
 
 
-    element.textContent =
+    messageElement.textContent =
         message;
 
-    element.dataset.type =
+
+    messageElement.dataset.type =
         type || "info";
 
 }
 
 
 /* =========================================================
-   BOTON CARGANDO
-========================================================= */
+   10. BOTÓN CARGANDO
+   ========================================================= */
 
 function setButtonLoading(
     button,
@@ -5090,8 +5208,8 @@ function setButtonLoading(
 
 
         button.innerHTML =
-            "⏳ " +
-            t("formSending");
+            "⏳ " + t("formSending");
+
 
     } else {
 
@@ -5116,8 +5234,8 @@ function setButtonLoading(
 
 
 /* =========================================================
-   DATOS FORMULARIO
-========================================================= */
+   11. OBTENER DATOS DEL FORMULARIO
+   ========================================================= */
 
 function getFormData(form) {
 
@@ -5148,8 +5266,8 @@ function getFormData(form) {
 
 
 /* =========================================================
-   BUSCAR FORMULARIO CLIENTE
-========================================================= */
+   12. ENCONTRAR FORMULARIO CLIENTE
+   ========================================================= */
 
 function getClientForm() {
 
@@ -5166,8 +5284,8 @@ function getClientForm() {
 
 
 /* =========================================================
-   BUSCAR FORMULARIO CONSULTA
-========================================================= */
+   13. ENCONTRAR FORMULARIO CONSULTAS
+   ========================================================= */
 
 function getQuestionForm() {
 
@@ -5182,8 +5300,8 @@ function getQuestionForm() {
 
 
 /* =========================================================
-   FORMULARIO CLIENTE
-========================================================= */
+   14. FORMULARIO CLIENTE → SUPABASE
+   ========================================================= */
 
 async function submitClientForm(event) {
 
@@ -5195,14 +5313,6 @@ async function submitClientForm(event) {
 
 
     if (!form) {
-        return false;
-    }
-
-
-    if (
-        form.dataset.submitting ===
-        "true"
-    ) {
         return false;
     }
 
@@ -5242,7 +5352,7 @@ async function submitClientForm(event) {
         "";
 
 
-    /* VALIDACION */
+    /* VALIDACIÓN */
 
     if (
         !name ||
@@ -5282,10 +5392,6 @@ async function submitClientForm(event) {
         );
 
 
-    form.dataset.submitting =
-        "true";
-
-
     setButtonLoading(
         button,
         true
@@ -5295,8 +5401,7 @@ async function submitClientForm(event) {
     try {
 
         if (
-            typeof supabaseClient ===
-            "undefined" ||
+            typeof supabaseClient === "undefined" ||
             !supabaseClient
         ) {
 
@@ -5312,11 +5417,9 @@ async function submitClientForm(event) {
                 .from("client_requests")
                 .insert({
 
-                    name:
-                        name,
+                    name: name,
 
-                    email:
-                        email,
+                    email: email,
 
                     phone:
                         phone || null,
@@ -5345,6 +5448,11 @@ async function submitClientForm(event) {
         }
 
 
+        console.log(
+            "✓ Cliente guardado en Supabase."
+        );
+
+
         showFormMessage(
             form,
             t("formSuccessClient"),
@@ -5355,7 +5463,7 @@ async function submitClientForm(event) {
         form.reset();
 
 
-        /* Restaurar placeholders/values */
+        /* Volver a aplicar placeholders */
 
         applyTranslations();
 
@@ -5374,12 +5482,7 @@ async function submitClientForm(event) {
             "error"
         );
 
-
     } finally {
-
-        form.dataset.submitting =
-            "false";
-
 
         setButtonLoading(
             button,
@@ -5395,8 +5498,8 @@ async function submitClientForm(event) {
 
 
 /* =========================================================
-   FORMULARIO CONSULTAS
-========================================================= */
+   15. FORMULARIO CONSULTAS → SUPABASE
+   ========================================================= */
 
 async function submitQuestionForm(event) {
 
@@ -5412,35 +5515,27 @@ async function submitQuestionForm(event) {
     }
 
 
-    if (
-        form.dataset.submitting ===
-        "true"
-    ) {
-        return false;
-    }
-
-
     const nameField =
         form.querySelector(
-            '[name="nombre"]'
+            '[name="nombre"], [name="name"]'
         );
 
 
     const emailField =
         form.querySelector(
-            '[name="email"]'
+            '[name="email"], [name="correo"]'
         );
 
 
     const topicField =
         form.querySelector(
-            '[name="tema"]'
+            '[name="tema"], [name="topic"]'
         );
 
 
     const questionField =
         form.querySelector(
-            '[name="consulta"]'
+            '[name="consulta"], [name="question"], [name="mensaje"]'
         );
 
 
@@ -5468,7 +5563,7 @@ async function submitQuestionForm(event) {
             : "";
 
 
-    /* VALIDACION */
+    /* VALIDACIÓN */
 
     if (
         !name ||
@@ -5509,10 +5604,6 @@ async function submitQuestionForm(event) {
         );
 
 
-    form.dataset.submitting =
-        "true";
-
-
     setButtonLoading(
         button,
         true
@@ -5522,8 +5613,7 @@ async function submitQuestionForm(event) {
     try {
 
         if (
-            typeof supabaseClient ===
-            "undefined" ||
+            typeof supabaseClient === "undefined" ||
             !supabaseClient
         ) {
 
@@ -5539,17 +5629,13 @@ async function submitQuestionForm(event) {
                 .from("questions")
                 .insert({
 
-                    name:
-                        name,
+                    name: name,
 
-                    email:
-                        email,
+                    email: email,
 
-                    topic:
-                        topic,
+                    topic: topic,
 
-                    question:
-                        question,
+                    question: question,
 
                     language:
                         currentLanguage,
@@ -5567,6 +5653,11 @@ async function submitQuestionForm(event) {
             throw result.error;
 
         }
+
+
+        console.log(
+            "✓ Consulta guardada en Supabase."
+        );
 
 
         showFormMessage(
@@ -5596,12 +5687,7 @@ async function submitQuestionForm(event) {
             "error"
         );
 
-
     } finally {
-
-        form.dataset.submitting =
-            "false";
-
 
         setButtonLoading(
             button,
@@ -5617,8 +5703,8 @@ async function submitQuestionForm(event) {
 
 
 /* =========================================================
-   INICIALIZAR FORMULARIOS
-========================================================= */
+   16. INICIALIZAR FORMULARIOS
+   ========================================================= */
 
 function initializeForms() {
 
@@ -5628,11 +5714,10 @@ function initializeForms() {
 
     if (
         clientForm &&
-        clientForm.dataset.iglesiasFormReady !==
-        "true"
+        clientForm.dataset.iglesiasSubmitReady !== "true"
     ) {
 
-        clientForm.dataset.iglesiasFormReady =
+        clientForm.dataset.iglesiasSubmitReady =
             "true";
 
 
@@ -5650,11 +5735,10 @@ function initializeForms() {
 
     if (
         questionForm &&
-        questionForm.dataset.iglesiasFormReady !==
-        "true"
+        questionForm.dataset.iglesiasSubmitReady !== "true"
     ) {
 
-        questionForm.dataset.iglesiasFormReady =
+        questionForm.dataset.iglesiasSubmitReady =
             "true";
 
 
@@ -5669,8 +5753,8 @@ function initializeForms() {
 
 
 /* =========================================================
-   FORMULARIOS LADO A LADO
-========================================================= */
+   17. FORMULARIOS LADO A LADO
+   ========================================================= */
 
 function initializeFormsLayout() {
 
@@ -5688,7 +5772,7 @@ function initializeFormsLayout() {
     ) {
 
         console.warn(
-            "No se encontraron ambos formularios."
+            "⚠ No se encontraron ambos formularios."
         );
 
         return;
@@ -5696,7 +5780,9 @@ function initializeFormsLayout() {
     }
 
 
-    /* Si ya existe wrapper */
+    /* -----------------------------------------
+       SI YA EXISTE NUESTRO CONTENEDOR
+    ----------------------------------------- */
 
     let wrapper =
         document.getElementById(
@@ -5705,21 +5791,18 @@ function initializeFormsLayout() {
 
 
     if (wrapper) {
+
         return;
+
     }
 
 
-    /*
-       IMPORTANTE:
-       No usamos closest() ni movemos contenedores
-       externos. Movemos directamente los formularios.
-    */
-
+    /* -----------------------------------------
+       CREAR WRAPPER
+    ----------------------------------------- */
 
     wrapper =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     wrapper.id =
@@ -5727,10 +5810,12 @@ function initializeFormsLayout() {
 
 
     wrapper.className =
-        "iglesiasFormsWrapper";
+        "iglesias-forms-wrapper";
 
 
-    /* Insertar antes del primer formulario */
+    /* -----------------------------------------
+       INSERTAR ANTES DEL PRIMER FORMULARIO
+    ----------------------------------------- */
 
     clientForm.parentNode.insertBefore(
         wrapper,
@@ -5738,7 +5823,9 @@ function initializeFormsLayout() {
     );
 
 
-    /* Mover formularios */
+    /* -----------------------------------------
+       MOVER FORMULARIOS
+    ----------------------------------------- */
 
     wrapper.appendChild(
         clientForm
@@ -5750,6 +5837,20 @@ function initializeFormsLayout() {
     );
 
 
+    /* -----------------------------------------
+       CLASES
+    ----------------------------------------- */
+
+    clientForm.classList.add(
+        "iglesias-client-form"
+    );
+
+
+    questionForm.classList.add(
+        "iglesias-question-form"
+    );
+
+
     console.log(
         "✓ Formularios colocados lado a lado."
     );
@@ -5758,8 +5859,8 @@ function initializeFormsLayout() {
 
 
 /* =========================================================
-   CSS FORMULARIOS
-========================================================= */
+   18. CSS DE FORMULARIOS
+   ========================================================= */
 
 function initializeFormsCSS() {
 
@@ -5768,14 +5869,14 @@ function initializeFormsCSS() {
             "iglesiasFormsCSS"
         )
     ) {
+
         return;
+
     }
 
 
     const style =
-        document.createElement(
-            "style"
-        );
+        document.createElement("style");
 
 
     style.id =
@@ -5784,72 +5885,212 @@ function initializeFormsCSS() {
 
     style.textContent = `
 
-#iglesiasFormsWrapper {
-    width: 100% !important;
-    max-width: 1200px !important;
-    margin: 0 auto !important;
+        /* =========================================
+           CONTENEDOR PRINCIPAL
+        ========================================= */
 
-    display: grid !important;
+        #iglesiasFormsWrapper,
+        .iglesias-forms-wrapper {
 
-    grid-template-columns:
-        minmax(0, 1fr)
-        minmax(0, 1fr) !important;
+            width: 100% !important;
 
-    gap: 32px !important;
+            max-width: 1200px !important;
 
-    align-items: start !important;
+            margin-left: auto !important;
 
-    box-sizing: border-box !important;
-}
+            margin-right: auto !important;
 
-#iglesiasFormsWrapper > form {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
+            display: grid !important;
 
-    margin: 0 !important;
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(0, 1fr) !important;
 
-    box-sizing: border-box !important;
-}
+            gap: 32px !important;
 
-#iglesiasFormsWrapper input,
-#iglesiasFormsWrapper select,
-#iglesiasFormsWrapper textarea,
-#iglesiasFormsWrapper button {
-    max-width: 100%;
-    box-sizing: border-box;
-}
+            align-items: start !important;
 
-html[dir="rtl"] #iglesiasFormsWrapper {
-    direction: rtl;
-}
+            box-sizing: border-box !important;
 
-@media (max-width: 768px) {
+        }
 
-    #iglesiasFormsWrapper {
-        display: grid !important;
 
-        grid-template-columns:
-            minmax(0, 1fr) !important;
+        /* =========================================
+           FORMULARIOS
+        ========================================= */
 
-        gap: 24px !important;
-    }
+        #iglesiasFormsWrapper > form,
+        .iglesias-forms-wrapper > form {
 
-}
+            width: 100% !important;
 
-`;
+            max-width: none !important;
+
+            min-width: 0 !important;
+
+            margin: 0 !important;
+
+            box-sizing: border-box !important;
+
+        }
+
+
+        #iglesiasFormsWrapper > *,
+        .iglesias-forms-wrapper > * {
+
+            min-width: 0 !important;
+
+            max-width: 100% !important;
+
+            box-sizing: border-box !important;
+
+        }
+
+
+        /* =========================================
+           CAMPOS
+        ========================================= */
+
+        #iglesiasFormsWrapper input,
+        #iglesiasFormsWrapper select,
+        #iglesiasFormsWrapper textarea,
+        .iglesias-forms-wrapper input,
+        .iglesias-forms-wrapper select,
+        .iglesias-forms-wrapper textarea {
+
+            max-width: 100% !important;
+
+            box-sizing: border-box !important;
+
+        }
+
+
+        /* =========================================
+           CELULAR
+        ========================================= */
+
+        @media (max-width: 768px) {
+
+            #iglesiasFormsWrapper,
+            .iglesias-forms-wrapper {
+
+                grid-template-columns: 1fr !important;
+
+                gap: 24px !important;
+
+                width: 100% !important;
+
+                max-width: 100% !important;
+
+            }
+
+        }
+
+
+        /* =========================================
+           EVITAR DESBORDE
+        ========================================= */
+
+        html,
+        body {
+
+            max-width: 100% !important;
+
+            overflow-x: hidden !important;
+
+        }
+
+    `;
 
 
     document.head.appendChild(
         style
     );
 
+
+    console.log(
+        "✓ CSS de formularios cargado."
+    );
+
 }
 
 
 /* =========================================================
-   BOTONES QUIERO SER CLIENTE
-========================================================= */
+   19. SELECTOR DE IDIOMA
+   ========================================================= */
+
+function initializeLanguageSelector() {
+
+    const selectors =
+        document.querySelectorAll(
+            "#language, " +
+            ".language-selector select, " +
+            ".language-switcher select, " +
+            ".lang-selector select, " +
+            "select[data-language]"
+        );
+
+
+    selectors.forEach(
+        function(selector) {
+
+            /* Evitar duplicar eventos */
+
+            if (
+                selector.dataset.iglesiasLanguageReady === "true"
+            ) {
+
+                selector.value =
+                    currentLanguage;
+
+                return;
+
+            }
+
+
+            selector.dataset.iglesiasLanguageReady =
+                "true";
+
+
+            selector.value =
+                currentLanguage;
+
+
+            selector.addEventListener(
+                "change",
+                function(event) {
+
+                    changeLanguage(
+                        event.target.value
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    if (!selectors.length) {
+
+        console.warn(
+            "⚠ No se encontró selector de idioma."
+        );
+
+    } else {
+
+        console.log(
+            "✓ Selector de idioma conectado."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   20. BOTONES QUIERO SER CLIENTE
+   ========================================================= */
 
 function initializeClientButtons() {
 
@@ -5860,70 +6101,80 @@ function initializeClientButtons() {
             '[href="#cliente"], ' +
             '[href="#client"]'
         )
-        .forEach(function(button) {
+        .forEach(
+            function(button) {
 
-            if (
-                button.dataset.iglesiasClientReady ===
-                "true"
-            ) {
-                return;
-            }
+                if (
+                    button.dataset.iglesiasClientReady === "true"
+                ) {
 
-
-            button.dataset.iglesiasClientReady =
-                "true";
-
-
-            button.addEventListener(
-                "click",
-                function(event) {
-
-                    const form =
-                        getClientForm();
-
-
-                    if (!form) {
-                        return;
-                    }
-
-
-                    event.preventDefault();
-
-
-                    form.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
-                    });
-
-
-                    setTimeout(
-                        function() {
-
-                            const input =
-                                form.querySelector(
-                                    "input:not([type='hidden']), select, textarea"
-                                );
-
-
-                            if (input) {
-                                input.focus();
-                            }
-
-                        },
-                        500
-                    );
+                    return;
 
                 }
-            );
 
-        });
+
+                button.dataset.iglesiasClientReady =
+                    "true";
+
+
+                button.addEventListener(
+                    "click",
+                    function(event) {
+
+                        const target =
+                            getClientForm();
+
+
+                        if (!target) {
+                            return;
+                        }
+
+
+                        event.preventDefault();
+
+
+                        target.scrollIntoView({
+
+                            behavior:
+                                "smooth",
+
+                            block:
+                                "center"
+
+                        });
+
+
+                        setTimeout(
+                            function() {
+
+                                const firstInput =
+                                    target.querySelector(
+                                        "input, select, textarea"
+                                    );
+
+
+                                if (firstInput) {
+
+                                    firstInput.focus();
+
+                                }
+
+                            },
+                            500
+                        );
+
+                    }
+                );
+
+            }
+        );
 
 }
 
 
 /* =========================================================
-   PORTAL
-========================================================= */
+   21. BOTÓN PORTAL
+   ========================================================= */
 
 function initializePortalButtons() {
 
@@ -5931,81 +6182,213 @@ function initializePortalButtons() {
         .querySelectorAll(
             '[data-portal-button], .portal-button'
         )
-        .forEach(function(button) {
+        .forEach(
+            function(button) {
 
-            if (
-                button.dataset.iglesiasPortalReady ===
-                "true"
-            ) {
-                return;
-            }
+                if (
+                    button.dataset.iglesiasPortalReady === "true"
+                ) {
 
-
-            button.dataset.iglesiasPortalReady =
-                "true";
-
-
-            button.addEventListener(
-                "click",
-                function() {
-
-                    console.log(
-                        "Iglesias Portal"
-                    );
+                    return;
 
                 }
-            );
 
-        });
+
+                button.dataset.iglesiasPortalReady =
+                    "true";
+
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        console.log(
+                            "Iglesias Portal"
+                        );
+
+                    }
+                );
+
+            }
+        );
 
 }
 
 
 /* =========================================================
-   INICIALIZACIÓN
-========================================================= */
+   22. EVITAR DOBLE ENVÍO
+   ========================================================= */
+
+function preventDuplicateSubmissions() {
+
+    document
+        .querySelectorAll("form")
+        .forEach(
+            function(form) {
+
+                if (
+                    form.dataset.iglesiasDuplicateReady === "true"
+                ) {
+
+                    return;
+
+                }
+
+
+                form.dataset.iglesiasDuplicateReady =
+                    "true";
+
+
+                form.addEventListener(
+                    "submit",
+                    function(event) {
+
+                        if (
+                            form.dataset.processing === "true"
+                        ) {
+
+                            event.preventDefault();
+
+                            return;
+
+                        }
+
+
+                        form.dataset.processing =
+                            "true";
+
+
+                        setTimeout(
+                            function() {
+
+                                form.dataset.processing =
+                                    "false";
+
+                            },
+                            5000
+                        );
+
+                    },
+                    true
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   23. OBSERVAR ELEMENTOS QUE APAREZCAN DESPUÉS
+   ========================================================= */
+
+function initializeObserver() {
+
+    if (
+        typeof MutationObserver === "undefined"
+    ) {
+
+        return;
+
+    }
+
+
+    const observer =
+        new MutationObserver(
+            function() {
+
+                initializeLanguageSelector();
+
+                initializeForms();
+
+                initializeClientButtons();
+
+                initializePortalButtons();
+
+            }
+        );
+
+
+    observer.observe(
+        document.body,
+        {
+            childList: true,
+            subtree: true
+        }
+    );
+
+}
+
+
+/* =========================================================
+   24. INICIALIZACIÓN GENERAL
+   ========================================================= */
 
 function initializeWebsite() {
 
     try {
 
-        /* CSS */
+        console.log(
+            "Iniciando Estudio Contable Iglesias..."
+        );
+
+
+        /* CSS PRIMERO */
 
         initializeFormsCSS();
 
 
-        /* Formularios */
+        /* FORMULARIOS */
 
         initializeForms();
 
 
-        /* Layout */
-
         initializeFormsLayout();
 
 
-        /* Idiomas */
+        /* IDIOMAS */
 
         initializeLanguageSelector();
 
 
-        /* Botones */
+        /* BOTONES */
 
         initializeClientButtons();
-
 
         initializePortalButtons();
 
 
-        /* Aplicar idioma */
+        /* PROTECCIÓN */
+
+        preventDuplicateSubmissions();
+
+
+        /* OBSERVADOR */
+
+        initializeObserver();
+
+
+        /* TRADUCCIONES */
+
+        waitForTranslations();
+
+
+        /* SUPABASE */
 
         if (
-            typeof translations !==
-            "undefined" &&
-            translations
+            typeof supabaseClient !== "undefined" &&
+            supabaseClient
         ) {
 
-            applyTranslations();
+            console.log(
+                "✓ Supabase conectado."
+            );
+
+        } else {
+
+            console.warn(
+                "⚠ supabaseClient todavía no está disponible."
+            );
 
         }
 
@@ -6015,36 +6398,10 @@ function initializeWebsite() {
         );
 
 
-        console.log(
-            "✓ Idioma:",
-            currentLanguage
-        );
-
-
-        /* Supabase */
-
-        if (
-            typeof supabaseClient !==
-            "undefined" &&
-            supabaseClient
-        ) {
-
-            console.log(
-                "✓ Supabase conectado correctamente."
-            );
-
-        } else {
-
-            console.warn(
-                "⚠ Supabase no está configurado."
-            );
-
-        }
-
     } catch (error) {
 
         console.error(
-            "✕ Error de inicialización:",
+            "ERROR DE INICIALIZACIÓN:",
             error
         );
 
@@ -6054,20 +6411,16 @@ function initializeWebsite() {
 
 
 /* =========================================================
-   ARRANQUE
-========================================================= */
+   25. ARRANQUE
+   ========================================================= */
 
 if (
-    document.readyState ===
-    "loading"
+    document.readyState === "loading"
 ) {
 
     document.addEventListener(
         "DOMContentLoaded",
-        initializeWebsite,
-        {
-            once: true
-        }
+        initializeWebsite
     );
 
 } else {
@@ -6078,8 +6431,8 @@ if (
 
 
 /* =========================================================
-   FUNCIONES GLOBALES
-========================================================= */
+   26. FUNCIONES GLOBALES
+   ========================================================= */
 
 window.changeLanguage =
     changeLanguage;
@@ -6092,6 +6445,12 @@ window.submitQuestionForm =
 
 window.initializeWebsite =
     initializeWebsite;
+
+window.applyTranslations =
+    applyTranslations;
+
+window.t =
+    t;
 
 </script>
 ```
