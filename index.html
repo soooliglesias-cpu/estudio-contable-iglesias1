@@ -5181,31 +5181,28 @@ async function submitQuestionForm(event) {
         return;
     }
 
-    const nameInput = form.querySelector('input[name="nombre"]');
-    const emailInput = form.querySelector('input[name="email"]');
-    const topicInput = form.querySelector('select[name="tema"]');
-    const questionInput = form.querySelector('textarea[name="consulta"]');
+    // Obtener directamente los campos del HTML
+    const name =
+        form.querySelector('[name="nombre"]')?.value.trim() || "";
 
-    console.log("FORMULARIO CONSULTA:", {
-        name: nameInput?.value,
-        email: emailInput?.value,
-        topic: topicInput?.value,
-        question: questionInput?.value
+    const email =
+        form.querySelector('[name="email"]')?.value.trim() || "";
+
+    const topic =
+        form.querySelector('[name="tema"]')?.value.trim() || "";
+
+    const question =
+        form.querySelector('[name="consulta"]')?.value.trim() || "";
+
+    console.log("📨 Datos consulta:", {
+        name,
+        email,
+        topic,
+        question
     });
 
-    const name = nameInput?.value.trim() || "";
-    const email = emailInput?.value.trim() || "";
-    const topic = topicInput?.value.trim() || "";
-    const question = questionInput?.value.trim() || "";
-
+    // Validación
     if (!name || !email || !topic || !question) {
-
-        console.error("❌ Faltan campos:", {
-            name: !name,
-            email: !email,
-            topic: !topic,
-            question: !question
-        });
 
         showFormMessage(
             form,
@@ -5227,9 +5224,8 @@ async function submitQuestionForm(event) {
         return;
     }
 
-    const button = form.querySelector(
-        'button[type="submit"], input[type="submit"]'
-    );
+    const button =
+        form.querySelector('button[type="submit"]');
 
     setButtonLoading(button, true);
 
@@ -5239,20 +5235,25 @@ async function submitQuestionForm(event) {
             throw new Error("Supabase no está configurado.");
         }
 
-        const { error } = await supabaseClient
-            .from("questions")
-            .insert({
-                name: name,
-                email: email,
-                topic: topic,
-                question: question,
-                language: currentLanguage,
-                status: "new"
-            });
+        const { data, error } =
+            await supabaseClient
+                .from("questions")
+                .insert({
+                    name: name,
+                    email: email,
+                    topic: topic,
+                    question: question,
+                    language: currentLanguage,
+                    status: "new"
+                })
+                .select();
 
         if (error) {
+            console.error("❌ Error Supabase questions:", error);
             throw error;
         }
+
+        console.log("✅ Consulta guardada:", data);
 
         showFormMessage(
             form,
@@ -5279,7 +5280,10 @@ async function submitQuestionForm(event) {
 
     } finally {
 
-        setButtonLoading(button, false);
+        setButtonLoading(
+            button,
+            false
+        );
 
     }
 }
