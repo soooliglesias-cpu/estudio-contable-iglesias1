@@ -5171,17 +5171,15 @@ async function submitClientForm(event) {
    FORMULARIO DE CONSULTAS
 ========================================================= */
 async function submitQuestionForm(event) {
-
     event.preventDefault();
 
     const form = event.currentTarget;
 
     if (!form) {
-        console.error("❌ No se encontró el formulario de consulta.");
-        return;
+        console.error("No se encontró el formulario.");
+        return false;
     }
 
-    // Obtener directamente los campos del HTML
     const name =
         form.querySelector('[name="nombre"]')?.value.trim() || "";
 
@@ -5194,38 +5192,34 @@ async function submitQuestionForm(event) {
     const question =
         form.querySelector('[name="consulta"]')?.value.trim() || "";
 
-    console.log("📨 Datos consulta:", {
+    console.log("Datos consulta:", {
         name,
         email,
         topic,
         question
     });
 
-    // Validación
     if (!name || !email || !topic || !question) {
-
         showFormMessage(
             form,
             t("formRequired"),
             "error"
         );
-
-        return;
+        return false;
     }
 
     if (!isValidEmail(email)) {
-
         showFormMessage(
             form,
             t("formEmail"),
             "error"
         );
-
-        return;
+        return false;
     }
 
-    const button =
-        form.querySelector('button[type="submit"]');
+    const button = form.querySelector(
+        'button[type="submit"], input[type="submit"]'
+    );
 
     setButtonLoading(button, true);
 
@@ -5235,25 +5229,26 @@ async function submitQuestionForm(event) {
             throw new Error("Supabase no está configurado.");
         }
 
-        const { data, error } =
-            await supabaseClient
-                .from("questions")
-                .insert({
-                    name: name,
-                    email: email,
-                    topic: topic,
-                    question: question,
-                    language: currentLanguage,
-                    status: "new"
-                })
-                .select();
+        const { error } = await supabaseClient
+            .from("questions")
+            .insert({
+                name: name,
+                email: email,
+                topic: topic,
+                question: question,
+                language: currentLanguage,
+                status: "new"
+            });
 
         if (error) {
-            console.error("❌ Error Supabase questions:", error);
+            console.error(
+                "Error Supabase questions:",
+                error
+            );
             throw error;
         }
 
-        console.log("✅ Consulta guardada:", data);
+        console.log("Consulta guardada correctamente.");
 
         showFormMessage(
             form,
@@ -5268,7 +5263,7 @@ async function submitQuestionForm(event) {
     } catch (error) {
 
         console.error(
-            "❌ Error formulario consulta:",
+            "Error formulario consulta:",
             error
         );
 
@@ -5280,12 +5275,11 @@ async function submitQuestionForm(event) {
 
     } finally {
 
-        setButtonLoading(
-            button,
-            false
-        );
+        setButtonLoading(button, false);
 
     }
+
+    return false;
 }
 
     /* =====================================================
