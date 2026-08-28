@@ -1924,7 +1924,7 @@ FORMULARIO CLIENTES
 Quiero ser cliente
 </h3>
 
-<form onsubmit="submitClientForm(event)">
+<form id="clientForm" data-form="client">
 
 <label data-i18n="nameLabel">
 Nombre y apellido
@@ -2327,2400 +2327,3214 @@ FIN DE PARTE 1
 
 (function () {
 
-    "use strict";
-
-
-    /* =====================================================
-       CONFIGURACIÓN SUPABASE
-       ===================================================== */
-
-    const SUPABASE_URL =
-        "https://lpjzhjftgmlcpjyrkqfl.supabase.co";
-
-    const SUPABASE_KEY =
-        "sb_publishable_XJPVuprbVeoyev-rv7WsZg_h-D63Xf2";
-
-
-    /* =====================================================
-       IDIOMAS
-       ===================================================== */
-
-    const supportedLanguages = [
-        "es",
-        "en",
-        "pt",
-        "fr",
-        "it",
-        "de",
-        "nl",
-        "ca",
-        "eu",
-        "gl",
-        "sv",
-        "no",
-        "da",
-        "fi",
-        "is",
-        "pl",
-        "cs",
-        "sk",
-        "sl",
-        "hr",
-        "hu",
-        "ro",
-        "bg",
-        "el",
-        "tr",
-        "uk",
-        "ru",
-        "ar",
-        "he",
-        "fa",
-        "hi",
-        "bn",
-        "ur",
-        "zh",
-        "ja",
-        "ko",
-        "th",
-        "vi",
-        "id",
-        "ms",
-        "fil",
-        "sw",
-        "af"
-    ];
-
-
-    /* =====================================================
-       IDIOMA ACTUAL
-       ===================================================== */
-
-    let currentLanguage =
-        localStorage.getItem(
-            "preferredLanguage"
-        ) || "es";
-
-
-    if (
-        !supportedLanguages.includes(
-            currentLanguage
-        )
-    ) {
-
-        currentLanguage = "es";
-
-    }
-
-
-    /* =====================================================
-       SUPABASE
-       ===================================================== */
-
-    let supabaseClient = null;
-
-
-    function startSupabase() {
-
-        if (
-            window.supabase &&
-            typeof window.supabase.createClient ===
-                "function"
-        ) {
-
-            try {
-
-                supabaseClient =
-                    window.supabase.createClient(
-                        SUPABASE_URL,
-                        SUPABASE_KEY
-                    );
-
-
-                window.supabaseClient =
-                    supabaseClient;
-
-
-                console.log(
-                    "✓ Supabase conectado correctamente."
-                );
-
-
-                return true;
-
-            } catch (error) {
-
-                console.error(
-                    "Error creando Supabase:",
-                    error
-                );
-
-
-                return false;
-
-            }
-
-        }
-
-
-        return false;
-
-    }
-
-
-    function loadSupabase() {
-
-        if (
-            window.supabase &&
-            typeof window.supabase.createClient ===
-                "function"
-        ) {
-
-            startSupabase();
-
-            return;
-
-        }
-
-
-        if (
-            document.querySelector(
-                'script[data-iglesias-supabase]'
-            )
-        ) {
-
-            return;
-
-        }
-
-
-        const script =
-            document.createElement(
-                "script"
-            );
-
-
-        script.src =
-            "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
-
-
-        script.async = true;
-
-
-        script.dataset.iglesiasSupabase =
-            "true";
-
-
-        script.onload =
-            function () {
-
-                startSupabase();
-
-            };
-
-
-        script.onerror =
-            function () {
-
-                console.error(
-                    "No se pudo cargar Supabase."
-                );
-
-            };
-
-
-        document.head.appendChild(
-            script
-        );
-
-    }
-
-
-    /* =====================================================
-       TRADUCCIONES
-       ===================================================== */
-
-    function getTranslations() {
-
-        if (
-            window.translations &&
-            typeof window.translations ===
-                "object"
-        ) {
-
-            return window.translations;
-
-        }
-
-
-        return {};
-
-    }
-
-
-    function getTexts() {
-
-        const translations =
-            getTranslations();
-
-
-        if (
-            translations[currentLanguage]
-        ) {
-
-            return translations[
-                currentLanguage
-            ];
-
-        }
-
-
-        if (
-            translations.es
-        ) {
-
-            return translations.es;
-
-        }
-
-
-        return {};
-
-    }
-
-
-    function t(key) {
-
-        const texts =
-            getTexts();
-
-
-        if (
-            texts &&
-            Object.prototype.hasOwnProperty.call(
-                texts,
-                key
-            )
-        ) {
-
-            return texts[key];
-
-        }
-
-
-        const translations =
-            getTranslations();
-
-
-        if (
-            translations.es &&
-            Object.prototype.hasOwnProperty.call(
-                translations.es,
-                key
-            )
-        ) {
-
-            return translations.es[key];
-
-        }
-
-
-        return key;
-
-    }
-
-
-    /* =====================================================
-       TRADUCIR ATRIBUTOS
-       ===================================================== */
-
-    function translateAttributes(
-        element
-    ) {
-
-        if (!element) {
-            return;
-        }
-
-
-        /* ------------------------------
-           TEXTO
-        ------------------------------ */
-
-        const textKey =
-            element.getAttribute(
-                "data-i18n"
-            );
-
-
-        if (textKey) {
-
-            const value =
-                t(textKey);
-
-
-            if (
-                value &&
-                value !== textKey
-            ) {
-
-                element.textContent =
-                    value;
-
-            }
-
-        }
-
-
-        /* ------------------------------
-           HTML
-        ------------------------------ */
-
-        const htmlKey =
-            element.getAttribute(
-                "data-i18n-html"
-            );
-
-
-        if (htmlKey) {
-
-            const value =
-                t(htmlKey);
-
-
-            if (
-                value &&
-                value !== htmlKey
-            ) {
-
-                element.innerHTML =
-                    value;
-
-            }
-
-        }
-
-
-        /* ------------------------------
-           PLACEHOLDER
-        ------------------------------ */
-
-        const placeholderKey =
-            element.getAttribute(
-                "data-i18n-placeholder"
-            );
-
-
-        if (placeholderKey) {
-
-            const value =
-                t(placeholderKey);
-
-
-            if (
-                value &&
-                value !== placeholderKey
-            ) {
-
-                element.setAttribute(
-                    "placeholder",
-                    value
-                );
-
-            }
-
-        }
-
-
-        /* ------------------------------
-           ARIA
-        ------------------------------ */
-
-        const ariaKey =
-            element.getAttribute(
-                "data-i18n-aria"
-            );
-
-
-        if (ariaKey) {
-
-            const value =
-                t(ariaKey);
-
-
-            if (
-                value &&
-                value !== ariaKey
-            ) {
-
-                element.setAttribute(
-                    "aria-label",
-                    value
-                );
-
-            }
-
-        }
-
-
-        /* ------------------------------
-           TITLE
-        ------------------------------ */
-
-        const titleKey =
-            element.getAttribute(
-                "data-i18n-title"
-            );
-
-
-        if (titleKey) {
-
-            const value =
-                t(titleKey);
-
-
-            if (
-                value &&
-                value !== titleKey
-            ) {
-
-                element.setAttribute(
-                    "title",
-                    value
-                );
-
-            }
-
-        }
-
-    }
-
-
-    /* =====================================================
-       TRADUCIR SELECTS
-       ===================================================== */
-
-    function translateAllSelects() {
-
-        document
-            .querySelectorAll(
-                "select option[data-i18n]"
-            )
-            .forEach(
-                function (option) {
-
-                    const key =
-                        option.getAttribute(
-                            "data-i18n"
-                        );
-
-
-                    const value =
-                        t(key);
-
-
-                    if (
-                        value &&
-                        value !== key
-                    ) {
-
-                        option.textContent =
-                            value;
-
-                    }
-
-                }
-            );
-
-    }
-
-
-    /* =====================================================
-       TRADUCIR PÁGINA COMPLETA
-       ===================================================== */
-
-    function translatePage() {
-
-        const translations =
-            getTranslations();
-
-
-        if (
-            !translations ||
-            Object.keys(translations).length ===
-                0
-        ) {
-
-            return false;
-
-        }
-
-
-        document
-            .querySelectorAll(
-                "[data-i18n], " +
-                "[data-i18n-html], " +
-                "[data-i18n-placeholder], " +
-                "[data-i18n-aria], " +
-                "[data-i18n-title]"
-            )
-            .forEach(
-                function (element) {
-
-                    translateAttributes(
-                        element
-                    );
-
-                }
-            );
-
-
-        translateAllSelects();
-
-
-        /* ------------------------------
-           HTML LANG
-        ------------------------------ */
-
-        document.documentElement.lang =
-            currentLanguage;
-
-
-        /* ------------------------------
-           DIRECCIÓN
-        ------------------------------ */
-
-        document.documentElement.dir =
-            (
-                currentLanguage === "ar" ||
-                currentLanguage === "he" ||
-                currentLanguage === "fa" ||
-                currentLanguage === "ur"
-            )
-                ? "rtl"
-                : "ltr";
-
-
-        /* ------------------------------
-           SELECTOR
-        ------------------------------ */
-
-        document
-            .querySelectorAll(
-                "#language, " +
-                ".language-selector select, " +
-                ".language-switcher select, " +
-                ".lang-selector select, " +
-                "select[data-language]"
-            )
-            .forEach(
-                function (select) {
-
-                    select.value =
-                        currentLanguage;
-
-                }
-            );
-
-
-        /* ------------------------------
-           FORMULARIOS
-        ------------------------------ */
-
-        translateForms();
-
-
-        console.log(
-            "✓ Página traducida:",
-            currentLanguage
-        );
-
-
-        return true;
-
-    }
-
-
-    /* =====================================================
-       ESPERAR TRADUCCIONES
-       ===================================================== */
-
-    function waitForTranslations(
-        attempt
-    ) {
-
-        attempt =
-            attempt || 0;
-
-
-        if (
-            translatePage()
-        ) {
-
-            return;
-
-        }
-
-
-        if (
-            attempt >= 60
-        ) {
-
-            console.warn(
-                "No se encontraron las traducciones."
-            );
-
-            return;
-
-        }
-
-
-        setTimeout(
-            function () {
-
-                waitForTranslations(
-                    attempt + 1
-                );
-
-            },
-            250
-        );
-
-    }
-
-
-    /* =====================================================
-       CAMBIAR IDIOMA
-       ===================================================== */
-
-    function changeLanguage(
-        language
-    ) {
-
-        language =
-            String(
-                language || ""
-            )
-                .toLowerCase()
-                .trim();
-
-
-        if (
-            !supportedLanguages.includes(
-                language
-            )
-        ) {
-
-            language = "es";
-
-        }
-
-
-        currentLanguage =
-            language;
-
-
-        localStorage.setItem(
-            "preferredLanguage",
-            currentLanguage
-        );
-
-
-        translatePage();
-
-
-        console.log(
-            "✓ Idioma cambiado a:",
-            currentLanguage
-        );
-
-    }
-
-
-    window.changeLanguage =
-        changeLanguage;
-
-
-    /* =====================================================
-       SELECTOR DE IDIOMA
-       ===================================================== */
-
-    function initializeLanguageSelector() {
-
-        document
-            .querySelectorAll(
-                "#language, " +
-                ".language-selector select, " +
-                ".language-switcher select, " +
-                ".lang-selector select, " +
-                "select[data-language]"
-            )
-            .forEach(
-                function (select) {
-
-                    select.value =
-                        currentLanguage;
-
-
-                    if (
-                        select.dataset
-                            .iglesiasLanguageReady ===
-                        "true"
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    select.dataset
-                        .iglesiasLanguageReady =
-                            "true";
-
-
-                    select.addEventListener(
-                        "change",
-                        function () {
-
-                            changeLanguage(
-                                this.value
-                            );
-
-                        }
-                    );
-
-                }
-            );
-
-    }
-
-
-    /* =====================================================
-       BUSCAR FORMULARIO CLIENTE
-       ===================================================== */
-
-    function getClientForm() {
-
-        return document.querySelector(
-            "#clientForm, " +
-            "#client-form, " +
-            "#contactForm, " +
-            "#contact-form, " +
-            'form[data-form="client"], ' +
-            'form[data-form="cliente"]'
-        );
-
-    }
-
-
-    /* =====================================================
-       BUSCAR FORMULARIO CONSULTA
-       ===================================================== */
-
-    function getQuestionForm() {
-
-        return document.querySelector(
-            "#questionForm, " +
-            "#question-form, " +
-            'form[data-form="question"], ' +
-            'form[data-form="consulta"]'
-        );
-
-    }
-
-
-    /* =====================================================
-       TRADUCIR FORMULARIO CLIENTE
-       ===================================================== */
-
-    function translateClientForm(
-        form
-    ) {
-
-        const title =
-            form.querySelector(
-                "[data-form-title]"
-            );
-
-
-        if (title) {
-
-            title.textContent =
-                t("clientFormTitle");
-
-        }
-
-
-        const labels = {
-
-            name:
-                "nameLabel",
-
-            email:
-                "emailLabel",
-
-            phone:
-                "phoneLabel",
-
-            activity:
-                "activityLabel",
-
-            message:
-                "messageLabel"
-
-        };
-
-
-        Object.keys(labels)
-            .forEach(
-                function (field) {
-
-                    const element =
-                        form.querySelector(
-                            '[data-field="' +
-                            field +
-                            '"]'
-                        );
-
-
-                    if (element) {
-
-                        element.textContent =
-                            t(
-                                labels[field]
-                            );
-
-                    }
-
-                }
-            );
-
-
-        const message =
-            form.querySelector(
-                'textarea[name="message"], ' +
-                'textarea[name="mensaje"]'
-            );
-
-
-        if (message) {
-
-            const key =
-                "messagePlaceholder";
-
-
-            const value =
-                t(key);
-
-
-            if (
-                value &&
-                value !== key
-            ) {
-
-                message.placeholder =
-                    value;
-
-            }
-
-        }
-
-
-        translateSelectOptions(
-            form,
-            "activity"
-        );
-
-    }
-
-
-    /* =====================================================
-       TRADUCIR FORMULARIO CONSULTA
-       ===================================================== */
-
-    function translateQuestionForm(
-        form
-    ) {
-
-        const title =
-            form.querySelector(
-                "[data-form-title]"
-            );
-
-
-        if (title) {
-
-            title.textContent =
-                t("questionFormTitle");
-
-        }
-
-
-        const labels = {
-
-            name:
-                "nameLabelShort",
-
-            email:
-                "emailLabel",
-
-            topic:
-                "topicLabel",
-
-            question:
-                "questionLabel"
-
-        };
-
-
-        Object.keys(labels)
-            .forEach(
-                function (field) {
-
-                    const element =
-                        form.querySelector(
-                            '[data-field="' +
-                            field +
-                            '"]'
-                        );
-
-
-                    if (element) {
-
-                        element.textContent =
-                            t(
-                                labels[field]
-                            );
-
-                    }
-
-                }
-            );
-
-
-        const question =
-            form.querySelector(
-                'textarea[name="consulta"], ' +
-                'textarea[name="question"], ' +
-                'textarea[name="mensaje"]'
-            );
-
-
-        if (question) {
-
-            const key =
-                "questionPlaceholder";
-
-
-            const value =
-                t(key);
-
-
-            if (
-                value &&
-                value !== key
-            ) {
-
-                question.placeholder =
-                    value;
-
-            }
-
-        }
-
-
-        translateSelectOptions(
-            form,
-            "topic"
-        );
-
-    }
-
-
-    /* =====================================================
-       TRADUCIR OPCIONES
-       ===================================================== */
-
-    function translateSelectOptions(
-        form,
-        type
-    ) {
-
-        const select =
-            form.querySelector(
-                'select[name="' +
-                type +
-                '"], ' +
-                'select[data-select="' +
-                type +
-                '"]'
-            );
-
-
-        if (!select) {
-            return;
-        }
-
-
-        Array.from(
-            select.options
-        )
-            .forEach(
-                function (option) {
-
-                    const key =
-                        option.getAttribute(
-                            "data-i18n"
-                        );
-
-
-                    if (!key) {
-                        return;
-                    }
-
-
-                    const value =
-                        t(key);
-
-
-                    if (
-                        value &&
-                        value !== key
-                    ) {
-
-                        option.textContent =
-                            value;
-
-                    }
-
-                }
-            );
-
-    }
-
-
-    /* =====================================================
-       TRADUCIR FORMULARIOS
-       ===================================================== */
-
-    function translateForms() {
-
-        const clientForm =
-            getClientForm();
-
-
-        const questionForm =
-            getQuestionForm();
-
-
-        if (clientForm) {
-
-            translateClientForm(
-                clientForm
-            );
-
-        }
-
-
-        if (questionForm) {
-
-            translateQuestionForm(
-                questionForm
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       COLOCAR FORMULARIOS UNO AL LADO DEL OTRO
-       ===================================================== */
-
-    function createFormsLayout() {
-
-        const clientForm =
-            getClientForm();
-
-
-        const questionForm =
-            getQuestionForm();
-
-
-        if (
-            !clientForm ||
-            !questionForm
-        ) {
-
-            console.warn(
-                "No se encontraron los dos formularios."
-            );
-
-            return;
-
-        }
-
-
-        let wrapper =
-            document.getElementById(
-                "iglesiasFormsWrapper"
-            );
-
-
-        if (!wrapper) {
-
-            wrapper =
-                document.createElement(
-                    "div"
-                );
-
-
-            wrapper.id =
-                "iglesiasFormsWrapper";
-
-
-            wrapper.className =
-                "iglesias-forms-wrapper";
-
-
-            const parent =
-                clientForm.parentElement;
-
-
-            if (
-                parent
-            ) {
-
-                parent.insertBefore(
-                    wrapper,
-                    clientForm
-                );
-
-            }
-
-
-            wrapper.appendChild(
-                clientForm
-            );
-
-
-            wrapper.appendChild(
-                questionForm
-            );
-
-        } else {
-
-            if (
-                clientForm.parentElement !==
-                wrapper
-            ) {
-
-                wrapper.appendChild(
-                    clientForm
-                );
-
-            }
-
-
-            if (
-                questionForm.parentElement !==
-                wrapper
-            ) {
-
-                wrapper.appendChild(
-                    questionForm
-                );
-
-            }
-
-        }
-
-
-        clientForm.classList.add(
-            "iglesias-client-form"
-        );
-
-
-        questionForm.classList.add(
-            "iglesias-question-form"
-        );
-
-    }
-
-
-    /* =====================================================
-       CSS FORMULARIOS
-       PC = UNO AL LADO DEL OTRO
-       CELULAR = UNO DEBAJO DEL OTRO
-       ===================================================== */
-
-    function installFormsCSS() {
-
-        const old =
-            document.getElementById(
-                "iglesiasFormsCSS"
-            );
-
-
-        if (old) {
-
-            old.remove();
-
-        }
-
-
-        const style =
-            document.createElement(
-                "style"
-            );
-
-
-        style.id =
-            "iglesiasFormsCSS";
-
-
-        style.textContent = `
-
-        /* =============================================
-           CONTENEDOR
-        ============================================= */
-
-        #iglesiasFormsWrapper {
-
-            width: 100% !important;
-
-            max-width: 1180px !important;
-
-            margin: 35px auto !important;
-
-            padding: 0 20px !important;
-
-            display: grid !important;
-
-            grid-template-columns:
-                minmax(0, 1fr)
-                minmax(0, 1fr) !important;
-
-            gap: 32px !important;
-
-            align-items: stretch !important;
-
-            box-sizing: border-box !important;
-
-        }
-
-
-        /* =============================================
-           FORMULARIOS
-        ============================================= */
-
-        #iglesiasFormsWrapper > form {
-
-            width: 100% !important;
-
-            max-width: 100% !important;
-
-            min-width: 0 !important;
-
-            margin: 0 !important;
-
-            padding: 28px !important;
-
-            box-sizing: border-box !important;
-
-            float: none !important;
-
-            clear: none !important;
-
-            display: block !important;
-
-            grid-column: auto !important;
-
-            grid-row: auto !important;
-
-            align-self: stretch !important;
-
-        }
-
-
-        /* =============================================
-           CAMPOS
-        ============================================= */
-
-        #iglesiasFormsWrapper input,
-        #iglesiasFormsWrapper select,
-        #iglesiasFormsWrapper textarea {
-
-            width: 100% !important;
-
-            max-width: 100% !important;
-
-            box-sizing: border-box !important;
-
-        }
-
-
-        /* =============================================
-           TEXTAREA
-        ============================================= */
-
-        #iglesiasFormsWrapper textarea {
-
-            min-height: 130px !important;
-
-            resize: vertical !important;
-
-        }
-
-
-        /* =============================================
-           LABELS
-        ============================================= */
-
-        #iglesiasFormsWrapper label {
-
-            display: block !important;
-
-            width: 100% !important;
-
-        }
-
-
-        /* =============================================
-           BOTONES
-        ============================================= */
-
-        #iglesiasFormsWrapper button[type="submit"],
-        #iglesiasFormsWrapper input[type="submit"] {
-
-            max-width: 100% !important;
-
-            box-sizing: border-box !important;
-
-            cursor: pointer !important;
-
-        }
-
-
-        /* =============================================
-           MENSAJES
-        ============================================= */
-
-        #iglesiasFormsWrapper .form-message {
-
-            width: 100% !important;
-
-            box-sizing: border-box !important;
-
-            margin-top: 15px !important;
-
-            padding: 12px 15px !important;
-
-            border-radius: 10px !important;
-
-        }
-
-
-        /* =============================================
-           TABLET / CELULAR
-        ============================================= */
-
-        @media (max-width: 900px) {
-
-            #iglesiasFormsWrapper {
-
-                grid-template-columns:
-                    1fr !important;
-
-                gap: 24px !important;
-
-            }
-
-        }
-
-
-        @media (max-width: 600px) {
-
-            #iglesiasFormsWrapper {
-
-                padding:
-                    0 15px !important;
-
-                margin:
-                    25px auto !important;
-
-                gap:
-                    20px !important;
-
-            }
-
-
-            #iglesiasFormsWrapper > form {
-
-                padding:
-                    22px !important;
-
-            }
-
-        }
-
-
-        /* =============================================
-           RTL
-        ============================================= */
-
-        html[dir="rtl"]
-        #iglesiasFormsWrapper {
-
-            direction: rtl !important;
-
-        }
-
-        `;
-
-
-        document.head.appendChild(
-            style
-        );
-
-    }
-
-
-    /* =====================================================
-       VALIDAR EMAIL
-       ===================================================== */
-
-    function isValidEmail(
-        email
-    ) {
-
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-            .test(
-                String(email)
-                    .trim()
-            );
-
-    }
-
-
-    /* =====================================================
-       OBTENER DATOS
-       ===================================================== */
-
-    function getFormData(
-        form
-    ) {
-
-        const data = {};
-
-
-        new FormData(form)
-            .forEach(
-                function (
-                    value,
-                    key
-                ) {
-
-                    data[key] =
-                        String(
-                            value
-                        ).trim();
-
-                }
-            );
-
-
-        return data;
-
-    }
-
-
-    /* =====================================================
-       MENSAJE FORMULARIO
-       ===================================================== */
-
-    function showFormMessage(
-        form,
-        message,
-        type
-    ) {
-
-        let element =
-            form.querySelector(
-                ".form-message"
-            );
-
-
-        if (!element) {
-
-            element =
-                document.createElement(
-                    "div"
-                );
-
-
-            element.className =
-                "form-message";
-
-
-            element.setAttribute(
-                "role",
-                "status"
-            );
-
-
-            form.appendChild(
-                element
-            );
-
-        }
-
-
-        element.textContent =
-            message;
-
-
-        element.dataset.type =
-            type || "info";
-
-    }
-
-
-    /* =====================================================
-       LOADING
-       ===================================================== */
-
-    function setButtonLoading(
-        button,
-        loading
-    ) {
-
-        if (!button) {
-            return;
-        }
-
-
-        if (loading) {
-
-            button.dataset.originalText =
-                button.innerHTML;
-
-
-            button.disabled =
-                true;
-
-
-            button.innerHTML =
-                "⏳ " +
-                t("formSending");
-
-        } else {
-
-            button.disabled =
-                false;
-
-
-            if (
-                button.dataset.originalText
-            ) {
-
-                button.innerHTML =
-                    button.dataset.originalText;
-
-
-                delete button.dataset.originalText;
-
-            }
-
-        }
-
-    }
-
-
-    /* =====================================================
-       ENVIAR CLIENTE
-       ===================================================== */
-
-    async function submitClientForm(
-        event
-    ) {
-
-        event.preventDefault();
-
-
-        const form =
-            event.currentTarget;
-
-
-        if (
-            form.dataset.submitting ===
-            "true"
-        ) {
-
-            return false;
-
-        }
-
-
-        const data =
-            getFormData(
-                form
-            );
-
-
-        const name =
-            data.name ||
-            data.nombre ||
-            data.full_name ||
-            "";
-
-
-        const email =
-            data.email ||
-            data.correo ||
-            "";
-
-
-        const phone =
-            data.phone ||
-            data.telefono ||
-            "";
-
-
-        const activity =
-            data.activity ||
-            data.actividad ||
-            "";
-
-
-        const message =
-            data.message ||
-            data.mensaje ||
-            "";
-
-
-        if (
-            !name ||
-            !email ||
-            !activity
-        ) {
-
-            showFormMessage(
-                form,
-                t("formRequired"),
-                "error"
-            );
-
-
-            return false;
-
-        }
-
-
-        if (
-            !isValidEmail(
-                email
-            )
-        ) {
-
-            showFormMessage(
-                form,
-                t("formEmail"),
-                "error"
-            );
-
-
-            return false;
-
-        }
-
-
-        const button =
-            form.querySelector(
-                'button[type="submit"], ' +
-                'input[type="submit"]'
-            );
-
-
-        form.dataset.submitting =
-            "true";
-
-
-        setButtonLoading(
-            button,
-            true
-        );
-
-
-        try {
-
-            if (!supabaseClient) {
-
-                startSupabase();
-
-            }
-
-
-            if (!supabaseClient) {
-
-                throw new Error(
-                    "Supabase no disponible."
-                );
-
-            }
-
-
-            const result =
-                await supabaseClient
-                    .from(
-                        "client_requests"
-                    )
-                    .insert({
-
-                        name:
-                            name,
-
-                        email:
-                            email,
-
-                        phone:
-                            phone || null,
-
-                        activity:
-                            activity,
-
-                        message:
-                            message || null,
-
-                        language:
-                            currentLanguage,
-
-                        status:
-                            "new"
-
-                    });
-
-
-            if (
-                result.error
-            ) {
-
-                throw result.error;
-
-            }
-
-
-            showFormMessage(
-                form,
-                t(
-                    "formSuccessClient"
-                ),
-                "success"
-            );
-
-
-            form.reset();
-
-
-            translatePage();
-
-        } catch (error) {
-
-            console.error(
-                "Error guardando cliente:",
-                error
-            );
-
-
-            showFormMessage(
-                form,
-                t("formError"),
-                "error"
-            );
-
-        } finally {
-
-            form.dataset.submitting =
-                "false";
-
-
-            setButtonLoading(
-                button,
-                false
-            );
-
-        }
-
-
-        return false;
-
-    }
-
-
-    /* =====================================================
-       ENVIAR CONSULTA
-       ===================================================== */
-
-    async function submitQuestionForm(
-        event
-    ) {
-
-        event.preventDefault();
-
-
-        const form =
-            event.currentTarget;
-
-
-        if (
-            form.dataset.submitting ===
-            "true"
-        ) {
-
-            return false;
-
-        }
-
-
-        function value(
-            selector
-        ) {
-
-            const element =
-                form.querySelector(
-                    selector
-                );
-
-
-            return (
-                element &&
-                typeof element.value ===
-                    "string"
-            )
-                ? element.value.trim()
-                : "";
-
-        }
-
-
-        const name =
-            value(
-                '[name="nombre"]'
-            ) ||
-            value(
-                '[name="name"]'
-            );
-
-
-        const email =
-            value(
-                '[name="email"]'
-            ) ||
-            value(
-                '[name="correo"]'
-            );
-
-
-        const topic =
-            value(
-                '[name="tema"]'
-            ) ||
-            value(
-                '[name="topic"]'
-            );
-
-
-        const question =
-            value(
-                '[name="consulta"]'
-            ) ||
-            value(
-                '[name="question"]'
-            ) ||
-            value(
-                '[name="mensaje"]'
-            );
-
-
-        if (
-            !name ||
-            !email ||
-            !topic ||
-            !question
-        ) {
-
-            showFormMessage(
-                form,
-                t("formRequired"),
-                "error"
-            );
-
-
-            return false;
-
-        }
-
-
-        if (
-            !isValidEmail(
-                email
-            )
-        ) {
-
-            showFormMessage(
-                form,
-                t("formEmail"),
-                "error"
-            );
-
-
-            return false;
-
-        }
-
-
-        const button =
-            form.querySelector(
-                'button[type="submit"], ' +
-                'input[type="submit"]'
-            );
-
-
-        form.dataset.submitting =
-            "true";
-
-
-        setButtonLoading(
-            button,
-            true
-        );
-
-
-        try {
-
-            if (!supabaseClient) {
-
-                startSupabase();
-
-            }
-
-
-            if (!supabaseClient) {
-
-                throw new Error(
-                    "Supabase no disponible."
-                );
-
-            }
-
-
-            const result =
-                await supabaseClient
-                    .from(
-                        "questions"
-                    )
-                    .insert({
-
-                        name:
-                            name,
-
-                        email:
-                            email,
-
-                        topic:
-                            topic,
-
-                        question:
-                            question,
-
-                        language:
-                            currentLanguage,
-
-                        status:
-                            "new"
-
-                    });
-
-
-            if (
-                result.error
-            ) {
-
-                throw result.error;
-
-            }
-
-
-            showFormMessage(
-                form,
-                t(
-                    "formSuccessQuestion"
-                ),
-                "success"
-            );
-
-
-            form.reset();
-
-
-            translatePage();
-
-        } catch (error) {
-
-            console.error(
-                "Error guardando consulta:",
-                error
-            );
-
-
-            showFormMessage(
-                form,
-                t("formError"),
-                "error"
-            );
-
-        } finally {
-
-            form.dataset.submitting =
-                "false";
-
-
-            setButtonLoading(
-                button,
-                false
-            );
-
-        }
-
-
-        return false;
-
-    }
-
-
-    window.submitClientForm =
-        submitClientForm;
-
-
-    window.submitQuestionForm =
-        submitQuestionForm;
-
-
-    /* =====================================================
-       INICIALIZAR FORMULARIOS
-       ===================================================== */
-
-    function initializeForms() {
-
-        const clientForm =
-            getClientForm();
-
-
-        const questionForm =
-            getQuestionForm();
-
-
-        if (clientForm) {
-
-            if (
-                clientForm.dataset
-                    .iglesiasFormReady !==
-                "true"
-            ) {
-
-                clientForm.dataset
-                    .iglesiasFormReady =
-                        "true";
-
-
-                clientForm.addEventListener(
-                    "submit",
-                    submitClientForm
-                );
-
-            }
-
-        }
-
-
-        if (questionForm) {
-
-            if (
-                questionForm.dataset
-                    .iglesiasFormReady !==
-                "true"
-            ) {
-
-                questionForm.dataset
-                    .iglesiasFormReady =
-                        "true";
-
-
-                questionForm.addEventListener(
-                    "submit",
-                    submitQuestionForm
-                );
-
-            }
-
-        }
-
-    }
-
-
-    /* =====================================================
-       BOTONES QUE LLEVAN AL FORMULARIO
-       ===================================================== */
-
-    function initializeClientButtons() {
-
-        document
-            .querySelectorAll(
-                '[data-client-action], ' +
-                '.client-button, ' +
-                '[href="#cliente"], ' +
-                '[href="#client"]'
-            )
-            .forEach(
-                function (button) {
-
-                    if (
-                        button.dataset
-                            .iglesiasClientReady ===
-                        "true"
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    button.dataset
-                        .iglesiasClientReady =
-                            "true";
-
-
-                    button.addEventListener(
-                        "click",
-                        function (event) {
-
-                            const form =
-                                getClientForm();
-
-
-                            if (!form) {
-                                return;
-                            }
-
-
-                            event.preventDefault();
-
-
-                            form.scrollIntoView({
-
-                                behavior:
-                                    "smooth",
-
-                                block:
-                                    "center"
-
-                            });
-
-
-                            setTimeout(
-                                function () {
-
-                                    const first =
-                                        form.querySelector(
-                                            "input:not([type='hidden']), select, textarea"
-                                        );
-
-
-                                    if (first) {
-
-                                        first.focus();
-
-                                    }
-
-                                },
-                                500
-                            );
-
-                        }
-                    );
-
-                }
-            );
-
-    }
-
-
-    /* =====================================================
-       OBSERVADOR DE TRADUCCIONES
-       ===================================================== */
-
-    function initializeObserver() {
-
-        if (
-            window.iglesiasObserver
-        ) {
-
-            return;
-
-        }
-
-
-        let timeout = null;
-
-
-        const observer =
-            new MutationObserver(
-                function () {
-
-                    clearTimeout(
-                        timeout
-                    );
-
-
-                    timeout =
-                        setTimeout(
-                            function () {
-
-                                initializeLanguageSelector();
-
-                            },
-                            150
-                        );
-
-                }
-            );
-
-
-        observer.observe(
-            document.body,
-            {
-
-                childList:
-                    true,
-
-                subtree:
-                    true
-
-            }
-        );
-
-
-        window.iglesiasObserver =
-            observer;
-
-    }
-
-
-    /* =====================================================
-       INICIALIZAR TODO
-       ===================================================== */
-
-    function initializeWebsite() {
-
-        console.log(
-            "================================"
-        );
-
-
-        console.log(
-            "ESTUDIO CONTABLE IGLESIAS"
-        );
-
-
-        console.log(
-            "Iniciando sistema..."
-        );
-
-
-        /* CSS */
-
-        installFormsCSS();
-
-
-        /* FORMULARIOS */
-
-        createFormsLayout();
-
-
-        initializeForms();
-
-
-        /* IDIOMA */
-
-        initializeLanguageSelector();
-
-
-        /* BOTONES */
-
-        initializeClientButtons();
-
-
-        /* OBSERVADOR */
-
-        initializeObserver();
-
-
-        /* TRADUCCIÓN */
-
-        translatePage();
-
-
-        waitForTranslations();
-
-
-        /* SUPABASE */
-
-        loadSupabase();
-
-
-        console.log(
-            "✓ Sistema iniciado."
-        );
-
-    }
-
-
-    /* =====================================================
-       ARRANQUE
-       ===================================================== */
-
-    if (
-        document.readyState ===
-        "loading"
-    ) {
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            initializeWebsite
-        );
-
-    } else {
-
-        initializeWebsite();
-
-    }
-
-
-    /* =====================================================
-       FUNCIONES GLOBALES
-       ===================================================== */
-
-    window.initializeWebsite =
-        initializeWebsite;
-
-
-    window.translatePage =
-        translatePage;
-
-
-    window.t =
-        t;
-
+"use strict";
+
+
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+"https://lpjzhjftgmlcpjyrkqfl.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_XJPVuprbVeoyev-rv7WsZg_h-D63Xf2";
+
+let supabaseClient = null;
+
+
+/* =========================================================
+   IDIOMAS DISPONIBLES
+   ========================================================= */
+
+const supportedLanguages = [
+"es",
+"en",
+"pt",
+"fr",
+"it",
+"de",
+"zh",
+"ko",
+"ar"
+];
+
+
+let currentLanguage =
+localStorage.getItem("preferredLanguage") || "es";
+
+
+if (!supportedLanguages.includes(currentLanguage)) {
+
+currentLanguage = "es";
+
+}
+
+
+/* =========================================================
+   TRADUCCIONES
+   ========================================================= */
+
+window.translations = {
+
+es: {
+
+navHome:"Inicio",
+navAbout:"Sobre nosotros",
+navServices:"Servicios",
+navAgro:"Agro",
+navNews:"Novedades",
+navCalendar:"Vencimientos",
+navContact:"Contacto",
+navPortal:"Portal clientes",
+
+heroEyebrow:"Estudio Contable",
+heroTitle:"Contabilidad con <span>visión de futuro.</span>",
+heroText:"Un estudio contable moderno, cercano y estratégico, creado para acompañar personas, empresas y productores agropecuarios en cada etapa de su crecimiento.",
+heroButton:"Quiero ser cliente",
+heroSecondary:"Conocé el estudio",
+
+aboutEyebrow:"Sobre nosotros",
+aboutTitle:"Una forma diferente de hacer contabilidad.",
+aboutP1:"Estudio Contable Iglesias nace de una visión profesional que busca combinar la rigurosidad de la contabilidad con una atención cercana, clara y personalizada.",
+aboutP2:"Detrás del estudio está María Sol Iglesias, Contadora Pública, con una mirada orientada a la transformación, la tecnología y el crecimiento sostenible de sus clientes.",
+aboutP3:"El objetivo es que la información contable deje de ser solamente una obligación y se convierta en una herramienta para tomar mejores decisiones.",
+aboutButton:"Conocé nuestra propuesta",
+
+historyTitle:"La historia del estudio",
+historyStartTitle:"El comienzo",
+historyStartText:"Un proyecto profesional construido desde la vocación por la contabilidad y el deseo de crear un estudio propio.",
+historyPresentTitle:"El presente",
+historyPresentText:"Una propuesta moderna que integra contabilidad, impuestos, tecnología y acompañamiento personalizado.",
+historyFutureTitle:"El futuro",
+historyFutureText:"Una plataforma digital propia para simplificar la relación entre el estudio y sus clientes.",
+
+evolutionEyebrow:"Nuestra evolución",
+evolutionTitle:"Un estudio construido con propósito.",
+evolutionText:"La historia de Estudio Contable Iglesias está pensada como un camino de crecimiento, innovación y cercanía.",
+vocacionTitle:"Vocación",
+vocacionText:"La profesión como punto de partida y la búsqueda constante de excelencia como motor.",
+innovationTitle:"Innovación",
+innovationText:"Incorporar herramientas digitales para hacer que la información sea más accesible y útil.",
+growthTitle:"Crecimiento",
+growthText:"Acompañar a cada cliente para que pueda tomar decisiones con información clara y confiable.",
+
+valuesEyebrow:"Nuestros valores",
+valuesTitle:"Misión, visión y compromiso.",
+valuesText:"Tres pilares que orientan cada decisión del estudio.",
+missionTitle:"Misión",
+missionText:"Brindar servicios contables e impositivos profesionales, claros y personalizados, utilizando la tecnología como herramienta para mejorar la experiencia y la toma de decisiones de nuestros clientes.",
+visionTitle:"Visión",
+visionText:"Construir un estudio contable moderno, innovador y cercano, reconocido por la calidad profesional, la especialización y la incorporación responsable de tecnología.",
+commitmentTitle:"Compromiso",
+commitmentText:"Trabajar con responsabilidad, confidencialidad, transparencia y dedicación, entendiendo que detrás de cada número existe una persona, una empresa o un proyecto.",
+
+sustainabilityEyebrow:"Sustentabilidad",
+sustainabilityTitle:"Crecer también es cuidar.",
+sustainabilityP1:"El compromiso del Estudio Contable Iglesias con la sustentabilidad forma parte de una visión profesional de largo plazo.",
+sustainabilityP2:"Buscamos reducir el uso innecesario de papel, digitalizar procesos y promover herramientas que permitan trabajar de manera más eficiente.",
+sustainabilityP3:"En el sector agropecuario, además, creemos en la importancia de acompañar una gestión responsable de la información productiva y económica.",
+sustainabilityBoxTitle:"Nuestro compromiso",
+sustainability1:"🌱 Digitalización de procesos",
+sustainability2:"📄 Reducción del uso de papel",
+sustainability3:"💻 Gestión documental digital",
+sustainability4:"🌾 Información para una gestión agropecuaria responsable",
+sustainability5:"♻️ Uso eficiente de recursos",
+sustainability6:"🤝 Crecimiento sostenible",
+
+servicesEyebrow:"Servicios",
+servicesTitle:"Una mirada integral sobre tu actividad.",
+servicesText:"Soluciones contables e impositivas adaptadas a cada realidad profesional y empresarial.",
+serviceAccountingTitle:"Contabilidad",
+serviceAccountingText:"Información contable organizada para comprender la realidad económica y acompañar la toma de decisiones.",
+serviceTaxesTitle:"Impuestos",
+serviceTaxesText:"Planificación y cumplimiento de obligaciones tributarias con seguimiento personalizado.",
+serviceCompaniesTitle:"Empresas",
+serviceCompaniesText:"Acompañamiento contable y financiero para empresas, emprendimientos y proyectos en crecimiento.",
+serviceAgroTitle:"Agro",
+serviceAgroText:"Gestión contable y seguimiento de información económica y productiva para productores agropecuarios.",
+serviceMonoTitle:"Monotributo",
+serviceMonoText:"Seguimiento de facturación, categoría, obligaciones y situación impositiva.",
+serviceAdviceTitle:"Asesoramiento",
+serviceAdviceText:"Análisis profesional para ayudarte a comprender tus números y tomar decisiones con mayor información.",
+
+agroEyebrow:"Especialización agropecuaria",
+agroTitle:"El campo también necesita información.",
+agroText1:"Una propuesta pensada para productores que necesitan tener organizada la información económica, productiva y documental de sus establecimientos.",
+agroText2:"El futuro portal permitirá consultar en un único espacio información de campos, lotes, campañas, hacienda, SISA, caravanas, movimientos y resultados.",
+agroButton:"Consultar por Agro",
+agroPanelTitle:"Gestión Agro",
+agro1:"🌾 Campos y establecimientos",
+agro2:"📐 Superficie y lotes",
+agro3:"🚜 Campañas agrícolas",
+agro4:"🌱 Cultivos",
+agro5:"🐄 Hacienda",
+agro6:"🏷️ Caravanas",
+agro7:"📋 SISA",
+agro8:"🚚 Movimientos",
+agro9:"💰 Ingresos",
+agro10:"📉 Gastos",
+agro11:"📊 Comparativos",
+agro12:"📁 Documentación",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"Tu información, siempre a tu alcance.",
+portalText:"Un espacio digital privado donde cada cliente podrá consultar su información contable, impositiva y, cuando corresponda, agropecuaria.",
+portalButton:"Ingresar al portal",
+portalFeature1:"📊 Ingresos y gastos",
+portalFeature2:"🧾 Estado impositivo",
+portalFeature3:"📅 Vencimientos",
+portalFeature4:"🌾 Información Agro",
+portalFeature5:"📈 Comparativos",
+portalFeature6:"📁 Documentación",
+
+newsEyebrow:"Novedades",
+newsTitle:"Actualidad del estudio.",
+newsText:"Información profesional, novedades tributarias, actualizaciones y participación de María Sol Iglesias.",
+newsCategory1:"Actualidad tributaria",
+newsTitle1:"Novedades impositivas",
+newsText1:"Este espacio estará destinado a comunicar actualizaciones tributarias y profesionales.",
+newsCategory2:"Entrevistas",
+newsTitle2:"María Sol Iglesias",
+newsText2:"Un espacio para compartir entrevistas, notas, participaciones y contenidos profesionales.",
+newsCategory3:"Sector agropecuario",
+newsTitle3:"Actualidad del agro",
+newsText3:"Información de interés para productores agropecuarios y empresas del sector.",
+
+calendarEyebrow:"Calendario",
+calendarTitle:"Vencimientos y fechas importantes.",
+calendarText:"El calendario público ofrece información general. Los vencimientos particulares de cada cliente estarán disponibles dentro de su portal privado.",
+calendarDate:"Fecha",
+calendarObligation:"Obligación",
+calendarPeriod:"Período",
+calendarStatus:"Estado",
+calendarNext:"Próximo",
+incomeTax:"Ganancias",
+advance:"Anticipo",
+
+formsEyebrow:"Contacto profesional",
+formsTitle:"Comencemos a trabajar juntos.",
+formsText:"Podés solicitar información para comenzar a trabajar con el estudio o realizar una consulta profesional.",
+clientFormTitle:"Quiero ser cliente",
+questionFormTitle:"Hacer una consulta",
+nameLabel:"Nombre y apellido",
+nameLabelShort:"Nombre",
+emailLabel:"Email",
+phoneLabel:"Teléfono",
+activityLabel:"Actividad",
+messageLabel:"Mensaje",
+topicLabel:"Tema",
+questionLabel:"Consulta",
+selectActivity:"Seleccionar",
+activityCompany:"Empresa",
+activityEntrepreneur:"Emprendedor",
+activityAgro:"Productor agropecuario",
+activityProfessional:"Profesional",
+activityMono:"Monotributista",
+activityOther:"Otro",
+activityPlaceholder:"Contanos brevemente sobre tu actividad.",
+selectTopic:"Seleccionar",
+topicAccounting:"Contabilidad",
+topicTaxes:"Impuestos",
+topicAgro:"Agro",
+topicMono:"Monotributo",
+topicCompanies:"Empresas",
+topicOther:"Otro",
+contactRequestButton:"Solicitar contacto",
+sendQuestionButton:"Enviar consulta",
+
+agendaEyebrow:"Agenda",
+agendaTitle:"Agendá una reunión con María Sol.",
+agendaText:"Reservá una reunión con el estudio seleccionando el día y horario que mejor se adapte a tu disponibilidad.",
+agendaBoxTitle:"📅 Reuniones profesionales",
+agendaBoxText:"Elegí un día y horario disponible para reunirte con María Sol Iglesias.",
+agendaButton:"Reservar una reunión",
+
+contactEyebrow:"Contacto",
+contactTitle:"Hablemos de tu proyecto.",
+contactText:"Si querés ordenar tu situación contable, conocer nuestros servicios o realizar una consulta, podés comunicarte con el estudio.",
+contactButton:"Quiero ser cliente",
+accountant:"Contadora Pública",
+maps:"Ver ubicación en Google Maps",
+footerLocation:"Carlos Casares · Buenos Aires · Argentina",
+
+formRequired:"Por favor completá todos los campos obligatorios.",
+formEmail:"Ingresá un email válido.",
+formSending:"Enviando...",
+formSuccessClient:"¡Gracias! Recibimos tu solicitud de contacto.",
+formSuccessQuestion:"¡Gracias! Recibimos tu consulta.",
+formError:"No pudimos enviar la información. Intentá nuevamente."
+},
+
+
+en: {
+
+navHome:"Home",
+navAbout:"About us",
+navServices:"Services",
+navAgro:"Agriculture",
+navNews:"News",
+navCalendar:"Deadlines",
+navContact:"Contact",
+navPortal:"Client portal",
+
+heroEyebrow:"Accounting Firm",
+heroTitle:"Accounting with <span>a vision for the future.</span>",
+heroText:"A modern, approachable and strategic accounting firm created to support individuals, companies and agricultural producers throughout every stage of their growth.",
+heroButton:"Become a client",
+heroSecondary:"Discover the firm",
+
+aboutEyebrow:"About us",
+aboutTitle:"A different way of doing accounting.",
+aboutP1:"Estudio Contable Iglesias was created from a professional vision that combines accounting rigor with close, clear and personalized attention.",
+aboutP2:"The firm is led by María Sol Iglesias, Public Accountant, with a focus on transformation, technology and sustainable growth for her clients.",
+aboutP3:"The goal is for accounting information to become more than an obligation and instead become a tool for better decision-making.",
+aboutButton:"Discover our approach",
+
+historyTitle:"The history of the firm",
+historyStartTitle:"The beginning",
+historyStartText:"A professional project built from a passion for accounting and the desire to create an independent firm.",
+historyPresentTitle:"The present",
+historyPresentText:"A modern proposal combining accounting, taxes, technology and personalized support.",
+historyFutureTitle:"The future",
+historyFutureText:"A proprietary digital platform designed to simplify the relationship between the firm and its clients.",
+
+evolutionEyebrow:"Our evolution",
+evolutionTitle:"A firm built with purpose.",
+evolutionText:"The history of Estudio Contable Iglesias is conceived as a journey of growth, innovation and close support.",
+vocacionTitle:"Professional vocation",
+vocacionText:"The profession as a starting point and the constant pursuit of excellence as a driving force.",
+innovationTitle:"Innovation",
+innovationText:"Digital tools that make information more accessible and useful.",
+growthTitle:"Growth",
+growthText:"Supporting every client with clear and reliable information for better decisions.",
+
+valuesEyebrow:"Our values",
+valuesTitle:"Mission, vision and commitment.",
+valuesText:"Three pillars that guide every decision of the firm.",
+missionTitle:"Mission",
+missionText:"To provide professional, clear and personalized accounting and tax services, using technology to improve the experience and decision-making of our clients.",
+visionTitle:"Vision",
+visionText:"To build a modern, innovative and approachable accounting firm recognized for professional quality, specialization and responsible use of technology.",
+commitmentTitle:"Commitment",
+commitmentText:"To work with responsibility, confidentiality, transparency and dedication, understanding that behind every number there is a person, a company or a project.",
+
+sustainabilityEyebrow:"Sustainability",
+sustainabilityTitle:"Growing also means caring.",
+sustainabilityP1:"Estudio Contable Iglesias' commitment to sustainability is part of a long-term professional vision.",
+sustainabilityP2:"We seek to reduce unnecessary paper use, digitize processes and promote tools that allow us to work more efficiently.",
+sustainabilityP3:"In agriculture, we also believe in supporting responsible management of productive and economic information.",
+sustainabilityBoxTitle:"Our commitment",
+sustainability1:"🌱 Process digitalization",
+sustainability2:"📄 Reduced paper use",
+sustainability3:"💻 Digital document management",
+sustainability4:"🌾 Information for responsible agricultural management",
+sustainability5:"♻️ Efficient use of resources",
+sustainability6:"🤝 Sustainable growth",
+
+servicesEyebrow:"Services",
+servicesTitle:"A comprehensive view of your activity.",
+servicesText:"Accounting and tax solutions adapted to each professional and business reality.",
+serviceAccountingTitle:"Accounting",
+serviceAccountingText:"Organized accounting information to understand your financial reality and support decision-making.",
+serviceTaxesTitle:"Taxes",
+serviceTaxesText:"Tax planning and compliance with personalized follow-up.",
+serviceCompaniesTitle:"Companies",
+serviceCompaniesText:"Accounting and financial support for companies, businesses and growing projects.",
+serviceAgroTitle:"Agriculture",
+serviceAgroText:"Accounting management and monitoring of economic and productive information for agricultural producers.",
+serviceMonoTitle:"Monotax",
+serviceMonoText:"Monitoring of invoicing, category, obligations and tax status.",
+serviceAdviceTitle:"Advisory",
+serviceAdviceText:"Professional analysis to help you understand your numbers and make better-informed decisions.",
+
+agroEyebrow:"Agricultural specialization",
+agroTitle:"Agriculture also needs information.",
+agroText1:"A proposal designed for producers who need organized economic, productive and documentary information about their operations.",
+agroText2:"The future portal will allow users to consult information about fields, lots, campaigns, livestock, SISA, ear tags, movements and results in one place.",
+agroButton:"Ask about Agriculture",
+agroPanelTitle:"Agricultural Management",
+agro1:"🌾 Fields and operations",
+agro2:"📐 Area and lots",
+agro3:"🚜 Agricultural campaigns",
+agro4:"🌱 Crops",
+agro5:"🐄 Livestock",
+agro6:"🏷️ Ear tags",
+agro7:"📋 SISA",
+agro8:"🚚 Movements",
+agro9:"💰 Income",
+agro10:"📉 Expenses",
+agro11:"📊 Comparisons",
+agro12:"📁 Documentation",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"Your information, always within reach.",
+portalText:"A private digital space where each client can consult accounting, tax and, when applicable, agricultural information.",
+portalButton:"Enter the portal",
+portalFeature1:"📊 Income and expenses",
+portalFeature2:"🧾 Tax status",
+portalFeature3:"📅 Deadlines",
+portalFeature4:"🌾 Agricultural information",
+portalFeature5:"📈 Comparisons",
+portalFeature6:"📁 Documentation",
+
+newsEyebrow:"News",
+newsTitle:"Firm updates.",
+newsText:"Professional information, tax news, updates and content featuring María Sol Iglesias.",
+newsCategory1:"Tax updates",
+newsTitle1:"Tax news",
+newsText1:"This space will be used to communicate tax and professional updates.",
+newsCategory2:"Interviews",
+newsTitle2:"María Sol Iglesias",
+newsText2:"A space for interviews, articles, professional appearances and content.",
+newsCategory3:"Agricultural sector",
+newsTitle3:"Agricultural news",
+newsText3:"Relevant information for agricultural producers and companies in the sector.",
+
+calendarEyebrow:"Calendar",
+calendarTitle:"Deadlines and important dates.",
+calendarText:"The public calendar provides general information. Individual client deadlines will be available inside the private portal.",
+calendarDate:"Date",
+calendarObligation:"Obligation",
+calendarPeriod:"Period",
+calendarStatus:"Status",
+calendarNext:"Upcoming",
+incomeTax:"Income tax",
+advance:"Advance payment",
+
+formsEyebrow:"Professional contact",
+formsTitle:"Let's start working together.",
+formsText:"Request information to start working with the firm or send a professional inquiry.",
+clientFormTitle:"Become a client",
+questionFormTitle:"Ask a question",
+nameLabel:"Full name",
+nameLabelShort:"Name",
+emailLabel:"Email",
+phoneLabel:"Phone",
+activityLabel:"Activity",
+messageLabel:"Message",
+topicLabel:"Topic",
+questionLabel:"Question",
+selectActivity:"Select",
+activityCompany:"Company",
+activityEntrepreneur:"Entrepreneur",
+activityAgro:"Agricultural producer",
+activityProfessional:"Professional",
+activityMono:"Monotax taxpayer",
+activityOther:"Other",
+activityPlaceholder:"Tell us briefly about your activity.",
+selectTopic:"Select",
+topicAccounting:"Accounting",
+topicTaxes:"Taxes",
+topicAgro:"Agriculture",
+topicMono:"Monotax",
+topicCompanies:"Companies",
+topicOther:"Other",
+contactRequestButton:"Request contact",
+sendQuestionButton:"Send inquiry",
+
+agendaEyebrow:"Schedule",
+agendaTitle:"Schedule a meeting with María Sol.",
+agendaText:"Book a meeting with the firm by selecting the day and time that best suits your availability.",
+agendaBoxTitle:"📅 Professional meetings",
+agendaBoxText:"Choose an available day and time to meet with María Sol Iglesias.",
+agendaButton:"Book a meeting",
+
+contactEyebrow:"Contact",
+contactTitle:"Let's talk about your project.",
+contactText:"If you want to organize your accounting situation, learn about our services or ask a question, contact the firm.",
+contactButton:"Become a client",
+accountant:"Public Accountant",
+maps:"View location on Google Maps",
+footerLocation:"Carlos Casares · Buenos Aires · Argentina",
+
+formRequired:"Please complete all required fields.",
+formEmail:"Please enter a valid email address.",
+formSending:"Sending...",
+formSuccessClient:"Thank you! We received your contact request.",
+formSuccessQuestion:"Thank you! We received your inquiry.",
+formError:"We could not send the information. Please try again."
+},
+
+
+pt: {
+
+navHome:"Início",
+navAbout:"Sobre nós",
+navServices:"Serviços",
+navAgro:"Agro",
+navNews:"Novidades",
+navCalendar:"Vencimentos",
+navContact:"Contato",
+navPortal:"Portal do cliente",
+
+heroEyebrow:"Escritório Contábil",
+heroTitle:"Contabilidade com <span>visão de futuro.</span>",
+heroText:"Um escritório contábil moderno, próximo e estratégico, criado para acompanhar pessoas, empresas e produtores rurais em cada etapa do seu crescimento.",
+heroButton:"Quero ser cliente",
+heroSecondary:"Conheça o escritório",
+
+aboutEyebrow:"Sobre nós",
+aboutTitle:"Uma forma diferente de fazer contabilidade.",
+aboutP1:"O Estudio Contable Iglesias nasceu de uma visão profissional que busca combinar o rigor da contabilidade com um atendimento próximo, claro e personalizado.",
+aboutP2:"À frente do escritório está María Sol Iglesias, Contadora Pública, com uma visão voltada para transformação, tecnologia e crescimento sustentável de seus clientes.",
+aboutP3:"O objetivo é transformar a informação contábil em uma ferramenta para tomar decisões melhores.",
+aboutButton:"Conheça nossa proposta",
+
+historyTitle:"A história do escritório",
+historyStartTitle:"O começo",
+historyStartText:"Um projeto profissional construído a partir da vocação pela contabilidade e do desejo de criar um escritório próprio.",
+historyPresentTitle:"O presente",
+historyPresentText:"Uma proposta moderna que integra contabilidade, impostos, tecnologia e acompanhamento personalizado.",
+historyFutureTitle:"O futuro",
+historyFutureText:"Uma plataforma digital própria para simplificar a relação entre o escritório e seus clientes.",
+
+evolutionEyebrow:"Nossa evolução",
+evolutionTitle:"Um escritório construído com propósito.",
+evolutionText:"A história do Estudio Contable Iglesias é pensada como um caminho de crescimento, inovação e proximidade.",
+vocacionTitle:"Vocação",
+vocacionText:"A profissão como ponto de partida e a busca constante pela excelência como motor.",
+innovationTitle:"Inovação",
+innovationText:"Ferramentas digitais para tornar a informação mais acessível e útil.",
+growthTitle:"Crescimento",
+growthText:"Acompanhar cada cliente para que possa tomar decisões com informações claras e confiáveis.",
+
+valuesEyebrow:"Nossos valores",
+valuesTitle:"Missão, visão e compromisso.",
+valuesText:"Três pilares que orientam cada decisão do escritório.",
+missionTitle:"Missão",
+missionText:"Oferecer serviços contábeis e tributários profissionais, claros e personalizados, utilizando a tecnologia para melhorar a experiência e a tomada de decisões dos clientes.",
+visionTitle:"Visão",
+visionText:"Construir um escritório contábil moderno, inovador e próximo, reconhecido pela qualidade profissional, especialização e uso responsável da tecnologia.",
+commitmentTitle:"Compromisso",
+commitmentText:"Trabalhar com responsabilidade, confidencialidade, transparência e dedicação, entendendo que por trás de cada número existe uma pessoa, empresa ou projeto.",
+
+sustainabilityEyebrow:"Sustentabilidade",
+sustainabilityTitle:"Crescer também é cuidar.",
+sustainabilityP1:"O compromisso do Estudio Contable Iglesias com a sustentabilidade faz parte de uma visão profissional de longo prazo.",
+sustainabilityP2:"Buscamos reduzir o uso desnecessário de papel, digitalizar processos e promover ferramentas que permitam trabalhar com mais eficiência.",
+sustainabilityP3:"No setor agropecuário, acreditamos também na importância de uma gestão responsável das informações produtivas e econômicas.",
+sustainabilityBoxTitle:"Nosso compromisso",
+sustainability1:"🌱 Digitalização de processos",
+sustainability2:"📄 Redução do uso de papel",
+sustainability3:"💻 Gestão documental digital",
+sustainability4:"🌾 Informação para uma gestão agropecuária responsável",
+sustainability5:"♻️ Uso eficiente de recursos",
+sustainability6:"🤝 Crescimento sustentável",
+
+servicesEyebrow:"Serviços",
+servicesTitle:"Uma visão integral sobre sua atividade.",
+servicesText:"Soluções contábeis e tributárias adaptadas a cada realidade profissional e empresarial.",
+serviceAccountingTitle:"Contabilidade",
+serviceAccountingText:"Informações contábeis organizadas para compreender a realidade econômica e apoiar a tomada de decisões.",
+serviceTaxesTitle:"Impostos",
+serviceTaxesText:"Planejamento e cumprimento das obrigações tributárias com acompanhamento personalizado.",
+serviceCompaniesTitle:"Empresas",
+serviceCompaniesText:"Acompanhamento contábil e financeiro para empresas, empreendimentos e projetos em crescimento.",
+serviceAgroTitle:"Agro",
+serviceAgroText:"Gestão contábil e acompanhamento de informações econômicas e produtivas para produtores rurais.",
+serviceMonoTitle:"Monotributo",
+serviceMonoText:"Acompanhamento de faturamento, categoria, obrigações e situação tributária.",
+serviceAdviceTitle:"Assessoria",
+serviceAdviceText:"Análise profissional para ajudar você a compreender seus números e tomar decisões mais informadas.",
+
+agroEyebrow:"Especialização agropecuária",
+agroTitle:"O campo também precisa de informação.",
+agroText1:"Uma proposta pensada para produtores que precisam organizar as informações econômicas, produtivas e documentais de suas propriedades.",
+agroText2:"O futuro portal permitirá consultar em um único espaço informações sobre campos, lotes, campanhas, gado, SISA, brincos, movimentações e resultados.",
+agroButton:"Consultar sobre Agro",
+agroPanelTitle:"Gestão Agro",
+agro1:"🌾 Campos e propriedades",
+agro2:"📐 Área e lotes",
+agro3:"🚜 Campanhas agrícolas",
+agro4:"🌱 Cultivos",
+agro5:"🐄 Gado",
+agro6:"🏷️ Brincos",
+agro7:"📋 SISA",
+agro8:"🚚 Movimentações",
+agro9:"💰 Receitas",
+agro10:"📉 Despesas",
+agro11:"📊 Comparativos",
+agro12:"📁 Documentação",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"Sua informação, sempre ao seu alcance.",
+portalText:"Um espaço digital privado onde cada cliente poderá consultar suas informações contábeis, tributárias e, quando aplicável, agropecuárias.",
+portalButton:"Entrar no portal",
+portalFeature1:"📊 Receitas e despesas",
+portalFeature2:"🧾 Situação tributária",
+portalFeature3:"📅 Vencimentos",
+portalFeature4:"🌾 Informações Agro",
+portalFeature5:"📈 Comparativos",
+portalFeature6:"📁 Documentação",
+
+newsEyebrow:"Novidades",
+newsTitle:"Atualidades do escritório.",
+newsText:"Informações profissionais, novidades tributárias, atualizações e participação de María Sol Iglesias.",
+newsCategory1:"Atualidade tributária",
+newsTitle1:"Novidades fiscais",
+newsText1:"Este espaço será destinado à comunicação de atualizações tributárias e profissionais.",
+newsCategory2:"Entrevistas",
+newsTitle2:"María Sol Iglesias",
+newsText2:"Um espaço para compartilhar entrevistas, artigos, participações e conteúdos profissionais.",
+newsCategory3:"Setor agropecuário",
+newsTitle3:"Atualidade do agro",
+newsText3:"Informações de interesse para produtores rurais e empresas do setor.",
+
+calendarEyebrow:"Calendário",
+calendarTitle:"Vencimentos e datas importantes.",
+calendarText:"O calendário público oferece informações gerais. Os vencimentos particulares de cada cliente estarão disponíveis dentro do portal privado.",
+calendarDate:"Data",
+calendarObligation:"Obrigação",
+calendarPeriod:"Período",
+calendarStatus:"Status",
+calendarNext:"Próximo",
+incomeTax:"Imposto de renda",
+advance:"Antecipação",
+
+formsEyebrow:"Contato profissional",
+formsTitle:"Vamos começar a trabalhar juntos.",
+formsText:"Solicite informações para começar a trabalhar com o escritório ou faça uma consulta profissional.",
+clientFormTitle:"Quero ser cliente",
+questionFormTitle:"Fazer uma consulta",
+nameLabel:"Nome e sobrenome",
+nameLabelShort:"Nome",
+emailLabel:"Email",
+phoneLabel:"Telefone",
+activityLabel:"Atividade",
+messageLabel:"Mensagem",
+topicLabel:"Tema",
+questionLabel:"Consulta",
+selectActivity:"Selecionar",
+activityCompany:"Empresa",
+activityEntrepreneur:"Empreendedor",
+activityAgro:"Produtor rural",
+activityProfessional:"Profissional",
+activityMono:"Monotributista",
+activityOther:"Outro",
+activityPlaceholder:"Conte-nos brevemente sobre sua atividade.",
+selectTopic:"Selecionar",
+topicAccounting:"Contabilidade",
+topicTaxes:"Impostos",
+topicAgro:"Agro",
+topicMono:"Monotributo",
+topicCompanies:"Empresas",
+topicOther:"Outro",
+contactRequestButton:"Solicitar contato",
+sendQuestionButton:"Enviar consulta",
+
+agendaEyebrow:"Agenda",
+agendaTitle:"Agende uma reunião com María Sol.",
+agendaText:"Reserve uma reunião com o escritório selecionando o dia e horário que melhor se adapte à sua disponibilidade.",
+agendaBoxTitle:"📅 Reuniões profissionais",
+agendaBoxText:"Escolha um dia e horário disponível para se reunir com María Sol Iglesias.",
+agendaButton:"Reservar reunião",
+
+contactEyebrow:"Contato",
+contactTitle:"Vamos conversar sobre seu projeto.",
+contactText:"Se quiser organizar sua situação contábil, conhecer nossos serviços ou fazer uma consulta, entre em contato com o escritório.",
+contactButton:"Quero ser cliente",
+accountant:"Contadora Pública",
+maps:"Ver localização no Google Maps",
+footerLocation:"Carlos Casares · Buenos Aires · Argentina",
+
+formRequired:"Preencha todos os campos obrigatórios.",
+formEmail:"Digite um email válido.",
+formSending:"Enviando...",
+formSuccessClient:"Obrigado! Recebemos sua solicitação de contato.",
+formSuccessQuestion:"Obrigado! Recebemos sua consulta.",
+formError:"Não foi possível enviar as informações. Tente novamente."
+},
+
+
+fr: {
+
+navHome:"Accueil",
+navAbout:"À propos",
+navServices:"Services",
+navAgro:"Agriculture",
+navNews:"Actualités",
+navCalendar:"Échéances",
+navContact:"Contact",
+navPortal:"Portail clients",
+
+heroEyebrow:"Cabinet comptable",
+heroTitle:"La comptabilité avec <span>une vision d'avenir.</span>",
+heroText:"Un cabinet comptable moderne, proche et stratégique, créé pour accompagner les particuliers, les entreprises et les producteurs agricoles à chaque étape de leur développement.",
+heroButton:"Devenir client",
+heroSecondary:"Découvrir le cabinet",
+
+aboutEyebrow:"À propos",
+aboutTitle:"Une autre façon de faire de la comptabilité.",
+aboutP1:"Estudio Contable Iglesias est né d'une vision professionnelle qui cherche à combiner la rigueur comptable avec une attention proche, claire et personnalisée.",
+aboutP2:"Le cabinet est dirigé par María Sol Iglesias, experte-comptable, avec une approche orientée vers la transformation, la technologie et la croissance durable de ses clients.",
+aboutP3:"L'objectif est de faire de l'information comptable un outil permettant de prendre de meilleures décisions.",
+aboutButton:"Découvrir notre proposition",
+
+historyTitle:"L'histoire du cabinet",
+historyStartTitle:"Le début",
+historyStartText:"Un projet professionnel construit autour de la vocation comptable et du désir de créer son propre cabinet.",
+historyPresentTitle:"Le présent",
+historyPresentText:"Une proposition moderne qui intègre comptabilité, fiscalité, technologie et accompagnement personnalisé.",
+historyFutureTitle:"L'avenir",
+historyFutureText:"Une plateforme numérique propre pour simplifier la relation entre le cabinet et ses clients.",
+
+evolutionEyebrow:"Notre évolution",
+evolutionTitle:"Un cabinet construit avec une vision.",
+evolutionText:"L'histoire d'Estudio Contable Iglesias est pensée comme un chemin de croissance, d'innovation et de proximité.",
+vocacionTitle:"Vocation",
+vocacionText:"La profession comme point de départ et la recherche constante de l'excellence comme moteur.",
+innovationTitle:"Innovation",
+innovationText:"Des outils numériques pour rendre l'information plus accessible et utile.",
+growthTitle:"Croissance",
+growthText:"Accompagner chaque client avec des informations claires et fiables.",
+
+valuesEyebrow:"Nos valeurs",
+valuesTitle:"Mission, vision et engagement.",
+valuesText:"Trois piliers qui orientent chaque décision du cabinet.",
+missionTitle:"Mission",
+missionText:"Fournir des services comptables et fiscaux professionnels, clairs et personnalisés, en utilisant la technologie pour améliorer l'expérience et la prise de décision des clients.",
+visionTitle:"Vision",
+visionText:"Construire un cabinet comptable moderne, innovant et proche, reconnu pour sa qualité professionnelle, sa spécialisation et son utilisation responsable de la technologie.",
+commitmentTitle:"Engagement",
+commitmentText:"Travailler avec responsabilité, confidentialité, transparence et dévouement, en comprenant que derrière chaque chiffre se trouve une personne, une entreprise ou un projet.",
+
+sustainabilityEyebrow:"Durabilité",
+sustainabilityTitle:"Grandir, c'est aussi prendre soin.",
+sustainabilityP1:"L'engagement d'Estudio Contable Iglesias en faveur de la durabilité fait partie d'une vision professionnelle à long terme.",
+sustainabilityP2:"Nous cherchons à réduire l'utilisation inutile du papier, à numériser les processus et à promouvoir des outils permettant de travailler plus efficacement.",
+sustainabilityP3:"Dans le secteur agricole, nous croyons également à l'importance d'une gestion responsable des informations productives et économiques.",
+sustainabilityBoxTitle:"Notre engagement",
+sustainability1:"🌱 Numérisation des processus",
+sustainability2:"📄 Réduction de l'utilisation du papier",
+sustainability3:"💻 Gestion documentaire numérique",
+sustainability4:"🌾 Informations pour une gestion agricole responsable",
+sustainability5:"♻️ Utilisation efficace des ressources",
+sustainability6:"🤝 Croissance durable",
+
+servicesEyebrow:"Services",
+servicesTitle:"Une vision globale de votre activité.",
+servicesText:"Des solutions comptables et fiscales adaptées à chaque réalité professionnelle et entrepreneuriale.",
+serviceAccountingTitle:"Comptabilité",
+serviceAccountingText:"Des informations comptables organisées pour comprendre la réalité économique et accompagner la prise de décision.",
+serviceTaxesTitle:"Fiscalité",
+serviceTaxesText:"Planification et respect des obligations fiscales avec un suivi personnalisé.",
+serviceCompaniesTitle:"Entreprises",
+serviceCompaniesText:"Accompagnement comptable et financier pour les entreprises et projets en croissance.",
+serviceAgroTitle:"Agriculture",
+serviceAgroText:"Gestion comptable et suivi des informations économiques et productives des producteurs agricoles.",
+serviceMonoTitle:"Monotributo",
+serviceMonoText:"Suivi de la facturation, de la catégorie, des obligations et de la situation fiscale.",
+serviceAdviceTitle:"Conseil",
+serviceAdviceText:"Analyse professionnelle pour vous aider à comprendre vos chiffres et à prendre de meilleures décisions.",
+
+agroEyebrow:"Spécialisation agricole",
+agroTitle:"Le secteur agricole a aussi besoin d'informations.",
+agroText1:"Une proposition pensée pour les producteurs qui doivent organiser les informations économiques, productives et documentaires de leurs exploitations.",
+agroText2:"Le futur portail permettra de consulter au même endroit les informations relatives aux champs, parcelles, campagnes, élevage, SISA, mouvements et résultats.",
+agroButton:"Consulter pour l'agriculture",
+agroPanelTitle:"Gestion agricole",
+agro1:"🌾 Champs et exploitations",
+agro2:"📐 Surfaces et parcelles",
+agro3:"🚜 Campagnes agricoles",
+agro4:"🌱 Cultures",
+agro5:"🐄 Élevage",
+agro6:"🏷️ Identifiants",
+agro7:"📋 SISA",
+agro8:"🚚 Mouvements",
+agro9:"💰 Revenus",
+agro10:"📉 Dépenses",
+agro11:"📊 Comparatifs",
+agro12:"📁 Documentation",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"Vos informations, toujours à portée de main.",
+portalText:"Un espace numérique privé où chaque client pourra consulter ses informations comptables, fiscales et, le cas échéant, agricoles.",
+portalButton:"Accéder au portail",
+portalFeature1:"📊 Revenus et dépenses",
+portalFeature2:"🧾 Situation fiscale",
+portalFeature3:"📅 Échéances",
+portalFeature4:"🌾 Informations agricoles",
+portalFeature5:"📈 Comparatifs",
+portalFeature6:"📁 Documentation",
+
+newsEyebrow:"Actualités",
+newsTitle:"Actualités du cabinet.",
+newsText:"Informations professionnelles, nouveautés fiscales, mises à jour et participation de María Sol Iglesias.",
+newsCategory1:"Actualité fiscale",
+newsTitle1:"Nouveautés fiscales",
+newsText1:"Cet espace sera consacré aux mises à jour fiscales et professionnelles.",
+newsCategory2:"Interviews",
+newsTitle2:"María Sol Iglesias",
+newsText2:"Un espace pour partager des interviews, articles, participations et contenus professionnels.",
+newsCategory3:"Secteur agricole",
+newsTitle3:"Actualité agricole",
+newsText3:"Informations utiles pour les producteurs agricoles et les entreprises du secteur.",
+
+calendarEyebrow:"Calendrier",
+calendarTitle:"Échéances et dates importantes.",
+calendarText:"Le calendrier public fournit des informations générales. Les échéances individuelles seront disponibles dans le portail privé.",
+calendarDate:"Date",
+calendarObligation:"Obligation",
+calendarPeriod:"Période",
+calendarStatus:"Statut",
+calendarNext:"À venir",
+incomeTax:"Impôt sur le revenu",
+advance:"Acompte",
+
+formsEyebrow:"Contact professionnel",
+formsTitle:"Commençons à travailler ensemble.",
+formsText:"Demandez des informations pour commencer à travailler avec le cabinet ou envoyez une demande professionnelle.",
+clientFormTitle:"Je veux devenir client",
+questionFormTitle:"Poser une question",
+nameLabel:"Nom et prénom",
+nameLabelShort:"Nom",
+emailLabel:"Email",
+phoneLabel:"Téléphone",
+activityLabel:"Activité",
+messageLabel:"Message",
+topicLabel:"Sujet",
+questionLabel:"Question",
+selectActivity:"Sélectionner",
+activityCompany:"Entreprise",
+activityEntrepreneur:"Entrepreneur",
+activityAgro:"Producteur agricole",
+activityProfessional:"Professionnel",
+activityMono:"Contribuable Monotributo",
+activityOther:"Autre",
+activityPlaceholder:"Parlez-nous brièvement de votre activité.",
+selectTopic:"Sélectionner",
+topicAccounting:"Comptabilité",
+topicTaxes:"Fiscalité",
+topicAgro:"Agriculture",
+topicMono:"Monotributo",
+topicCompanies:"Entreprises",
+topicOther:"Autre",
+contactRequestButton:"Demander un contact",
+sendQuestionButton:"Envoyer la demande",
+
+agendaEyebrow:"Agenda",
+agendaTitle:"Planifiez une réunion avec María Sol.",
+agendaText:"Réservez une réunion avec le cabinet en choisissant le jour et l'heure qui vous conviennent le mieux.",
+agendaBoxTitle:"📅 Réunions professionnelles",
+agendaBoxText:"Choisissez un jour et une heure disponibles pour rencontrer María Sol Iglesias.",
+agendaButton:"Réserver une réunion",
+
+contactEyebrow:"Contact",
+contactTitle:"Parlons de votre projet.",
+contactText:"Si vous souhaitez organiser votre situation comptable, découvrir nos services ou poser une question, contactez le cabinet.",
+contactButton:"Je veux devenir client",
+accountant:"Experte-comptable",
+maps:"Voir l'emplacement sur Google Maps",
+footerLocation:"Carlos Casares · Buenos Aires · Argentine",
+
+formRequired:"Veuillez remplir tous les champs obligatoires.",
+formEmail:"Veuillez saisir une adresse email valide.",
+formSending:"Envoi...",
+formSuccessClient:"Merci ! Nous avons reçu votre demande de contact.",
+formSuccessQuestion:"Merci ! Nous avons reçu votre demande.",
+formError:"Nous n'avons pas pu envoyer les informations. Veuillez réessayer."
+},
+
+
+it: {
+
+navHome:"Home",
+navAbout:"Chi siamo",
+navServices:"Servizi",
+navAgro:"Agro",
+navNews:"Novità",
+navCalendar:"Scadenze",
+navContact:"Contatti",
+navPortal:"Portale clienti",
+
+heroEyebrow:"Studio contabile",
+heroTitle:"Contabilità con <span>visione del futuro.</span>",
+heroText:"Uno studio contabile moderno, vicino e strategico, creato per accompagnare persone, aziende e produttori agricoli in ogni fase della loro crescita.",
+heroButton:"Diventa cliente",
+heroSecondary:"Scopri lo studio",
+
+aboutEyebrow:"Chi siamo",
+aboutTitle:"Un modo diverso di fare contabilità.",
+aboutP1:"Estudio Contable Iglesias nasce da una visione professionale che combina il rigore della contabilità con un'attenzione vicina, chiara e personalizzata.",
+aboutP2:"Lo studio è guidato da María Sol Iglesias, Dottore Commercialista, con una visione orientata alla trasformazione, alla tecnologia e alla crescita sostenibile dei clienti.",
+aboutP3:"L'obiettivo è trasformare le informazioni contabili in uno strumento per prendere decisioni migliori.",
+aboutButton:"Scopri la nostra proposta",
+
+historyTitle:"La storia dello studio",
+historyStartTitle:"L'inizio",
+historyStartText:"Un progetto professionale costruito dalla vocazione per la contabilità e dal desiderio di creare uno studio proprio.",
+historyPresentTitle:"Il presente",
+historyPresentText:"Una proposta moderna che integra contabilità, imposte, tecnologia e assistenza personalizzata.",
+historyFutureTitle:"Il futuro",
+historyFutureText:"Una piattaforma digitale propria per semplificare il rapporto tra lo studio e i suoi clienti.",
+
+evolutionEyebrow:"La nostra evoluzione",
+evolutionTitle:"Uno studio costruito con uno scopo.",
+evolutionText:"La storia di Estudio Contable Iglesias è pensata come un percorso di crescita, innovazione e vicinanza.",
+vocacionTitle:"Vocazione",
+vocacionText:"La professione come punto di partenza e la ricerca costante dell'eccellenza come motore.",
+innovationTitle:"Innovazione",
+innovationText:"Strumenti digitali per rendere le informazioni più accessibili e utili.",
+growthTitle:"Crescita",
+growthText:"Accompagnare ogni cliente con informazioni chiare e affidabili.",
+
+valuesEyebrow:"I nostri valori",
+valuesTitle:"Missione, visione e impegno.",
+valuesText:"Tre pilastri che guidano ogni decisione dello studio.",
+missionTitle:"Missione",
+missionText:"Offrire servizi contabili e fiscali professionali, chiari e personalizzati, utilizzando la tecnologia per migliorare l'esperienza e il processo decisionale dei clienti.",
+visionTitle:"Visione",
+visionText:"Costruire uno studio contabile moderno, innovativo e vicino, riconosciuto per la qualità professionale, la specializzazione e l'uso responsabile della tecnologia.",
+commitmentTitle:"Impegno",
+commitmentText:"Lavorare con responsabilità, riservatezza, trasparenza e dedizione, comprendendo che dietro ogni numero c'è una persona, un'azienda o un progetto.",
+
+sustainabilityEyebrow:"Sostenibilità",
+sustainabilityTitle:"Crescere significa anche prendersi cura.",
+sustainabilityP1:"L'impegno di Estudio Contable Iglesias per la sostenibilità fa parte di una visione professionale a lungo termine.",
+sustainabilityP2:"Cerchiamo di ridurre l'uso inutile della carta, digitalizzare i processi e promuovere strumenti che permettano di lavorare in modo più efficiente.",
+sustainabilityP3:"Nel settore agricolo crediamo inoltre nell'importanza di una gestione responsabile delle informazioni produttive ed economiche.",
+sustainabilityBoxTitle:"Il nostro impegno",
+sustainability1:"🌱 Digitalizzazione dei processi",
+sustainability2:"📄 Riduzione dell'uso della carta",
+sustainability3:"💻 Gestione documentale digitale",
+sustainability4:"🌾 Informazioni per una gestione agricola responsabile",
+sustainability5:"♻️ Uso efficiente delle risorse",
+sustainability6:"🤝 Crescita sostenibile",
+
+servicesEyebrow:"Servizi",
+servicesTitle:"Una visione completa della tua attività.",
+servicesText:"Soluzioni contabili e fiscali adattate a ogni realtà professionale e aziendale.",
+serviceAccountingTitle:"Contabilità",
+serviceAccountingText:"Informazioni contabili organizzate per comprendere la realtà economica e supportare le decisioni.",
+serviceTaxesTitle:"Imposte",
+serviceTaxesText:"Pianificazione e adempimento degli obblighi fiscali con monitoraggio personalizzato.",
+serviceCompaniesTitle:"Aziende",
+serviceCompaniesText:"Supporto contabile e finanziario per aziende, attività e progetti in crescita.",
+serviceAgroTitle:"Agro",
+serviceAgroText:"Gestione contabile e monitoraggio delle informazioni economiche e produttive per i produttori agricoli.",
+serviceMonoTitle:"Monotributo",
+serviceMonoText:"Monitoraggio della fatturazione, categoria, obblighi e situazione fiscale.",
+serviceAdviceTitle:"Consulenza",
+serviceAdviceText:"Analisi professionale per aiutarti a comprendere i tuoi numeri e prendere decisioni più consapevoli.",
+
+agroEyebrow:"Specializzazione agricola",
+agroTitle:"Anche l'agricoltura ha bisogno di informazioni.",
+agroText1:"Una proposta pensata per i produttori che devono organizzare le informazioni economiche, produttive e documentali delle loro attività.",
+agroText2:"Il futuro portale permetterà di consultare in un unico spazio informazioni su campi, lotti, campagne, bestiame, SISA, movimenti e risultati.",
+agroButton:"Consulta per Agro",
+agroPanelTitle:"Gestione Agro",
+agro1:"🌾 Campi e aziende agricole",
+agro2:"📐 Superficie e lotti",
+agro3:"🚜 Campagne agricole",
+agro4:"🌱 Colture",
+agro5:"🐄 Bestiame",
+agro6:"🏷️ Identificativi",
+agro7:"📋 SISA",
+agro8:"🚚 Movimenti",
+agro9:"💰 Entrate",
+agro10:"📉 Spese",
+agro11:"📊 Confronti",
+agro12:"📁 Documentazione",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"Le tue informazioni, sempre a portata di mano.",
+portalText:"Uno spazio digitale privato dove ogni cliente può consultare le proprie informazioni contabili, fiscali e, quando applicabile, agricole.",
+portalButton:"Accedi al portale",
+portalFeature1:"📊 Entrate e spese",
+portalFeature2:"🧾 Situazione fiscale",
+portalFeature3:"📅 Scadenze",
+portalFeature4:"🌾 Informazioni agricole",
+portalFeature5:"📈 Confronti",
+portalFeature6:"📁 Documentazione",
+
+newsEyebrow:"Novità",
+newsTitle:"Attualità dello studio.",
+newsText:"Informazioni professionali, novità fiscali, aggiornamenti e partecipazione di María Sol Iglesias.",
+newsCategory1:"Attualità fiscale",
+newsTitle1:"Novità fiscali",
+newsText1:"Questo spazio sarà dedicato agli aggiornamenti fiscali e professionali.",
+newsCategory2:"Interviste",
+newsTitle2:"María Sol Iglesias",
+newsText2:"Uno spazio per condividere interviste, articoli, partecipazioni e contenuti professionali.",
+newsCategory3:"Settore agricolo",
+newsTitle3:"Attualità agricola",
+newsText3:"Informazioni di interesse per produttori agricoli e aziende del settore.",
+
+calendarEyebrow:"Calendario",
+calendarTitle:"Scadenze e date importanti.",
+calendarText:"Il calendario pubblico offre informazioni generali. Le scadenze personali saranno disponibili nel portale privato.",
+calendarDate:"Data",
+calendarObligation:"Obbligo",
+calendarPeriod:"Periodo",
+calendarStatus:"Stato",
+calendarNext:"Prossimo",
+incomeTax:"Imposta sul reddito",
+advance:"Acconto",
+
+formsEyebrow:"Contatto professionale",
+formsTitle:"Iniziamo a lavorare insieme.",
+formsText:"Richiedi informazioni per iniziare a lavorare con lo studio o invia una richiesta professionale.",
+clientFormTitle:"Voglio diventare cliente",
+questionFormTitle:"Fai una domanda",
+nameLabel:"Nome e cognome",
+nameLabelShort:"Nome",
+emailLabel:"Email",
+phoneLabel:"Telefono",
+activityLabel:"Attività",
+messageLabel:"Messaggio",
+topicLabel:"Argomento",
+questionLabel:"Domanda",
+selectActivity:"Seleziona",
+activityCompany:"Azienda",
+activityEntrepreneur:"Imprenditore",
+activityAgro:"Produttore agricolo",
+activityProfessional:"Professionista",
+activityMono:"Contribuente Monotributo",
+activityOther:"Altro",
+activityPlaceholder:"Raccontaci brevemente della tua attività.",
+selectTopic:"Seleziona",
+topicAccounting:"Contabilità",
+topicTaxes:"Imposte",
+topicAgro:"Agro",
+topicMono:"Monotributo",
+topicCompanies:"Aziende",
+topicOther:"Altro",
+contactRequestButton:"Richiedi contatto",
+sendQuestionButton:"Invia richiesta",
+
+agendaEyebrow:"Agenda",
+agendaTitle:"Prenota un incontro con María Sol.",
+agendaText:"Prenota un incontro con lo studio scegliendo il giorno e l'orario più adatti alla tua disponibilità.",
+agendaBoxTitle:"📅 Riunioni professionali",
+agendaBoxText:"Scegli un giorno e un orario disponibile per incontrare María Sol Iglesias.",
+agendaButton:"Prenota un incontro",
+
+contactEyebrow:"Contatti",
+contactTitle:"Parliamo del tuo progetto.",
+contactText:"Se vuoi organizzare la tua situazione contabile, conoscere i nostri servizi o fare una domanda, contatta lo studio.",
+contactButton:"Voglio diventare cliente",
+accountant:"Dottore Commercialista",
+maps:"Vedi posizione su Google Maps",
+footerLocation:"Carlos Casares · Buenos Aires · Argentina",
+
+formRequired:"Compila tutti i campi obbligatori.",
+formEmail:"Inserisci un indirizzo email valido.",
+formSending:"Invio...",
+formSuccessClient:"Grazie! Abbiamo ricevuto la tua richiesta di contatto.",
+formSuccessQuestion:"Grazie! Abbiamo ricevuto la tua richiesta.",
+formError:"Non è stato possibile inviare le informazioni. Riprova."
+},
+
+
+de: {
+
+navHome:"Startseite",
+navAbout:"Über uns",
+navServices:"Leistungen",
+navAgro:"Landwirtschaft",
+navNews:"Neuigkeiten",
+navCalendar:"Fristen",
+navContact:"Kontakt",
+navPortal:"Kundenportal",
+
+heroEyebrow:"Steuer- und Buchhaltungsbüro",
+heroTitle:"Buchhaltung mit <span>Vision für die Zukunft.</span>",
+heroText:"Ein modernes, persönliches und strategisches Buchhaltungsbüro zur Begleitung von Privatpersonen, Unternehmen und landwirtschaftlichen Produzenten in jeder Wachstumsphase.",
+heroButton:"Kunde werden",
+heroSecondary:"Das Büro kennenlernen",
+
+aboutEyebrow:"Über uns",
+aboutTitle:"Eine andere Art, Buchhaltung zu machen.",
+aboutP1:"Estudio Contable Iglesias entstand aus einer professionellen Vision, die fachliche Genauigkeit mit persönlicher, klarer und individueller Betreuung verbindet.",
+aboutP2:"Das Büro wird von María Sol Iglesias, Wirtschaftsprüferin, geleitet und verbindet Transformation, Technologie und nachhaltiges Wachstum.",
+aboutP3:"Das Ziel ist, Buchhaltungsinformationen nicht nur als Verpflichtung, sondern als Grundlage für bessere Entscheidungen zu nutzen.",
+aboutButton:"Unser Angebot kennenlernen",
+
+historyTitle:"Die Geschichte des Büros",
+historyStartTitle:"Der Anfang",
+historyStartText:"Ein professionelles Projekt aus Leidenschaft für die Buchhaltung und dem Wunsch nach einem eigenen Büro.",
+historyPresentTitle:"Die Gegenwart",
+historyPresentText:"Ein modernes Angebot aus Buchhaltung, Steuern, Technologie und persönlicher Betreuung.",
+historyFutureTitle:"Die Zukunft",
+historyFutureText:"Eine eigene digitale Plattform zur Vereinfachung der Beziehung zwischen Büro und Kunden.",
+
+evolutionEyebrow:"Unsere Entwicklung",
+evolutionTitle:"Ein Büro mit einem klaren Ziel.",
+evolutionText:"Die Geschichte von Estudio Contable Iglesias steht für Wachstum, Innovation und persönliche Nähe.",
+vocacionTitle:"Berufung",
+vocacionText:"Der Beruf als Ausgangspunkt und das Streben nach Exzellenz als Antrieb.",
+innovationTitle:"Innovation",
+innovationText:"Digitale Werkzeuge machen Informationen zugänglicher und nützlicher.",
+growthTitle:"Wachstum",
+growthText:"Jeden Kunden mit klaren und zuverlässigen Informationen begleiten.",
+
+valuesEyebrow:"Unsere Werte",
+valuesTitle:"Mission, Vision und Engagement.",
+valuesText:"Drei Säulen, die jede Entscheidung des Büros leiten.",
+missionTitle:"Mission",
+missionText:"Professionelle, klare und individuelle Buchhaltungs- und Steuerleistungen anbieten und Technologie nutzen, um die Erfahrung und Entscheidungsfindung unserer Kunden zu verbessern.",
+visionTitle:"Vision",
+visionText:"Ein modernes, innovatives und persönliches Buchhaltungsbüro aufzubauen, das für Qualität, Spezialisierung und verantwortungsvollen Technologieeinsatz steht.",
+commitmentTitle:"Engagement",
+commitmentText:"Mit Verantwortung, Vertraulichkeit, Transparenz und Engagement arbeiten und verstehen, dass hinter jeder Zahl ein Mensch, ein Unternehmen oder ein Projekt steht.",
+
+sustainabilityEyebrow:"Nachhaltigkeit",
+sustainabilityTitle:"Wachsen heißt auch, Verantwortung zu übernehmen.",
+sustainabilityP1:"Das Nachhaltigkeitsengagement von Estudio Contable Iglesias ist Teil einer langfristigen professionellen Vision.",
+sustainabilityP2:"Wir reduzieren unnötigen Papierverbrauch, digitalisieren Prozesse und fördern effiziente Arbeitsweisen.",
+sustainabilityP3:"Im landwirtschaftlichen Bereich unterstützen wir eine verantwortungsvolle Verwaltung produktiver und wirtschaftlicher Informationen.",
+sustainabilityBoxTitle:"Unser Engagement",
+sustainability1:"🌱 Digitalisierung von Prozessen",
+sustainability2:"📄 Weniger Papierverbrauch",
+sustainability3:"💻 Digitale Dokumentenverwaltung",
+sustainability4:"🌾 Informationen für eine verantwortungsvolle Landwirtschaft",
+sustainability5:"♻️ Effiziente Ressourcennutzung",
+sustainability6:"🤝 Nachhaltiges Wachstum",
+
+servicesEyebrow:"Leistungen",
+servicesTitle:"Ein ganzheitlicher Blick auf Ihre Tätigkeit.",
+servicesText:"Buchhaltungs- und Steuerlösungen, angepasst an jede berufliche und unternehmerische Situation.",
+serviceAccountingTitle:"Buchhaltung",
+serviceAccountingText:"Geordnete Buchhaltungsinformationen zum Verständnis der wirtschaftlichen Situation und zur Unterstützung von Entscheidungen.",
+serviceTaxesTitle:"Steuern",
+serviceTaxesText:"Planung und Erfüllung steuerlicher Pflichten mit persönlicher Betreuung.",
+serviceCompaniesTitle:"Unternehmen",
+serviceCompaniesText:"Buchhalterische und finanzielle Begleitung für Unternehmen und wachsende Projekte.",
+serviceAgroTitle:"Landwirtschaft",
+serviceAgroText:"Buchhaltung und Überwachung wirtschaftlicher und produktiver Informationen für landwirtschaftliche Produzenten.",
+serviceMonoTitle:"Monotributo",
+serviceMonoText:"Überwachung von Rechnungsstellung, Kategorie, Pflichten und Steuerstatus.",
+serviceAdviceTitle:"Beratung",
+serviceAdviceText:"Professionelle Analyse, um Ihre Zahlen besser zu verstehen und fundierte Entscheidungen zu treffen.",
+
+agroEyebrow:"Spezialisierung Landwirtschaft",
+agroTitle:"Auch die Landwirtschaft braucht Informationen.",
+agroText1:"Ein Angebot für Produzenten, die wirtschaftliche, produktive und dokumentarische Informationen ihrer Betriebe organisieren möchten.",
+agroText2:"Das zukünftige Portal ermöglicht den Zugriff auf Informationen über Felder, Parzellen, Kampagnen, Vieh, SISA, Kennzeichnungen, Bewegungen und Ergebnisse an einem Ort.",
+agroButton:"Landwirtschaft anfragen",
+agroPanelTitle:"Landwirtschaftliche Verwaltung",
+agro1:"🌾 Felder und Betriebe",
+agro2:"📐 Flächen und Parzellen",
+agro3:"🚜 Landwirtschaftliche Kampagnen",
+agro4:"🌱 Kulturen",
+agro5:"🐄 Viehbestand",
+agro6:"🏷️ Kennzeichnungen",
+agro7:"📋 SISA",
+agro8:"🚚 Bewegungen",
+agro9:"💰 Einnahmen",
+agro10:"📉 Ausgaben",
+agro11:"📊 Vergleiche",
+agro12:"📁 Dokumentation",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"Ihre Informationen, immer griffbereit.",
+portalText:"Ein privater digitaler Bereich, in dem jeder Kunde seine buchhalterischen, steuerlichen und gegebenenfalls landwirtschaftlichen Informationen einsehen kann.",
+portalButton:"Portal öffnen",
+portalFeature1:"📊 Einnahmen und Ausgaben",
+portalFeature2:"🧾 Steuerstatus",
+portalFeature3:"📅 Fristen",
+portalFeature4:"🌾 Landwirtschaftliche Informationen",
+portalFeature5:"📈 Vergleiche",
+portalFeature6:"📁 Dokumentation",
+
+newsEyebrow:"Neuigkeiten",
+newsTitle:"Aktuelles aus dem Büro.",
+newsText:"Professionelle Informationen, steuerliche Neuigkeiten, Aktualisierungen und Beiträge von María Sol Iglesias.",
+newsCategory1:"Steuerliche Aktualität",
+newsTitle1:"Steuerliche Neuigkeiten",
+newsText1:"Dieser Bereich dient der Kommunikation steuerlicher und beruflicher Aktualisierungen.",
+newsCategory2:"Interviews",
+newsTitle2:"María Sol Iglesias",
+newsText2:"Ein Bereich für Interviews, Beiträge und professionelle Inhalte.",
+newsCategory3:"Landwirtschaft",
+newsTitle3:"Aktuelles aus der Landwirtschaft",
+newsText3:"Informationen für landwirtschaftliche Produzenten und Unternehmen.",
+
+calendarEyebrow:"Kalender",
+calendarTitle:"Fristen und wichtige Termine.",
+calendarText:"Der öffentliche Kalender bietet allgemeine Informationen. Individuelle Fristen werden im privaten Portal verfügbar sein.",
+calendarDate:"Datum",
+calendarObligation:"Verpflichtung",
+calendarPeriod:"Zeitraum",
+calendarStatus:"Status",
+calendarNext:"Bevorstehend",
+incomeTax:"Einkommensteuer",
+advance:"Vorauszahlung",
+
+formsEyebrow:"Professioneller Kontakt",
+formsTitle:"Beginnen wir gemeinsam.",
+formsText:"Fordern Sie Informationen an, um mit dem Büro zusammenzuarbeiten oder eine professionelle Anfrage zu senden.",
+clientFormTitle:"Kunde werden",
+questionFormTitle:"Eine Frage stellen",
+nameLabel:"Vor- und Nachname",
+nameLabelShort:"Name",
+emailLabel:"E-Mail",
+phoneLabel:"Telefon",
+activityLabel:"Tätigkeit",
+messageLabel:"Nachricht",
+topicLabel:"Thema",
+questionLabel:"Anfrage",
+selectActivity:"Auswählen",
+activityCompany:"Unternehmen",
+activityEntrepreneur:"Unternehmer",
+activityAgro:"Landwirtschaftlicher Produzent",
+activityProfessional:"Berufstätiger",
+activityMono:"Monotributo",
+activityOther:"Andere",
+activityPlaceholder:"Erzählen Sie uns kurz von Ihrer Tätigkeit.",
+selectTopic:"Auswählen",
+topicAccounting:"Buchhaltung",
+topicTaxes:"Steuern",
+topicAgro:"Landwirtschaft",
+topicMono:"Monotributo",
+topicCompanies:"Unternehmen",
+topicOther:"Andere",
+contactRequestButton:"Kontakt anfordern",
+sendQuestionButton:"Anfrage senden",
+
+agendaEyebrow:"Termin",
+agendaTitle:"Vereinbaren Sie ein Gespräch mit María Sol.",
+agendaText:"Buchen Sie einen Termin mit dem Büro und wählen Sie den für Sie passenden Tag und Zeitpunkt.",
+agendaBoxTitle:"📅 Professionelle Besprechungen",
+agendaBoxText:"Wählen Sie einen verfügbaren Termin für ein Gespräch mit María Sol Iglesias.",
+agendaButton:"Termin buchen",
+
+contactEyebrow:"Kontakt",
+contactTitle:"Sprechen wir über Ihr Projekt.",
+contactText:"Wenn Sie Ihre Buchhaltung organisieren, unsere Leistungen kennenlernen oder eine Frage stellen möchten, kontaktieren Sie das Büro.",
+contactButton:"Kunde werden",
+accountant:"Wirtschaftsprüferin",
+maps:"Standort auf Google Maps ansehen",
+footerLocation:"Carlos Casares · Buenos Aires · Argentinien",
+
+formRequired:"Bitte füllen Sie alle Pflichtfelder aus.",
+formEmail:"Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+formSending:"Wird gesendet...",
+formSuccessClient:"Vielen Dank! Wir haben Ihre Kontaktanfrage erhalten.",
+formSuccessQuestion:"Vielen Dank! Wir haben Ihre Anfrage erhalten.",
+formError:"Die Informationen konnten nicht gesendet werden. Bitte versuchen Sie es erneut."
+},
+
+
+zh: {
+
+navHome:"首页",
+navAbout:"关于我们",
+navServices:"服务",
+navAgro:"农业",
+navNews:"最新消息",
+navCalendar:"截止日期",
+navContact:"联系我们",
+navPortal:"客户门户",
+
+heroEyebrow:"会计事务所",
+heroTitle:"以<span>未来视野</span>提供会计服务。",
+heroText:"一家现代、专业且注重客户关系的会计事务所，为个人、企业和农业生产者提供成长各阶段的支持。",
+heroButton:"成为客户",
+heroSecondary:"了解事务所",
+
+aboutEyebrow:"关于我们",
+aboutTitle:"不同的会计服务方式。",
+aboutP1:"Iglesias会计事务所致力于将专业会计的严谨性与清晰、亲切和个性化的服务结合起来。",
+aboutP2:"事务所由公共会计师 María Sol Iglesias 负责，重视转型、技术和客户的可持续发展。",
+aboutP3:"我们的目标是让会计信息不仅是一项义务，更成为帮助客户做出更好决策的工具。",
+aboutButton:"了解我们的方案",
+
+historyTitle:"事务所的发展历程",
+historyStartTitle:"开始",
+historyStartText:"源于对会计职业的热爱以及建立自己事务所的愿望。",
+historyPresentTitle:"现在",
+historyPresentText:"融合会计、税务、技术和个性化服务的现代方案。",
+historyFutureTitle:"未来",
+historyFutureText:"建立专属数字平台，让事务所与客户之间的沟通更加简单。",
+
+evolutionEyebrow:"我们的发展",
+evolutionTitle:"一家有目标的事务所。",
+evolutionText:"Iglesias会计事务所的发展是一条关于成长、创新与专业陪伴的道路。",
+vocacionTitle:"职业使命",
+vocacionText:"以专业为起点，以持续追求卓越为动力。",
+innovationTitle:"创新",
+innovationText:"利用数字工具让信息更加容易获取和使用。",
+growthTitle:"成长",
+growthText:"通过清晰可靠的信息帮助每一位客户做出决定。",
+
+valuesEyebrow:"我们的价值观",
+valuesTitle:"使命、愿景与承诺。",
+valuesText:"指导事务所每项决定的三个支柱。",
+missionTitle:"使命",
+missionText:"提供专业、清晰和个性化的会计及税务服务，并利用技术改善客户体验和决策过程。",
+visionTitle:"愿景",
+visionText:"打造现代、创新且值得信赖的会计事务所，以专业品质、专业化和负责任的技术应用赢得认可。",
+commitmentTitle:"承诺",
+commitmentText:"以责任、保密、透明和敬业的态度工作，因为每一个数字背后都代表着一个人、一家公司或一个项目。",
+
+sustainabilityEyebrow:"可持续发展",
+sustainabilityTitle:"成长也意味着关怀。",
+sustainabilityP1:"Iglesias会计事务所对可持续发展的承诺是长期专业理念的一部分。",
+sustainabilityP2:"我们努力减少不必要的纸张使用，推进流程数字化，并使用更高效的工具。",
+sustainabilityP3:"在农业领域，我们也重视对生产和经济信息进行负责任的管理。",
+sustainabilityBoxTitle:"我们的承诺",
+sustainability1:"🌱 流程数字化",
+sustainability2:"📄 减少纸张使用",
+sustainability3:"💻 数字文件管理",
+sustainability4:"🌾 负责任的农业管理信息",
+sustainability5:"♻️ 高效利用资源",
+sustainability6:"🤝 可持续增长",
+
+servicesEyebrow:"服务",
+servicesTitle:"全面了解您的业务。",
+servicesText:"根据不同职业和企业需求提供会计及税务解决方案。",
+serviceAccountingTitle:"会计",
+serviceAccountingText:"整理会计信息，帮助了解经济状况并支持决策。",
+serviceTaxesTitle:"税务",
+serviceTaxesText:"提供税务规划和义务履行的个性化跟踪。",
+serviceCompaniesTitle:"企业",
+serviceCompaniesText:"为企业、创业项目和成长中的业务提供会计及财务支持。",
+serviceAgroTitle:"农业",
+serviceAgroText:"为农业生产者提供会计管理以及经济和生产信息跟踪。",
+serviceMonoTitle:"Monotributo",
+serviceMonoText:"跟踪开票、类别、义务和税务状况。",
+serviceAdviceTitle:"咨询",
+serviceAdviceText:"通过专业分析帮助您理解数字并做出更好的决策。",
+
+agroEyebrow:"农业专业服务",
+agroTitle:"农业同样需要信息。",
+agroText1:"为需要整理农场经济、生产和文件信息的生产者设计的方案。",
+agroText2:"未来的门户将允许用户在一个空间内查看农场、地块、生产季、牲畜、SISA、标识、流动和结果信息。",
+agroButton:"咨询农业服务",
+agroPanelTitle:"农业管理",
+agro1:"🌾 农场和经营场所",
+agro2:"📐 面积和地块",
+agro3:"🚜 农业生产季",
+agro4:"🌱 作物",
+agro5:"🐄 牲畜",
+agro6:"🏷️ 标识",
+agro7:"📋 SISA",
+agro8:"🚚 流动",
+agro9:"💰 收入",
+agro10:"📉 支出",
+agro11:"📊 对比",
+agro12:"📁 文件",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"您的信息，随时触手可及。",
+portalText:"私人数字空间，客户可以查询会计、税务以及适用情况下的农业信息。",
+portalButton:"进入门户",
+portalFeature1:"📊 收入和支出",
+portalFeature2:"🧾 税务状况",
+portalFeature3:"📅 截止日期",
+portalFeature4:"🌾 农业信息",
+portalFeature5:"📈 对比",
+portalFeature6:"📁 文件",
+
+newsEyebrow:"最新消息",
+newsTitle:"事务所动态。",
+newsText:"专业信息、税务新闻、更新以及 María Sol Iglesias 的专业内容。",
+newsCategory1:"税务动态",
+newsTitle1:"税务更新",
+newsText1:"此区域将用于发布税务和专业方面的更新。",
+newsCategory2:"访谈",
+newsTitle2:"María Sol Iglesias",
+newsText2:"分享访谈、文章、专业活动和内容的空间。",
+newsCategory3:"农业部门",
+newsTitle3:"农业动态",
+newsText3:"面向农业生产者和相关企业的重要信息。",
+
+calendarEyebrow:"日历",
+calendarTitle:"截止日期和重要日期。",
+calendarText:"公共日历提供一般信息。每位客户的具体截止日期将在私人门户中提供。",
+calendarDate:"日期",
+calendarObligation:"义务",
+calendarPeriod:"期间",
+calendarStatus:"状态",
+calendarNext:"即将到来",
+incomeTax:"所得税",
+advance:"预付款",
+
+formsEyebrow:"专业联系",
+formsTitle:"让我们开始合作。",
+formsText:"您可以申请与事务所合作的信息，也可以提交专业咨询。",
+clientFormTitle:"成为客户",
+questionFormTitle:"提出咨询",
+nameLabel:"姓名",
+nameLabelShort:"姓名",
+emailLabel:"电子邮件",
+phoneLabel:"电话",
+activityLabel:"活动",
+messageLabel:"留言",
+topicLabel:"主题",
+questionLabel:"咨询",
+selectActivity:"请选择",
+activityCompany:"企业",
+activityEntrepreneur:"创业者",
+activityAgro:"农业生产者",
+activityProfessional:"专业人士",
+activityMono:"Monotributo纳税人",
+activityOther:"其他",
+activityPlaceholder:"请简要介绍您的业务。",
+selectTopic:"请选择",
+topicAccounting:"会计",
+topicTaxes:"税务",
+topicAgro:"农业",
+topicMono:"Monotributo",
+topicCompanies:"企业",
+topicOther:"其他",
+contactRequestButton:"申请联系",
+sendQuestionButton:"发送咨询",
+
+agendaEyebrow:"预约",
+agendaTitle:"预约与 María Sol 的会议。",
+agendaText:"选择最适合您的日期和时间，与事务所预约会议。",
+agendaBoxTitle:"📅 专业会议",
+agendaBoxText:"选择一个可用的日期和时间与 María Sol Iglesias 会面。",
+agendaButton:"预约会议",
+
+contactEyebrow:"联系我们",
+contactTitle:"让我们谈谈您的项目。",
+contactText:"如果您想整理会计情况、了解我们的服务或提出咨询，请联系我们。",
+contactButton:"成为客户",
+accountant:"公共会计师",
+maps:"在 Google Maps 上查看位置",
+footerLocation:"Carlos Casares · Buenos Aires · 阿根廷",
+
+formRequired:"请填写所有必填字段。",
+formEmail:"请输入有效的电子邮件地址。",
+formSending:"正在发送...",
+formSuccessClient:"谢谢！我们已收到您的联系申请。",
+formSuccessQuestion:"谢谢！我们已收到您的咨询。",
+formError:"信息发送失败，请稍后再试。"
+},
+
+
+ko: {
+
+navHome:"홈",
+navAbout:"회사 소개",
+navServices:"서비스",
+navAgro:"농업",
+navNews:"새 소식",
+navCalendar:"기한",
+navContact:"문의",
+navPortal:"고객 포털",
+
+heroEyebrow:"회계사무소",
+heroTitle:"미래를 바라보는 <span>회계 서비스.</span>",
+heroText:"개인, 기업 및 농업 생산자의 성장 과정에 함께하는 현대적이고 전문적인 회계사무소입니다.",
+heroButton:"고객이 되고 싶어요",
+heroSecondary:"사무소 알아보기",
+
+aboutEyebrow:"회사 소개",
+aboutTitle:"회계를 바라보는 새로운 방식.",
+aboutP1:"Estudio Contable Iglesias는 회계의 전문성과 엄격함을 친절하고 명확하며 개인화된 서비스와 결합합니다.",
+aboutP2:"사무소는 공인회계사 María Sol Iglesias가 이끌며 변화, 기술 및 고객의 지속 가능한 성장을 중요하게 생각합니다.",
+aboutP3:"회계 정보가 단순한 의무가 아니라 더 나은 의사결정을 위한 도구가 되는 것이 목표입니다.",
+aboutButton:"서비스 알아보기",
+
+historyTitle:"사무소의 역사",
+historyStartTitle:"시작",
+historyStartText:"회계에 대한 열정과 자신의 사무소를 만들고자 하는 바람에서 시작된 전문 프로젝트입니다.",
+historyPresentTitle:"현재",
+historyPresentText:"회계, 세금, 기술 및 맞춤형 서비스를 결합한 현대적인 제안입니다.",
+historyFutureTitle:"미래",
+historyFutureText:"사무소와 고객의 관계를 간소화하기 위한 자체 디지털 플랫폼을 구축합니다.",
+
+evolutionEyebrow:"우리의 성장",
+evolutionTitle:"목적을 가지고 만들어진 사무소.",
+evolutionText:"Estudio Contable Iglesias의 역사는 성장, 혁신 및 전문적인 동행의 과정입니다.",
+vocacionTitle:"전문성",
+vocacionText:"전문직을 출발점으로 지속적인 탁월함을 추구합니다.",
+innovationTitle:"혁신",
+innovationText:"디지털 도구를 활용하여 정보를 더욱 쉽게 이용할 수 있도록 합니다.",
+growthTitle:"성장",
+growthText:"명확하고 신뢰할 수 있는 정보를 통해 고객의 의사결정을 지원합니다.",
+
+valuesEyebrow:"우리의 가치",
+valuesTitle:"미션, 비전과 약속.",
+valuesText:"사무소의 모든 결정을 이끄는 세 가지 원칙입니다.",
+missionTitle:"미션",
+missionText:"전문적이고 명확하며 개인화된 회계 및 세무 서비스를 제공하고 기술을 활용하여 고객 경험과 의사결정을 개선합니다.",
+visionTitle:"비전",
+visionText:"전문적인 품질과 전문성, 책임 있는 기술 활용으로 인정받는 현대적이고 혁신적인 회계사무소를 만드는 것입니다.",
+commitmentTitle:"약속",
+commitmentText:"책임감, 기밀성, 투명성과 헌신으로 일하며 모든 숫자 뒤에는 사람, 기업 또는 프로젝트가 있다는 것을 이해합니다.",
+
+sustainabilityEyebrow:"지속가능성",
+sustainabilityTitle:"성장은 돌봄이기도 합니다.",
+sustainabilityP1:"Estudio Contable Iglesias의 지속가능성에 대한 약속은 장기적인 전문적 비전의 일부입니다.",
+sustainabilityP2:"불필요한 종이 사용을 줄이고 프로세스를 디지털화하며 효율적인 업무 방식을 추구합니다.",
+sustainabilityP3:"농업 분야에서도 생산 및 경제 정보의 책임 있는 관리를 중요하게 생각합니다.",
+sustainabilityBoxTitle:"우리의 약속",
+sustainability1:"🌱 프로세스 디지털화",
+sustainability2:"📄 종이 사용 감소",
+sustainability3:"💻 디지털 문서 관리",
+sustainability4:"🌾 책임 있는 농업 관리를 위한 정보",
+sustainability5:"♻️ 자원의 효율적 사용",
+sustainability6:"🤝 지속 가능한 성장",
+
+servicesEyebrow:"서비스",
+servicesTitle:"활동을 종합적으로 바라봅니다.",
+servicesText:"각 직업 및 기업의 상황에 맞춘 회계 및 세무 솔루션을 제공합니다.",
+serviceAccountingTitle:"회계",
+serviceAccountingText:"경제적 현실을 이해하고 의사결정을 지원할 수 있도록 회계 정보를 체계적으로 관리합니다.",
+serviceTaxesTitle:"세금",
+serviceTaxesText:"개인화된 관리를 통한 세무 계획 및 의무 이행을 지원합니다.",
+serviceCompaniesTitle:"기업",
+serviceCompaniesText:"기업과 성장 중인 프로젝트를 위한 회계 및 재무 지원을 제공합니다.",
+serviceAgroTitle:"농업",
+serviceAgroText:"농업 생산자를 위한 회계 관리와 경제 및 생산 정보의 추적을 제공합니다.",
+serviceMonoTitle:"Monotributo",
+serviceMonoText:"청구, 범주, 의무 및 세무 상태를 관리합니다.",
+serviceAdviceTitle:"자문",
+serviceAdviceText:"숫자를 이해하고 더 나은 결정을 내릴 수 있도록 전문적인 분석을 제공합니다.",
+
+agroEyebrow:"농업 전문",
+agroTitle:"농업에도 정보가 필요합니다.",
+agroText1:"농장의 경제, 생산 및 문서 정보를 체계적으로 관리해야 하는 생산자를 위한 서비스입니다.",
+agroText2:"향후 포털에서는 농장, 필지, 작물 시즌, 가축, SISA, 식별정보, 이동 및 결과를 한 곳에서 확인할 수 있습니다.",
+agroButton:"농업 서비스 문의",
+agroPanelTitle:"농업 관리",
+agro1:"🌾 농장 및 사업장",
+agro2:"📐 면적 및 필지",
+agro3:"🚜 농업 캠페인",
+agro4:"🌱 작물",
+agro5:"🐄 가축",
+agro6:"🏷️ 식별정보",
+agro7:"📋 SISA",
+agro8:"🚚 이동",
+agro9:"💰 수입",
+agro10:"📉 지출",
+agro11:"📊 비교",
+agro12:"📁 문서",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"정보를 언제나 편리하게 확인하세요.",
+portalText:"고객이 회계, 세무 및 필요한 경우 농업 관련 정보를 확인할 수 있는 비공개 디지털 공간입니다.",
+portalButton:"포털 로그인",
+portalFeature1:"📊 수입 및 지출",
+portalFeature2:"🧾 세무 상태",
+portalFeature3:"📅 기한",
+portalFeature4:"🌾 농업 정보",
+portalFeature5:"📈 비교",
+portalFeature6:"📁 문서",
+
+newsEyebrow:"새 소식",
+newsTitle:"사무소 소식",
+newsText:"전문 정보, 세무 뉴스, 업데이트 및 María Sol Iglesias의 전문 콘텐츠입니다.",
+newsCategory1:"세무 소식",
+newsTitle1:"세무 업데이트",
+newsText1:"세무 및 전문 분야의 업데이트를 전달하는 공간입니다.",
+newsCategory2:"인터뷰",
+newsTitle2:"María Sol Iglesias",
+newsText2:"인터뷰, 기사 및 전문 콘텐츠를 공유하는 공간입니다.",
+newsCategory3:"농업 분야",
+newsTitle3:"농업 소식",
+newsText3:"농업 생산자와 관련 기업을 위한 정보입니다.",
+
+calendarEyebrow:"달력",
+calendarTitle:"기한 및 중요 날짜",
+calendarText:"공개 달력은 일반적인 정보를 제공합니다. 고객별 기한은 비공개 포털에서 확인할 수 있습니다.",
+calendarDate:"날짜",
+calendarObligation:"의무",
+calendarPeriod:"기간",
+calendarStatus:"상태",
+calendarNext:"예정",
+incomeTax:"소득세",
+advance:"선납",
+
+formsEyebrow:"전문 문의",
+formsTitle:"함께 시작해 보세요.",
+formsText:"사무소와의 업무 시작에 필요한 정보를 요청하거나 전문적인 문의를 남길 수 있습니다.",
+clientFormTitle:"고객이 되고 싶어요",
+questionFormTitle:"문의하기",
+nameLabel:"이름과 성",
+nameLabelShort:"이름",
+emailLabel:"이메일",
+phoneLabel:"전화번호",
+activityLabel:"활동",
+messageLabel:"메시지",
+topicLabel:"주제",
+questionLabel:"문의 내용",
+selectActivity:"선택",
+activityCompany:"기업",
+activityEntrepreneur:"사업가",
+activityAgro:"농업 생산자",
+activityProfessional:"전문직",
+activityMono:"Monotributo 납세자",
+activityOther:"기타",
+activityPlaceholder:"활동에 대해 간단히 알려주세요.",
+selectTopic:"선택",
+topicAccounting:"회계",
+topicTaxes:"세금",
+topicAgro:"농업",
+topicMono:"Monotributo",
+topicCompanies:"기업",
+topicOther:"기타",
+contactRequestButton:"연락 요청",
+sendQuestionButton:"문의 보내기",
+
+agendaEyebrow:"예약",
+agendaTitle:"María Sol과 미팅을 예약하세요.",
+agendaText:"가능한 날짜와 시간 중 가장 편한 시간을 선택하여 미팅을 예약하세요.",
+agendaBoxTitle:"📅 전문 미팅",
+agendaBoxText:"María Sol Iglesias와 만날 수 있는 날짜와 시간을 선택하세요.",
+agendaButton:"미팅 예약",
+
+contactEyebrow:"문의",
+contactTitle:"프로젝트에 대해 이야기해 보세요.",
+contactText:"회계 상황을 정리하거나 서비스를 알아보거나 문의사항이 있다면 사무소로 연락해 주세요.",
+contactButton:"고객이 되고 싶어요",
+accountant:"공인회계사",
+maps:"Google Maps에서 위치 보기",
+footerLocation:"Carlos Casares · Buenos Aires · Argentina",
+
+formRequired:"필수 항목을 모두 입력해 주세요.",
+formEmail:"유효한 이메일 주소를 입력해 주세요.",
+formSending:"전송 중...",
+formSuccessClient:"감사합니다! 연락 요청을 접수했습니다.",
+formSuccessQuestion:"감사합니다! 문의를 접수했습니다.",
+formError:"정보를 전송할 수 없습니다. 다시 시도해 주세요."
+},
+
+
+ar: {
+
+navHome:"الرئيسية",
+navAbout:"من نحن",
+navServices:"الخدمات",
+navAgro:"القطاع الزراعي",
+navNews:"الأخبار",
+navCalendar:"المواعيد",
+navContact:"اتصل بنا",
+navPortal:"بوابة العملاء",
+
+heroEyebrow:"مكتب محاسبة",
+heroTitle:"محاسبة مع <span>رؤية للمستقبل.</span>",
+heroText:"مكتب محاسبة حديث وقريب واستراتيجي، يرافق الأفراد والشركات والمنتجين الزراعيين في كل مرحلة من مراحل نموهم.",
+heroButton:"أريد أن أصبح عميلاً",
+heroSecondary:"تعرّف على المكتب",
+
+aboutEyebrow:"من نحن",
+aboutTitle:"طريقة مختلفة لتقديم الخدمات المحاسبية.",
+aboutP1:"نشأ Estudio Contable Iglesias من رؤية مهنية تجمع بين الدقة المحاسبية والخدمة القريبة والواضحة والشخصية.",
+aboutP2:"تقود المكتب María Sol Iglesias، محاسبة عامة، برؤية تركز على التحول والتكنولوجيا والنمو المستدام للعملاء.",
+aboutP3:"الهدف هو أن تصبح المعلومات المحاسبية أداة لاتخاذ قرارات أفضل، وليس مجرد التزام.",
+aboutButton:"تعرّف على عرضنا",
+
+historyTitle:"تاريخ المكتب",
+historyStartTitle:"البداية",
+historyStartText:"مشروع مهني بُني انطلاقاً من الشغف بالمحاسبة والرغبة في إنشاء مكتب خاص.",
+historyPresentTitle:"الحاضر",
+historyPresentText:"عرض حديث يجمع بين المحاسبة والضرائب والتكنولوجيا والمتابعة الشخصية.",
+historyFutureTitle:"المستقبل",
+historyFutureText:"منصة رقمية خاصة لتبسيط العلاقة بين المكتب والعملاء.",
+
+evolutionEyebrow:"تطورنا",
+evolutionTitle:"مكتب بُني بهدف واضح.",
+evolutionText:"قصة Estudio Contable Iglesias هي رحلة من النمو والابتكار والقرب من العملاء.",
+vocacionTitle:"المهنية",
+vocacionText:"المهنة كنقطة انطلاق والسعي المستمر نحو التميز كمحرك.",
+innovationTitle:"الابتكار",
+innovationText:"استخدام الأدوات الرقمية لجعل المعلومات أكثر سهولة وفائدة.",
+growthTitle:"النمو",
+growthText:"مرافقة كل عميل بمعلومات واضحة وموثوقة لاتخاذ قرارات أفضل.",
+
+valuesEyebrow:"قيمنا",
+valuesTitle:"المهمة والرؤية والالتزام.",
+valuesText:"ثلاث ركائز توجه كل قرار في المكتب.",
+missionTitle:"المهمة",
+missionText:"تقديم خدمات محاسبية وضريبية مهنية وواضحة وشخصية، باستخدام التكنولوجيا لتحسين تجربة العملاء واتخاذ القرارات.",
+visionTitle:"الرؤية",
+visionText:"بناء مكتب محاسبة حديث ومبتكر وقريب، معروف بالجودة المهنية والتخصص والاستخدام المسؤول للتكنولوجيا.",
+commitmentTitle:"الالتزام",
+commitmentText:"العمل بمسؤولية وسرية وشفافية وتفانٍ، مع إدراك أن وراء كل رقم شخصاً أو شركة أو مشروعاً.",
+
+sustainabilityEyebrow:"الاستدامة",
+sustainabilityTitle:"النمو يعني أيضاً الاهتمام.",
+sustainabilityP1:"التزام Estudio Contable Iglesias بالاستدامة جزء من رؤية مهنية طويلة الأمد.",
+sustainabilityP2:"نسعى إلى تقليل استخدام الورق غير الضروري ورقمنة العمليات واستخدام أدوات أكثر كفاءة.",
+sustainabilityP3:"في القطاع الزراعي نؤمن أيضاً بأهمية الإدارة المسؤولة للمعلومات الإنتاجية والاقتصادية.",
+sustainabilityBoxTitle:"التزامنا",
+sustainability1:"🌱 رقمنة العمليات",
+sustainability2:"📄 تقليل استخدام الورق",
+sustainability3:"💻 إدارة المستندات الرقمية",
+sustainability4:"🌾 معلومات لإدارة زراعية مسؤولة",
+sustainability5:"♻️ الاستخدام الفعال للموارد",
+sustainability6:"🤝 نمو مستدام",
+
+servicesEyebrow:"الخدمات",
+servicesTitle:"نظرة شاملة على نشاطك.",
+servicesText:"حلول محاسبية وضريبية تتكيف مع كل واقع مهني وتجاري.",
+serviceAccountingTitle:"المحاسبة",
+serviceAccountingText:"معلومات محاسبية منظمة لفهم الواقع الاقتصادي ودعم اتخاذ القرارات.",
+serviceTaxesTitle:"الضرائب",
+serviceTaxesText:"التخطيط والامتثال للالتزامات الضريبية مع متابعة شخصية.",
+serviceCompaniesTitle:"الشركات",
+serviceCompaniesText:"دعم محاسبي ومالي للشركات والمشاريع التي تنمو.",
+serviceAgroTitle:"الزراعة",
+serviceAgroText:"إدارة محاسبية ومتابعة للمعلومات الاقتصادية والإنتاجية للمنتجين الزراعيين.",
+serviceMonoTitle:"Monotributo",
+serviceMonoText:"متابعة الفوترة والفئة والالتزامات والوضع الضريبي.",
+serviceAdviceTitle:"الاستشارات",
+serviceAdviceText:"تحليل مهني يساعدك على فهم أرقامك واتخاذ قرارات أفضل.",
+
+agroEyebrow:"التخصص الزراعي",
+agroTitle:"القطاع الزراعي يحتاج أيضاً إلى المعلومات.",
+agroText1:"خدمة مصممة للمنتجين الذين يحتاجون إلى تنظيم المعلومات الاقتصادية والإنتاجية والوثائق الخاصة بمزارعهم.",
+agroText2:"ستتيح البوابة المستقبلية الاطلاع على معلومات الحقول والقطع والحملات والثروة الحيوانية وSISA والحركات والنتائج في مكان واحد.",
+agroButton:"استشارة حول الزراعة",
+agroPanelTitle:"الإدارة الزراعية",
+agro1:"🌾 الحقول والمنشآت",
+agro2:"📐 المساحات والقطع",
+agro3:"🚜 الحملات الزراعية",
+agro4:"🌱 المحاصيل",
+agro5:"🐄 الثروة الحيوانية",
+agro6:"🏷️ التعريفات",
+agro7:"📋 SISA",
+agro8:"🚚 الحركات",
+agro9:"💰 الإيرادات",
+agro10:"📉 المصروفات",
+agro11:"📊 المقارنات",
+agro12:"📁 الوثائق",
+
+portalEyebrow:"Iglesias Portal",
+portalTitle:"معلوماتك دائماً في متناول يدك.",
+portalText:"مساحة رقمية خاصة يمكن لكل عميل من خلالها الاطلاع على معلوماته المحاسبية والضريبية والزراعية عند الحاجة.",
+portalButton:"الدخول إلى البوابة",
+portalFeature1:"📊 الإيرادات والمصروفات",
+portalFeature2:"🧾 الوضع الضريبي",
+portalFeature3:"📅 المواعيد",
+portalFeature4:"🌾 المعلومات الزراعية",
+portalFeature5:"📈 المقارنات",
+portalFeature6:"📁 الوثائق",
+
+newsEyebrow:"الأخبار",
+newsTitle:"آخر أخبار المكتب.",
+newsText:"معلومات مهنية وأخبار ضريبية وتحديثات ومحتوى مهني من María Sol Iglesias.",
+newsCategory1:"الأخبار الضريبية",
+newsTitle1:"المستجدات الضريبية",
+newsText1:"سيخصص هذا القسم للتحديثات الضريبية والمهنية.",
+newsCategory2:"المقابلات",
+newsTitle2:"María Sol Iglesias",
+newsText2:"مساحة لمشاركة المقابلات والمقالات والمشاركات والمحتوى المهني.",
+newsCategory3:"القطاع الزراعي",
+newsTitle3:"أخبار القطاع الزراعي",
+newsText3:"معلومات تهم المنتجين الزراعيين والشركات العاملة في القطاع.",
+
+calendarEyebrow:"التقويم",
+calendarTitle:"المواعيد والتواريخ المهمة.",
+calendarText:"يوفر التقويم العام معلومات عامة. ستكون المواعيد الخاصة بكل عميل متاحة داخل البوابة الخاصة.",
+calendarDate:"التاريخ",
+calendarObligation:"الالتزام",
+calendarPeriod:"الفترة",
+calendarStatus:"الحالة",
+calendarNext:"القادم",
+incomeTax:"ضريبة الدخل",
+advance:"دفعة مقدمة",
+
+formsEyebrow:"اتصال مهني",
+formsTitle:"لنبدأ العمل معاً.",
+formsText:"يمكنك طلب معلومات لبدء العمل مع المكتب أو إرسال استفسار مهني.",
+clientFormTitle:"أريد أن أصبح عميلاً",
+questionFormTitle:"طرح استفسار",
+nameLabel:"الاسم واللقب",
+nameLabelShort:"الاسم",
+emailLabel:"البريد الإلكتروني",
+phoneLabel:"الهاتف",
+activityLabel:"النشاط",
+messageLabel:"الرسالة",
+topicLabel:"الموضوع",
+questionLabel:"الاستفسار",
+selectActivity:"اختر",
+activityCompany:"شركة",
+activityEntrepreneur:"رائد أعمال",
+activityAgro:"منتج زراعي",
+activityProfessional:"مهني",
+activityMono:"دافع ضرائب Monotributo",
+activityOther:"آخر",
+activityPlaceholder:"أخبرنا باختصار عن نشاطك.",
+selectTopic:"اختر",
+topicAccounting:"المحاسبة",
+topicTaxes:"الضرائب",
+topicAgro:"الزراعة",
+topicMono:"Monotributo",
+topicCompanies:"الشركات",
+topicOther:"آخر",
+contactRequestButton:"طلب التواصل",
+sendQuestionButton:"إرسال الاستفسار",
+
+agendaEyebrow:"المواعيد",
+agendaTitle:"احجز اجتماعاً مع María Sol.",
+agendaText:"احجز اجتماعاً مع المكتب واختر اليوم والوقت الأنسب لتوافرك.",
+agendaBoxTitle:"📅 اجتماعات مهنية",
+agendaBoxText:"اختر يوماً ووقتاً متاحاً للاجتماع مع María Sol Iglesias.",
+agendaButton:"حجز اجتماع",
+
+contactEyebrow:"اتصل بنا",
+contactTitle:"لنتحدث عن مشروعك.",
+contactText:"إذا كنت ترغب في تنظيم وضعك المحاسبي أو معرفة خدماتنا أو إرسال استفسار، يمكنك التواصل مع المكتب.",
+contactButton:"أريد أن أصبح عميلاً",
+accountant:"محاسبة عامة",
+maps:"عرض الموقع على خرائط Google",
+footerLocation:"Carlos Casares · Buenos Aires · Argentina",
+
+formRequired:"يرجى إكمال جميع الحقول المطلوبة.",
+formEmail:"يرجى إدخال بريد إلكتروني صالح.",
+formSending:"جارٍ الإرسال...",
+formSuccessClient:"شكراً! لقد تلقينا طلب التواصل الخاص بك.",
+formSuccessQuestion:"شكراً! لقد تلقينا استفسارك.",
+formError:"تعذر إرسال المعلومات. يرجى المحاولة مرة أخرى."
+}
+
+};
+
+
+/* =========================================================
+   FUNCIÓN DE TRADUCCIÓN
+   ========================================================= */
+
+function getTexts() {
+
+return (
+window.translations[currentLanguage] ||
+window.translations.es
+);
+
+}
+
+
+function t(key) {
+
+const texts = getTexts();
+
+if (
+texts &&
+Object.prototype.hasOwnProperty.call(texts,key)
+) {
+
+return texts[key];
+
+}
+
+return (
+window.translations.es[key] ||
+key
+);
+
+}
+
+
+/* =========================================================
+   TRADUCIR ELEMENTO
+   ========================================================= */
+
+function translateElement(element) {
+
+const key =
+element.getAttribute("data-i18n");
+
+if (!key) return;
+
+const value = t(key);
+
+if (value === key) return;
+
+
+/*
+   Algunos textos necesitan HTML
+   porque contienen <span>.
+*/
+
+if (
+key === "heroTitle"
+) {
+
+element.innerHTML = value;
+
+} else {
+
+element.textContent = value;
+
+}
+
+}
+
+
+/* =========================================================
+   TRADUCIR PÁGINA
+   ========================================================= */
+
+function translatePage() {
+
+document
+.querySelectorAll("[data-i18n]")
+.forEach(function(element) {
+
+translateElement(element);
+
+});
+
+
+/* PLACEHOLDERS */
+
+document
+.querySelectorAll("[data-i18n-placeholder]")
+.forEach(function(element) {
+
+const key =
+element.getAttribute(
+"data-i18n-placeholder"
+);
+
+element.placeholder =
+t(key);
+
+});
+
+
+/* ARIA */
+
+document
+.querySelectorAll("[data-i18n-aria]")
+.forEach(function(element) {
+
+const key =
+element.getAttribute(
+"data-i18n-aria"
+);
+
+element.setAttribute(
+"aria-label",
+t(key)
+);
+
+});
+
+
+/* HTML */
+
+document
+.querySelectorAll("[data-i18n-html]")
+.forEach(function(element) {
+
+const key =
+element.getAttribute(
+"data-i18n-html"
+);
+
+element.innerHTML =
+t(key);
+
+});
+
+
+/* SELECTOR */
+
+const selectors =
+document.querySelectorAll(
+"#language, " +
+".language-selector select, " +
+".language-switcher select, " +
+".lang-selector select, " +
+"select[data-language]"
+);
+
+selectors.forEach(function(select) {
+
+select.value =
+currentLanguage;
+
+});
+
+
+/* DOCUMENTO */
+
+document.documentElement.lang =
+currentLanguage;
+
+document.documentElement.dir =
+currentLanguage === "ar"
+? "rtl"
+: "ltr";
+
+
+/* FORMULARIOS */
+
+translateFormSelects();
+
+}
+
+
+/* =========================================================
+   TRADUCIR SELECTS
+   ========================================================= */
+
+function translateFormSelects() {
+
+document
+.querySelectorAll("select")
+.forEach(function(select) {
+
+Array.from(select.options)
+.forEach(function(option) {
+
+const key =
+option.getAttribute("data-i18n");
+
+if (!key) return;
+
+option.textContent =
+t(key);
+
+});
+
+});
+
+}
+
+
+/* =========================================================
+   CAMBIAR IDIOMA
+   ========================================================= */
+
+function changeLanguage(language) {
+
+language =
+String(language || "")
+.toLowerCase()
+.trim();
+
+
+if (
+!supportedLanguages.includes(language)
+) {
+
+language = "es";
+
+}
+
+
+currentLanguage =
+language;
+
+
+localStorage.setItem(
+"preferredLanguage",
+currentLanguage
+);
+
+
+translatePage();
+
+
+console.log(
+"✓ Idioma cambiado:",
+currentLanguage
+);
+
+}
+
+
+window.changeLanguage =
+changeLanguage;
+
+
+/* =========================================================
+   SELECTOR DE IDIOMA
+   ========================================================= */
+
+function initializeLanguageSelector() {
+
+document
+.querySelectorAll(
+"#language, " +
+".language-selector select, " +
+".language-switcher select, " +
+".lang-selector select, " +
+"select[data-language]"
+)
+.forEach(function(select) {
+
+select.value =
+currentLanguage;
+
+
+if (
+select.dataset.iglesiasLanguageReady ===
+"true"
+) {
+
+return;
+
+}
+
+
+select.dataset.iglesiasLanguageReady =
+"true";
+
+
+select.addEventListener(
+"change",
+function() {
+
+changeLanguage(
+this.value
+);
+
+}
+);
+
+});
+
+}
+
+
+/* =========================================================
+   FORMULARIOS
+   ========================================================= */
+
+function getClientForm() {
+
+return (
+document.getElementById("clientForm") ||
+document.querySelector(
+'form[data-form="client"], ' +
+'form[data-form="cliente"]'
+)
+);
+
+}
+
+
+function getQuestionForm() {
+
+return (
+document.getElementById("questionForm") ||
+document.querySelector(
+'form[data-form="question"], ' +
+'form[data-form="consulta"]'
+)
+);
+
+}
+
+
+/* =========================================================
+   EMAIL
+   ========================================================= */
+
+function isValidEmail(email) {
+
+return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+.test(
+String(email || "").trim()
+);
+
+}
+
+
+/* =========================================================
+   DATOS DEL FORMULARIO
+   ========================================================= */
+
+function getFormData(form) {
+
+const data = {};
+
+new FormData(form)
+.forEach(function(value,key) {
+
+data[key] =
+String(value).trim();
+
+});
+
+return data;
+
+}
+
+
+/* =========================================================
+   MENSAJE DEL FORMULARIO
+   ========================================================= */
+
+function showFormMessage(
+form,
+message,
+type
+) {
+
+let element =
+form.querySelector(".form-message");
+
+
+if (!element) {
+
+element =
+document.createElement("div");
+
+element.className =
+"form-message";
+
+element.setAttribute(
+"role",
+"status"
+);
+
+form.appendChild(element);
+
+}
+
+
+element.textContent =
+message;
+
+element.dataset.type =
+type || "info";
+
+
+}
+
+
+/* =========================================================
+   CARGANDO
+   ========================================================= */
+
+function setButtonLoading(
+button,
+loading
+) {
+
+if (!button) return;
+
+
+if (loading) {
+
+if (
+!button.dataset.originalText
+) {
+
+button.dataset.originalText =
+button.innerHTML;
+
+}
+
+
+button.disabled =
+true;
+
+
+button.innerHTML =
+"⏳ " +
+t("formSending");
+
+
+} else {
+
+button.disabled =
+false;
+
+
+if (
+button.dataset.originalText
+) {
+
+button.innerHTML =
+button.dataset.originalText;
+
+delete button.dataset.originalText;
+
+}
+
+}
+
+}
+
+
+/* =========================================================
+   INICIAR SUPABASE
+   ========================================================= */
+
+function startSupabase() {
+
+if (
+window.supabase &&
+typeof window.supabase.createClient ===
+"function"
+) {
+
+try {
+
+supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+window.supabaseClient =
+supabaseClient;
+
+console.log(
+"✓ Supabase conectado."
+);
+
+return true;
+
+} catch(error) {
+
+console.error(
+"Error iniciando Supabase:",
+error
+);
+
+}
+
+}
+
+return false;
+
+}
+
+
+/* =========================================================
+   CARGAR SUPABASE
+   ========================================================= */
+
+function loadSupabase() {
+
+if (
+window.supabase &&
+typeof window.supabase.createClient ===
+"function"
+) {
+
+startSupabase();
+
+return;
+
+}
+
+
+if (
+document.querySelector(
+'script[data-iglesias-supabase]'
+)
+) {
+
+return;
+
+}
+
+
+const script =
+document.createElement("script");
+
+
+script.src =
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+
+
+script.async =
+true;
+
+
+script.dataset.iglesiasSupabase =
+"true";
+
+
+script.onload =
+function() {
+
+startSupabase();
+
+};
+
+
+script.onerror =
+function() {
+
+console.error(
+"No se pudo cargar Supabase."
+);
+
+};
+
+
+document.head.appendChild(script);
+
+}
+
+
+/* =========================================================
+   FORMULARIO CLIENTE
+   ========================================================= */
+
+async function submitClientForm(event) {
+
+event.preventDefault();
+
+
+const form =
+event.currentTarget;
+
+
+if (
+form.dataset.submitting ===
+"true"
+) {
+
+return false;
+
+}
+
+
+const data =
+getFormData(form);
+
+
+const name =
+data.nombre ||
+data.name ||
+"";
+
+
+const email =
+data.email ||
+"";
+
+
+const phone =
+data.telefono ||
+data.phone ||
+"";
+
+
+const activity =
+data.actividad ||
+data.activity ||
+"";
+
+
+const message =
+data.mensaje ||
+data.message ||
+"";
+
+
+if (
+!name ||
+!email ||
+!activity
+) {
+
+showFormMessage(
+form,
+t("formRequired"),
+"error"
+);
+
+return false;
+
+}
+
+
+if (
+!isValidEmail(email)
+) {
+
+showFormMessage(
+form,
+t("formEmail"),
+"error"
+);
+
+return false;
+
+}
+
+
+const button =
+form.querySelector(
+'button[type="submit"], input[type="submit"]'
+);
+
+
+form.dataset.submitting =
+"true";
+
+
+setButtonLoading(
+button,
+true
+);
+
+
+try {
+
+if (!supabaseClient) {
+
+startSupabase();
+
+}
+
+
+if (!supabaseClient) {
+
+throw new Error(
+"Supabase no disponible."
+);
+
+}
+
+
+/*
+   GUARDAMOS EN client_requests
+*/
+
+const result =
+await supabaseClient
+.from("client_requests")
+.insert({
+
+name:name,
+
+email:email,
+
+phone:phone || null,
+
+activity:activity,
+
+message:message || null,
+
+language:currentLanguage,
+
+status:"new"
+
+});
+
+
+if (result.error) {
+
+throw result.error;
+
+}
+
+
+/*
+   MENSAJE ANTES DE RESET
+*/
+
+showFormMessage(
+form,
+t("formSuccessClient"),
+"success"
+);
+
+
+form.reset();
+
+
+/*
+   VOLVEMOS A TRADUCIR
+*/
+
+translatePage();
+
+
+/*
+   EL MENSAJE SE VUELVE A CREAR
+*/
+
+showFormMessage(
+form,
+t("formSuccessClient"),
+"success"
+);
+
+
+} catch(error) {
+
+console.error(
+"Error formulario cliente:",
+error
+);
+
+
+showFormMessage(
+form,
+t("formError"),
+"error"
+);
+
+} finally {
+
+form.dataset.submitting =
+"false";
+
+
+setButtonLoading(
+button,
+false
+);
+
+}
+
+
+return false;
+
+}
+
+
+window.submitClientForm =
+submitClientForm;
+
+
+/* =========================================================
+   FORMULARIO CONSULTA
+   ========================================================= */
+
+async function submitQuestionForm(event) {
+
+event.preventDefault();
+
+
+const form =
+event.currentTarget;
+
+
+if (
+form.dataset.submitting ===
+"true"
+) {
+
+return false;
+
+}
+
+
+function getValue(name1,name2) {
+
+const first =
+form.querySelector(
+'[name="' + name1 + '"]'
+);
+
+
+if (
+first &&
+typeof first.value ===
+"string"
+) {
+
+return first.value.trim();
+
+}
+
+
+if (name2) {
+
+const second =
+form.querySelector(
+'[name="' + name2 + '"]'
+);
+
+
+if (
+second &&
+typeof second.value ===
+"string"
+) {
+
+return second.value.trim();
+
+}
+
+}
+
+
+return "";
+
+}
+
+
+const name =
+getValue("nombre","name");
+
+
+const email =
+getValue("email","correo");
+
+
+const topic =
+getValue("tema","topic");
+
+
+const question =
+getValue("consulta","question") ||
+getValue("mensaje","");
+
+
+if (
+!name ||
+!email ||
+!topic ||
+!question
+) {
+
+showFormMessage(
+form,
+t("formRequired"),
+"error"
+);
+
+return false;
+
+}
+
+
+if (
+!isValidEmail(email)
+) {
+
+showFormMessage(
+form,
+t("formEmail"),
+"error"
+);
+
+return false;
+
+}
+
+
+const button =
+form.querySelector(
+'button[type="submit"], input[type="submit"]'
+);
+
+
+form.dataset.submitting =
+"true";
+
+
+setButtonLoading(
+button,
+true
+);
+
+
+try {
+
+if (!supabaseClient) {
+
+startSupabase();
+
+}
+
+
+if (!supabaseClient) {
+
+throw new Error(
+"Supabase no disponible."
+);
+
+}
+
+
+/*
+   GUARDAMOS EN questions
+*/
+
+const result =
+await supabaseClient
+.from("questions")
+.insert({
+
+name:name,
+
+email:email,
+
+topic:topic,
+
+question:question,
+
+language:currentLanguage,
+
+status:"new"
+
+});
+
+
+if (result.error) {
+
+throw result.error;
+
+}
+
+
+showFormMessage(
+form,
+t("formSuccessQuestion"),
+"success"
+);
+
+
+form.reset();
+
+
+translatePage();
+
+
+showFormMessage(
+form,
+t("formSuccessQuestion"),
+"success"
+);
+
+
+} catch(error) {
+
+console.error(
+"Error formulario consulta:",
+error
+);
+
+
+showFormMessage(
+form,
+t("formError"),
+"error"
+);
+
+} finally {
+
+form.dataset.submitting =
+"false";
+
+
+setButtonLoading(
+button,
+false
+);
+
+}
+
+
+return false;
+
+}
+
+
+window.submitQuestionForm =
+submitQuestionForm;
+
+
+/* =========================================================
+   PREPARAR FORMULARIOS
+   ========================================================= */
+
+function initializeForms() {
+
+const clientForm =
+getClientForm();
+
+
+const questionForm =
+getQuestionForm();
+
+
+if (clientForm) {
+
+clientForm.addEventListener(
+"submit",
+submitClientForm
+);
+
+}
+
+
+if (questionForm) {
+
+questionForm.addEventListener(
+"submit",
+submitQuestionForm
+);
+
+}
+
+}
+
+
+/* =========================================================
+   CSS FORMULARIOS
+   ========================================================= */
+
+function installFormsCSS() {
+
+if (
+document.getElementById(
+"iglesiasFormsCSS"
+)
+) {
+
+return;
+
+}
+
+
+const style =
+document.createElement("style");
+
+
+style.id =
+"iglesiasFormsCSS";
+
+
+style.textContent = `
+
+/* ==========================================
+   FORMULARIOS EN DOS COLUMNAS
+========================================== */
+
+.forms .form-grid {
+
+display:grid !important;
+
+grid-template-columns:
+repeat(2,minmax(0,1fr)) !important;
+
+gap:30px !important;
+
+width:100% !important;
+
+align-items:start !important;
+
+}
+
+
+/* ==========================================
+   CAJAS
+========================================== */
+
+.forms .form-box {
+
+width:100% !important;
+
+max-width:none !important;
+
+min-width:0 !important;
+
+margin:0 !important;
+
+}
+
+
+/* ==========================================
+   FORMULARIOS
+========================================== */
+
+.forms .form-box form {
+
+width:100% !important;
+
+max-width:none !important;
+
+margin:0 !important;
+
+}
+
+
+/* ==========================================
+   CAMPOS
+========================================== */
+
+.forms .form-box input,
+.forms .form-box select,
+.forms .form-box textarea {
+
+width:100% !important;
+
+max-width:100% !important;
+
+box-sizing:border-box !important;
+
+}
+
+
+/* ==========================================
+   MENSAJES
+========================================== */
+
+.forms .form-message {
+
+width:100% !important;
+
+margin-top:15px !important;
+
+padding:12px 15px !important;
+
+border-radius:10px !important;
+
+box-sizing:border-box !important;
+
+font-size:14px !important;
+
+}
+
+
+.forms .form-message[data-type="success"] {
+
+border:1px solid #b7d8c1 !important;
+
+}
+
+
+.forms .form-message[data-type="error"] {
+
+border:1px solid #e3b7b7 !important;
+
+}
+
+
+/* ==========================================
+   RTL ÁRABE
+========================================== */
+
+html[dir="rtl"] {
+
+direction:rtl;
+
+}
+
+
+html[dir="rtl"] .forms .form-box {
+
+text-align:right;
+
+}
+
+
+/* ==========================================
+   TABLET / CELULAR
+========================================== */
+
+@media(max-width:900px) {
+
+.forms .form-grid {
+
+grid-template-columns:
+1fr !important;
+
+gap:24px !important;
+
+}
+
+}
+
+
+@media(max-width:650px) {
+
+.forms .form-grid {
+
+grid-template-columns:
+1fr !important;
+
+gap:20px !important;
+
+}
+
+.forms .form-box {
+
+padding:25px !important;
+
+}
+
+}
+
+`;
+
+
+document.head.appendChild(style);
+
+}
+
+
+/* =========================================================
+   BOTONES "QUIERO SER CLIENTE"
+   ========================================================= */
+
+function initializeClientButtons() {
+
+document
+.querySelectorAll(
+'[href="#ser-cliente"], ' +
+'[href="#cliente"], ' +
+'[href="#client"], ' +
+'[data-client-action], ' +
+'.client-button'
+)
+.forEach(function(button) {
+
+if (
+button.dataset.iglesiasClientReady ===
+"true"
+) {
+
+return;
+
+}
+
+
+button.dataset.iglesiasClientReady =
+"true";
+
+
+button.addEventListener(
+"click",
+function(event) {
+
+const form =
+getClientForm();
+
+
+if (!form) {
+
+return;
+
+}
+
+
+event.preventDefault();
+
+
+form.scrollIntoView({
+
+behavior:"smooth",
+
+block:"center"
+
+});
+
+
+setTimeout(
+function() {
+
+const first =
+form.querySelector(
+"input:not([type='hidden']), select, textarea"
+);
+
+
+if (first) {
+
+first.focus();
+
+}
+
+},
+500
+);
+
+});
+
+});
+
+}
+
+
+/* =========================================================
+   INICIALIZAR
+   ========================================================= */
+
+function initializeWebsite() {
+
+console.log(
+"===================================="
+);
+
+console.log(
+"ESTUDIO CONTABLE IGLESIAS"
+);
+
+console.log(
+"SISTEMA INICIADO"
+);
+
+console.log(
+"===================================="
+);
+
+
+/* CSS */
+
+installFormsCSS();
+
+
+/* FORMULARIOS */
+
+initializeForms();
+
+
+/* IDIOMAS */
+
+initializeLanguageSelector();
+
+
+/* BOTONES */
+
+initializeClientButtons();
+
+
+/* TRADUCCIÓN */
+
+translatePage();
+
+
+/* SUPABASE */
+
+loadSupabase();
+
+
+console.log(
+"✓ Sistema completo iniciado."
+);
+
+}
+
+
+/* =========================================================
+   ARRANQUE
+   ========================================================= */
+
+if (
+document.readyState ===
+"loading"
+) {
+
+document.addEventListener(
+"DOMContentLoaded",
+initializeWebsite
+);
+
+} else {
+
+initializeWebsite();
+
+}
+
+
+/* =========================================================
+   FUNCIONES GLOBALES
+   ========================================================= */
+
+window.initializeWebsite =
+initializeWebsite;
+
+window.translatePage =
+translatePage;
+
+window.t =
+t;
 
 })();
 </script>
