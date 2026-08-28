@@ -4632,13 +4632,10 @@ portalLogin:"تسجيل الدخول",
 portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 }
-
-};
-```html
 <script>
 /* =========================================================
    ESTUDIO CONTABLE IGLESIAS
-   SISTEMA DE IDIOMAS + FORMULARIOS
+   SISTEMA DE IDIOMAS + FORMULARIOS (VERSIÓN CORREGIDA)
    ========================================================= */
 
 
@@ -4647,7 +4644,9 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
    ========================================================= */
 
 let currentLanguage =
-    localStorage.getItem("preferredLanguage") || "es";
+    (localStorage.getItem("preferredLanguage") || "es")
+        .toLowerCase()
+        .trim();
 
 
 /* =========================================================
@@ -4657,11 +4656,52 @@ let currentLanguage =
 const availableLanguages = [
     "es",
     "en",
-    "zh",
+    "it",
+    "fr",
+    "de",
     "ar",
     "ko",
-    "de"
+    "ja",
+    "pt"
 ];
+
+if (!availableLanguages.includes(currentLanguage)) {
+    currentLanguage = "es";
+}
+
+
+/* =========================================================
+   ESPERAR A QUE "translations" EXISTA
+   (ARREGLO: antes, si este script corría antes de que se
+   definiera el objeto "translations", el idioma quedaba
+   roto para siempre sin avisar)
+   ========================================================= */
+
+function waitForTranslations(callback, attemptsLeft) {
+
+    if (attemptsLeft === undefined) {
+        attemptsLeft = 40; // ~10 segundos (40 x 250ms)
+    }
+
+    if (typeof translations !== "undefined" && translations) {
+        callback();
+        return;
+    }
+
+    if (attemptsLeft <= 0) {
+        console.warn(
+            "⚠ 'translations' nunca se definió. " +
+            "Revisá que el script con las traducciones " +
+            "se cargue ANTES de este script."
+        );
+        return;
+    }
+
+    setTimeout(function () {
+        waitForTranslations(callback, attemptsLeft - 1);
+    }, 250);
+
+}
 
 
 /* =========================================================
@@ -4670,10 +4710,7 @@ const availableLanguages = [
 
 function t(key) {
 
-    if (
-        typeof translations === "undefined" ||
-        !translations
-    ) {
+    if (typeof translations === "undefined" || !translations) {
         return key;
     }
 
@@ -4682,21 +4719,13 @@ function t(key) {
         translations.es ||
         {};
 
-    if (
-        Object.prototype.hasOwnProperty.call(
-            language,
-            key
-        )
-    ) {
+    if (Object.prototype.hasOwnProperty.call(language, key)) {
         return language[key];
     }
 
     if (
         translations.es &&
-        Object.prototype.hasOwnProperty.call(
-            translations.es,
-            key
-        )
+        Object.prototype.hasOwnProperty.call(translations.es, key)
     ) {
         return translations.es[key];
     }
@@ -4711,71 +4740,48 @@ function t(key) {
 
 function applyTranslations() {
 
-    if (
-        typeof translations === "undefined" ||
-        !translations
-    ) {
+    if (typeof translations === "undefined" || !translations) {
+        console.warn(
+            "⚠ applyTranslations() llamada pero 'translations' " +
+            "no existe todavía."
+        );
         return;
     }
 
-    const texts =
-        translations[currentLanguage] ||
-        translations.es;
+    const texts = translations[currentLanguage] || translations.es;
 
     if (!texts) {
+        console.warn(
+            "⚠ No hay traducciones para el idioma:",
+            currentLanguage
+        );
         return;
     }
 
 
     /* TEXTOS */
 
-    document
-        .querySelectorAll("[data-i18n]")
-        .forEach(function(element) {
+    document.querySelectorAll("[data-i18n]").forEach(function (element) {
 
-            const key =
-                element.getAttribute("data-i18n");
+        const key = element.getAttribute("data-i18n");
 
-            if (
-                key &&
-                Object.prototype.hasOwnProperty.call(
-                    texts,
-                    key
-                )
-            ) {
+        if (key && Object.prototype.hasOwnProperty.call(texts, key)) {
+            element.innerHTML = texts[key];
+        }
 
-                element.innerHTML =
-                    texts[key];
-
-            }
-
-        });
+    });
 
 
     /* PLACEHOLDERS */
 
     document
         .querySelectorAll("[data-i18n-placeholder]")
-        .forEach(function(element) {
+        .forEach(function (element) {
 
-            const key =
-                element.getAttribute(
-                    "data-i18n-placeholder"
-                );
+            const key = element.getAttribute("data-i18n-placeholder");
 
-            if (
-                key &&
-                Object.prototype.hasOwnProperty.call(
-                    texts,
-                    key
-                )
-            ) {
-
-                element.setAttribute(
-                    "placeholder",
-                    texts[key]
-                );
-
+            if (key && Object.prototype.hasOwnProperty.call(texts, key)) {
+                element.setAttribute("placeholder", texts[key]);
             }
 
         });
@@ -4785,24 +4791,12 @@ function applyTranslations() {
 
     document
         .querySelectorAll("[data-i18n-value]")
-        .forEach(function(element) {
+        .forEach(function (element) {
 
-            const key =
-                element.getAttribute(
-                    "data-i18n-value"
-                );
+            const key = element.getAttribute("data-i18n-value");
 
-            if (
-                key &&
-                Object.prototype.hasOwnProperty.call(
-                    texts,
-                    key
-                )
-            ) {
-
-                element.value =
-                    texts[key];
-
+            if (key && Object.prototype.hasOwnProperty.call(texts, key)) {
+                element.value = texts[key];
             }
 
         });
@@ -4812,26 +4806,12 @@ function applyTranslations() {
 
     document
         .querySelectorAll("[data-i18n-aria]")
-        .forEach(function(element) {
+        .forEach(function (element) {
 
-            const key =
-                element.getAttribute(
-                    "data-i18n-aria"
-                );
+            const key = element.getAttribute("data-i18n-aria");
 
-            if (
-                key &&
-                Object.prototype.hasOwnProperty.call(
-                    texts,
-                    key
-                )
-            ) {
-
-                element.setAttribute(
-                    "aria-label",
-                    texts[key]
-                );
-
+            if (key && Object.prototype.hasOwnProperty.call(texts, key)) {
+                element.setAttribute("aria-label", texts[key]);
             }
 
         });
@@ -4839,16 +4819,11 @@ function applyTranslations() {
 
     /* DOCUMENTO */
 
-    document.documentElement.lang =
-        currentLanguage;
-
-    document.documentElement.dir =
-        currentLanguage === "ar"
-            ? "rtl"
-            : "ltr";
+    document.documentElement.lang = currentLanguage;
+    document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
 
 
-    /* SELECTORES */
+    /* SELECTORES: mantenerlos sincronizados con el idioma actual */
 
     document
         .querySelectorAll(
@@ -4858,112 +4833,103 @@ function applyTranslations() {
             ".lang-selector select, " +
             "select[data-language]"
         )
-        .forEach(function(selector) {
-
-            selector.value =
-                currentLanguage;
-
+        .forEach(function (selector) {
+            selector.value = currentLanguage;
         });
+
+
+    console.log("✓ Traducciones aplicadas:", currentLanguage);
 
 }
 
 
 /* =========================================================
    CAMBIAR IDIOMA
+   (ARREGLO: se normaliza el valor recibido, por si el <select>
+   tiene values con mayúsculas o espacios)
    ========================================================= */
 
 function changeLanguage(language) {
 
-    if (
-        !availableLanguages.includes(language)
-    ) {
+    language = String(language || "").toLowerCase().trim();
 
+    if (!availableLanguages.includes(language)) {
+        console.warn(
+            "⚠ Idioma no reconocido:", language,
+            "— revisá que el 'value' de las <option> del selector " +
+            "sea exactamente uno de:", availableLanguages.join(", ")
+        );
         language = "es";
-
     }
 
+    currentLanguage = language;
 
-    currentLanguage =
-        language;
-
-
-    localStorage.setItem(
-        "preferredLanguage",
-        currentLanguage
-    );
-
+    localStorage.setItem("preferredLanguage", currentLanguage);
 
     applyTranslations();
 
-
-    console.log(
-        "✓ Idioma:",
-        currentLanguage
-    );
+    console.log("✓ Idioma cambiado a:", currentLanguage);
 
 }
 
-
-/* =========================================================
-   HACER GLOBAL
-   ========================================================= */
-
-window.changeLanguage =
-    changeLanguage;
+window.changeLanguage = changeLanguage;
 
 
 /* =========================================================
    SELECTORES DE IDIOMA
+   (ARREGLO: ahora reintenta si el selector todavía no
+   existe en el DOM cuando corre el script, y usa
+   MutationObserver para engancharse a selectores que
+   aparezcan más tarde, por ejemplo en un menú mobile)
    ========================================================= */
 
 function initializeLanguageSelector() {
 
-    const selectors =
-        document.querySelectorAll(
-            "#language, " +
-            ".language-selector select, " +
-            ".language-switcher select, " +
-            ".lang-selector select, " +
-            "select[data-language]"
+    const selectors = document.querySelectorAll(
+        "#language, " +
+        ".language-selector select, " +
+        ".language-switcher select, " +
+        ".lang-selector select, " +
+        "select[data-language]"
+    );
+
+    if (selectors.length === 0) {
+        console.warn(
+            "⚠ No se encontró ningún selector de idioma en la página. " +
+            "Verificá que el <select> tenga el id 'language' o esté " +
+            "dentro de un contenedor con clase 'language-selector', " +
+            "'language-switcher' o 'lang-selector'."
         );
+    }
 
+    selectors.forEach(function (selector) {
 
-    selectors.forEach(function(selector) {
-
-        /* Evitar listeners duplicados */
-
-        if (
-            selector.dataset.iglesiasLanguageReady ===
-            "true"
-        ) {
-
-            selector.value =
-                currentLanguage;
-
+        if (selector.dataset.iglesiasLanguageReady === "true") {
+            selector.value = currentLanguage;
             return;
-
         }
 
+        selector.dataset.iglesiasLanguageReady = "true";
+        selector.value = currentLanguage;
 
-        selector.dataset.iglesiasLanguageReady =
-            "true";
+        selector.addEventListener("change", function (event) {
+            changeLanguage(event.target.value);
+        });
+
+    });
+
+}
 
 
-        selector.value =
-            currentLanguage;
+function observeForLateSelectors() {
 
+    const observer = new MutationObserver(function () {
+        initializeLanguageSelector();
+    });
 
-        selector.addEventListener(
-            "change",
-            function(event) {
-
-                changeLanguage(
-                    event.target.value
-                );
-
-            }
-        );
-
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
     });
 
 }
@@ -4975,167 +4941,40 @@ function initializeLanguageSelector() {
 
 function initializeMobileLanguageFix() {
 
-    if (
-        document.getElementById(
-            "iglesiasMobileLanguageFix"
-        )
-    ) {
+    if (document.getElementById("iglesiasMobileLanguageFix")) {
         return;
     }
 
-
-    const style =
-        document.createElement("style");
-
-
-    style.id =
-        "iglesiasMobileLanguageFix";
-
+    const style = document.createElement("style");
+    style.id = "iglesiasMobileLanguageFix";
 
     style.textContent = `
-
-        /* =================================================
-           IDIOMAS
-        ================================================= */
 
         .language-selector,
         .language-switcher,
         .lang-selector {
-
             display: flex !important;
-
             visibility: visible !important;
-
             opacity: 1 !important;
-
         }
-
 
         .language-selector select,
         .language-switcher select,
         .lang-selector select,
         select[data-language],
         #language {
-
             display: block !important;
-
             visibility: visible !important;
-
             opacity: 1 !important;
-
             max-width: 100%;
-
         }
 
-
-        /* =================================================
-           FORMULARIOS - PC
-        ================================================= */
-
-        @media (min-width: 769px) {
-
-            .forms-row {
-
-                display: grid !important;
-
-                grid-template-columns:
-                    minmax(0, 1fr)
-                    minmax(0, 1fr) !important;
-
-                gap: 32px !important;
-
-                width: 100% !important;
-
-                max-width: 1200px !important;
-
-                margin-left: auto !important;
-
-                margin-right: auto !important;
-
-                align-items: start !important;
-
-            }
-
-
-            .forms-row > * {
-
-                width: 100% !important;
-
-                min-width: 0 !important;
-
-                box-sizing: border-box !important;
-
-            }
-
-        }
-
-
-        /* =================================================
-           FORMULARIOS - CELULAR
-        ================================================= */
-
-        @media (max-width: 768px) {
-
-            .forms-row {
-
-                display: flex !important;
-
-                flex-direction: column !important;
-
-                width: 100% !important;
-
-                max-width: 100% !important;
-
-                gap: 24px !important;
-
-                margin-left: 0 !important;
-
-                margin-right: 0 !important;
-
-            }
-
-
-            .forms-row > * {
-
-                width: 100% !important;
-
-                max-width: 100% !important;
-
-                min-width: 0 !important;
-
-                box-sizing: border-box !important;
-
-            }
-
-
-            .forms-row form {
-
-                width: 100% !important;
-
-                max-width: 100% !important;
-
-                box-sizing: border-box !important;
-
-            }
-
-        }
-
-
-        /* =================================================
-           EVITAR DESBORDE
-        ================================================= */
-
-        html,
-        body {
-
+        html, body {
             max-width: 100% !important;
-
             overflow-x: hidden !important;
-
         }
 
     `;
-
 
     document.head.appendChild(style);
 
@@ -5147,11 +4986,7 @@ function initializeMobileLanguageFix() {
    ========================================================= */
 
 function isValidEmail(email) {
-
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-        String(email).trim()
-    );
-
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
 }
 
 
@@ -5159,46 +4994,21 @@ function isValidEmail(email) {
    MENSAJES DE FORMULARIO
    ========================================================= */
 
-function showFormMessage(
-    form,
-    message,
-    type
-) {
+function showFormMessage(form, message, type) {
 
-    if (!form) {
-        return;
-    }
+    if (!form) return;
 
-
-    let messageElement =
-        form.querySelector(".form-message");
-
+    let messageElement = form.querySelector(".form-message");
 
     if (!messageElement) {
-
-        messageElement =
-            document.createElement("div");
-
-        messageElement.className =
-            "form-message";
-
-        messageElement.setAttribute(
-            "role",
-            "status"
-        );
-
-        form.appendChild(
-            messageElement
-        );
-
+        messageElement = document.createElement("div");
+        messageElement.className = "form-message";
+        messageElement.setAttribute("role", "status");
+        form.appendChild(messageElement);
     }
 
-
-    messageElement.textContent =
-        message;
-
-    messageElement.dataset.type =
-        type || "info";
+    messageElement.textContent = message;
+    messageElement.dataset.type = type || "info";
 
 }
 
@@ -5207,48 +5017,26 @@ function showFormMessage(
    BOTÓN CARGANDO
    ========================================================= */
 
-function setButtonLoading(
-    button,
-    loading
-) {
+function setButtonLoading(button, loading) {
 
-    if (!button) {
-        return;
-    }
-
+    if (!button) return;
 
     if (loading) {
 
-        if (
-            !button.dataset.originalText
-        ) {
-
-            button.dataset.originalText =
-                button.innerHTML;
-
+        if (!button.dataset.originalText) {
+            button.dataset.originalText = button.innerHTML;
         }
 
-
         button.disabled = true;
-
-
-        button.innerHTML =
-            "⏳ " + t("formSending");
+        button.innerHTML = "⏳ " + t("formSending");
 
     } else {
 
         button.disabled = false;
 
-
-        if (
-            button.dataset.originalText
-        ) {
-
-            button.innerHTML =
-                button.dataset.originalText;
-
+        if (button.dataset.originalText) {
+            button.innerHTML = button.dataset.originalText;
             delete button.dataset.originalText;
-
         }
 
     }
@@ -5264,23 +5052,13 @@ function getFormData(form) {
 
     const data = {};
 
+    if (!form) return data;
 
-    if (!form) {
-        return data;
-    }
+    const formData = new FormData(form);
 
-
-    const formData =
-        new FormData(form);
-
-
-    formData.forEach(function(value, key) {
-
-        data[key] =
-            String(value).trim();
-
+    formData.forEach(function (value, key) {
+        data[key] = String(value).trim();
     });
-
 
     return data;
 
@@ -5295,201 +5073,71 @@ async function submitClientForm(event) {
 
     event.preventDefault();
 
+    const form = event.currentTarget;
+    if (!form) return false;
 
-    const form =
-        event.currentTarget;
+    const data = getFormData(form);
 
+    const name = data.name || data.full_name || data.nombre || "";
+    const email = data.email || data.correo || "";
+    const phone = data.phone || data.telefono || "";
+    const activity = data.activity || data.actividad || "";
+    const message = data.message || data.mensaje || "";
 
-    if (!form) {
+    if (!name || !email || !activity) {
+        showFormMessage(form, t("formRequired"), "error");
         return false;
     }
 
-
-    const data =
-        getFormData(form);
-
-
-    const name =
-        data.name ||
-        data.full_name ||
-        data.nombre ||
-        "";
-
-
-    const email =
-        data.email ||
-        data.correo ||
-        "";
-
-
-    const phone =
-        data.phone ||
-        data.telefono ||
-        "";
-
-
-    const activity =
-        data.activity ||
-        data.actividad ||
-        "";
-
-
-    const message =
-        data.message ||
-        data.mensaje ||
-        "";
-
-
-    if (
-        !name ||
-        !email ||
-        !activity
-    ) {
-
-        showFormMessage(
-            form,
-            t("formRequired"),
-            "error"
-        );
-
+    if (!isValidEmail(email)) {
+        showFormMessage(form, t("formEmail"), "error");
         return false;
-
     }
 
-
-    if (
-        !isValidEmail(email)
-    ) {
-
-        showFormMessage(
-            form,
-            t("formEmail"),
-            "error"
-        );
-
-        return false;
-
-    }
-
-
-    const button =
-        form.querySelector(
-            'button[type="submit"], input[type="submit"]'
-        );
-
-
-    setButtonLoading(
-        button,
-        true
+    const button = form.querySelector(
+        'button[type="submit"], input[type="submit"]'
     );
 
+    setButtonLoading(button, true);
 
     try {
 
-        if (
-            typeof supabaseClient === "undefined" ||
-            !supabaseClient
-        ) {
-
-            throw new Error(
-                "Supabase no está configurado."
-            );
-
+        if (typeof supabaseClient === "undefined" || !supabaseClient) {
+            throw new Error("Supabase no está configurado.");
         }
 
+        const result = await supabaseClient
+            .from("client_requests")
+            .insert({
+                name: name,
+                email: email,
+                phone: phone || null,
+                activity: activity,
+                message: message || null,
+                language: currentLanguage,
+                status: "new"
+            });
 
-        const result =
-            await supabaseClient
-                .from("client_requests")
-                .insert({
+        if (result.error) throw result.error;
 
-                    name: name,
-
-                    email: email,
-
-                    phone:
-                        phone || null,
-
-                    activity:
-                        activity,
-
-                    message:
-                        message || null,
-
-                    language:
-                        currentLanguage,
-
-                    status:
-                        "new"
-
-                });
-
-
-        if (result.error) {
-
-            throw result.error;
-
-        }
-
-
-        showFormMessage(
-            form,
-            t("formSuccessClient"),
-            "success"
-        );
-
-
+        showFormMessage(form, t("formSuccessClient"), "success");
         form.reset();
 
-
-        /* Volver a colocar el idioma */
-
-        const languageInputs =
-            form.querySelectorAll(
-                "[data-i18n-value]"
-            );
-
-        languageInputs.forEach(function(element) {
-
-            const key =
-                element.getAttribute(
-                    "data-i18n-value"
-                );
-
-            if (key) {
-
-                element.value =
-                    t(key);
-
-            }
-
+        form.querySelectorAll("[data-i18n-value]").forEach(function (element) {
+            const key = element.getAttribute("data-i18n-value");
+            if (key) element.value = t(key);
         });
-
 
     } catch (error) {
 
-        console.error(
-            "Error formulario cliente:",
-            error
-        );
-
-
-        showFormMessage(
-            form,
-            t("formError"),
-            "error"
-        );
-
+        console.error("Error formulario cliente:", error);
+        showFormMessage(form, t("formError"), "error");
 
     } finally {
 
-        setButtonLoading(
-            button,
-            false
-        );
+        setButtonLoading(button, false);
 
     }
-
 
     return false;
 
@@ -5504,166 +5152,62 @@ async function submitQuestionForm(event) {
 
     event.preventDefault();
 
+    const form = event.currentTarget;
+    if (!form) return false;
 
-    const form =
-        event.currentTarget;
+    const name = form.querySelector('[name="nombre"]')?.value.trim() || "";
+    const email = form.querySelector('[name="email"]')?.value.trim() || "";
+    const topic = form.querySelector('[name="tema"]')?.value.trim() || "";
+    const question = form.querySelector('[name="consulta"]')?.value.trim() || "";
 
-
-    if (!form) {
+    if (!name || !email || !topic || !question) {
+        showFormMessage(form, t("formRequired"), "error");
         return false;
     }
 
-
-    const name =
-        form.querySelector(
-            '[name="nombre"]'
-        )?.value.trim() || "";
-
-
-    const email =
-        form.querySelector(
-            '[name="email"]'
-        )?.value.trim() || "";
-
-
-    const topic =
-        form.querySelector(
-            '[name="tema"]'
-        )?.value.trim() || "";
-
-
-    const question =
-        form.querySelector(
-            '[name="consulta"]'
-        )?.value.trim() || "";
-
-
-    if (
-        !name ||
-        !email ||
-        !topic ||
-        !question
-    ) {
-
-        showFormMessage(
-            form,
-            t("formRequired"),
-            "error"
-        );
-
+    if (!isValidEmail(email)) {
+        showFormMessage(form, t("formEmail"), "error");
         return false;
-
     }
 
-
-    if (
-        !isValidEmail(email)
-    ) {
-
-        showFormMessage(
-            form,
-            t("formEmail"),
-            "error"
-        );
-
-        return false;
-
-    }
-
-
-    const button =
-        form.querySelector(
-            'button[type="submit"], input[type="submit"]'
-        );
-
-
-    setButtonLoading(
-        button,
-        true
+    const button = form.querySelector(
+        'button[type="submit"], input[type="submit"]'
     );
 
+    setButtonLoading(button, true);
 
     try {
 
-        if (
-            typeof supabaseClient === "undefined" ||
-            !supabaseClient
-        ) {
-
-            throw new Error(
-                "Supabase no está configurado."
-            );
-
+        if (typeof supabaseClient === "undefined" || !supabaseClient) {
+            throw new Error("Supabase no está configurado.");
         }
 
+        const result = await supabaseClient
+            .from("questions")
+            .insert({
+                name: name,
+                email: email,
+                topic: topic,
+                question: question,
+                language: currentLanguage,
+                status: "new"
+            });
 
-        const result =
-            await supabaseClient
-                .from("questions")
-                .insert({
+        if (result.error) throw result.error;
 
-                    name:
-                        name,
-
-                    email:
-                        email,
-
-                    topic:
-                        topic,
-
-                    question:
-                        question,
-
-                    language:
-                        currentLanguage,
-
-                    status:
-                        "new"
-
-                });
-
-
-        if (result.error) {
-
-            throw result.error;
-
-        }
-
-
-        showFormMessage(
-            form,
-            t("formSuccessQuestion"),
-            "success"
-        );
-
-
+        showFormMessage(form, t("formSuccessQuestion"), "success");
         form.reset();
-
 
     } catch (error) {
 
-        console.error(
-            "Error formulario consulta:",
-            error
-        );
-
-
-        showFormMessage(
-            form,
-            t("formError"),
-            "error"
-        );
-
+        console.error("Error formulario consulta:", error);
+        showFormMessage(form, t("formError"), "error");
 
     } finally {
 
-        setButtonLoading(
-            button,
-            false
-        );
+        setButtonLoading(button, false);
 
     }
-
 
     return false;
 
@@ -5675,26 +5219,15 @@ async function submitQuestionForm(event) {
    ========================================================= */
 
 function getClientForm() {
-
     return document.querySelector(
-        "#clientForm, " +
-        "#client-form, " +
-        "form[data-form='client'], " +
-        "form[data-form='cliente']"
+        "#clientForm, #client-form, form[data-form='client'], form[data-form='cliente']"
     );
-
 }
 
-
 function getQuestionForm() {
-
     return document.querySelector(
-        "#questionForm, " +
-        "#question-form, " +
-        "form[data-form='question'], " +
-        "form[data-form='consulta']"
+        "#questionForm, #question-form, form[data-form='question'], form[data-form='consulta']"
     );
-
 }
 
 
@@ -5704,135 +5237,64 @@ function getQuestionForm() {
 
 function initializeForms() {
 
-    const clientForm =
-        getClientForm();
+    const clientForm = getClientForm();
 
-
-    if (
-        clientForm &&
-        clientForm.dataset.iglesiasFormReady !== "true"
-    ) {
-
-        clientForm.dataset.iglesiasFormReady =
-            "true";
-
-
-        clientForm.addEventListener(
-            "submit",
-            submitClientForm
-        );
-
+    if (clientForm && clientForm.dataset.iglesiasFormReady !== "true") {
+        clientForm.dataset.iglesiasFormReady = "true";
+        clientForm.addEventListener("submit", submitClientForm);
     }
 
+    const questionForm = getQuestionForm();
 
-    const questionForm =
-        getQuestionForm();
-
-
-    if (
-        questionForm &&
-        questionForm.dataset.iglesiasFormReady !== "true"
-    ) {
-
-        questionForm.dataset.iglesiasFormReady =
-            "true";
-
-
-        questionForm.addEventListener(
-            "submit",
-            submitQuestionForm
-        );
-
+    if (questionForm && questionForm.dataset.iglesiasFormReady !== "true") {
+        questionForm.dataset.iglesiasFormReady = "true";
+        questionForm.addEventListener("submit", submitQuestionForm);
     }
 
 }
 
 
 /* =========================================================
-   CREAR CONTENEDOR VISUAL SIN MOVER EL HTML
+   LAYOUT DE FORMULARIOS LADO A LADO
+   (ARREGLO PRINCIPAL: en vez de "adivinar" cuál es el
+   contenedor común subiendo por el DOM —lo cual fallaba si
+   había otros elementos en el medio o CSS del sitio con
+   más prioridad—, ahora se crea un wrapper <div> propio
+   que envuelve directamente a los dos formularios y se le
+   aplican los estilos inline. Esto no depende de tu CSS
+   existente y no se puede pisar por accidente.)
    ========================================================= */
 
 function initializeFormsLayout() {
 
-    const clientForm =
-        getClientForm();
+    const clientForm = getClientForm();
+    const questionForm = getQuestionForm();
 
-
-    const questionForm =
-        getQuestionForm();
-
-
-    if (
-        !clientForm ||
-        !questionForm
-    ) {
-
+    if (!clientForm || !questionForm) {
         console.warn(
-            "No se encontraron los dos formularios."
+            "⚠ No se encontraron los dos formularios " +
+            "(revisá los ids/atributos data-form)."
         );
-
         return;
-
     }
 
-
-    /*
-       IMPORTANTE:
-
-       No movemos los formularios del DOM.
-
-       Solamente identificamos el contenedor
-       común existente para aplicar CSS.
-
-       Esto evita romper la estructura.
-    */
-
-
-    let commonParent =
-        clientForm.parentElement;
-
-
-    while (
-        commonParent &&
-        commonParent !== document.body
-    ) {
-
-        if (
-            commonParent.contains(questionForm)
-        ) {
-
-            break;
-
-        }
-
-        commonParent =
-            commonParent.parentElement;
-
-    }
-
-
-    if (
-        !commonParent
-    ) {
-
+    if (document.getElementById("iglesiasFormsWrapper")) {
+        // Ya se armó el wrapper antes, no duplicar.
         return;
-
     }
 
+    const wrapper = document.createElement("div");
+    wrapper.id = "iglesiasFormsWrapper";
+    wrapper.className = "iglesias-forms-container";
 
-    commonParent.classList.add(
-        "iglesias-forms-container"
-    );
+    // Insertamos el wrapper justo antes del primer formulario,
+    // y movemos ambos formularios adentro, en orden.
+    clientForm.parentElement.insertBefore(wrapper, clientForm);
+    wrapper.appendChild(clientForm);
+    wrapper.appendChild(questionForm);
 
-
-    clientForm.classList.add(
-        "iglesias-client-form"
-    );
-
-
-    questionForm.classList.add(
-        "iglesias-question-form"
-    );
+    clientForm.classList.add("iglesias-client-form");
+    questionForm.classList.add("iglesias-question-form");
 
 }
 
@@ -5843,127 +5305,44 @@ function initializeFormsLayout() {
 
 function initializeFormsCSS() {
 
-    if (
-        document.getElementById(
-            "iglesiasFormsCSS"
-        )
-    ) {
+    if (document.getElementById("iglesiasFormsCSS")) return;
 
-        return;
-
-    }
-
-
-    const style =
-        document.createElement("style");
-
-
-    style.id =
-        "iglesiasFormsCSS";
-
+    const style = document.createElement("style");
+    style.id = "iglesiasFormsCSS";
 
     style.textContent = `
 
-        /* ================================================
-           CONTENEDOR DE FORMULARIOS
-        ================================================ */
-
         .iglesias-forms-container {
-
             width: 100% !important;
-
-            max-width: 1200px;
-
+            max-width: 1200px !important;
             margin-left: auto !important;
-
             margin-right: auto !important;
-
-            box-sizing: border-box;
-
+            box-sizing: border-box !important;
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+            gap: 32px !important;
+            align-items: start !important;
         }
 
-
-        /* ================================================
-           PC
-        ================================================ */
-
-        @media (min-width: 769px) {
-
-            .iglesias-forms-container {
-
-                display: grid !important;
-
-                grid-template-columns:
-                    minmax(0, 1fr)
-                    minmax(0, 1fr) !important;
-
-                gap: 32px !important;
-
-                align-items: start !important;
-
-            }
-
-
-            .iglesias-forms-container
-            .iglesias-client-form,
-
-            .iglesias-forms-container
-            .iglesias-question-form {
-
-                width: 100% !important;
-
-                max-width: 100% !important;
-
-                min-width: 0 !important;
-
-                box-sizing: border-box !important;
-
-            }
-
+        .iglesias-forms-container > * {
+            width: 100% !important;
+            min-width: 0 !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
         }
-
-
-        /* ================================================
-           CELULAR
-        ================================================ */
 
         @media (max-width: 768px) {
 
             .iglesias-forms-container {
-
                 display: flex !important;
-
                 flex-direction: column !important;
-
                 gap: 24px !important;
-
-                width: 100% !important;
-
                 max-width: 100% !important;
-
-            }
-
-
-            .iglesias-forms-container
-            .iglesias-client-form,
-
-            .iglesias-forms-container
-            .iglesias-question-form {
-
-                width: 100% !important;
-
-                max-width: 100% !important;
-
-                min-width: 0 !important;
-
-                box-sizing: border-box !important;
-
             }
 
         }
 
     `;
-
 
     document.head.appendChild(style);
 
@@ -5978,70 +5357,29 @@ function initializeClientButtons() {
 
     document
         .querySelectorAll(
-            '[data-client-action], ' +
-            '.client-button, ' +
-            '[href="#cliente"], ' +
-            '[href="#client"]'
+            '[data-client-action], .client-button, [href="#cliente"], [href="#client"]'
         )
-        .forEach(function(button) {
+        .forEach(function (button) {
 
-            if (
-                button.dataset.iglesiasClientButton ===
-                "true"
-            ) {
+            if (button.dataset.iglesiasClientButton === "true") return;
 
-                return;
+            button.dataset.iglesiasClientButton = "true";
 
-            }
+            button.addEventListener("click", function (event) {
 
+                const target = getClientForm();
+                if (!target) return;
 
-            button.dataset.iglesiasClientButton =
-                "true";
+                event.preventDefault();
 
+                target.scrollIntoView({ behavior: "smooth", block: "center" });
 
-            button.addEventListener(
-                "click",
-                function(event) {
+                setTimeout(function () {
+                    const firstInput = target.querySelector("input, select, textarea");
+                    if (firstInput) firstInput.focus();
+                }, 500);
 
-                    const target =
-                        getClientForm();
-
-
-                    if (!target) {
-                        return;
-                    }
-
-
-                    event.preventDefault();
-
-
-                    target.scrollIntoView({
-
-                        behavior: "smooth",
-
-                        block: "center"
-
-                    });
-
-
-                    setTimeout(function() {
-
-                        const firstInput =
-                            target.querySelector(
-                                "input, select, textarea"
-                            );
-
-
-                        if (firstInput) {
-
-                            firstInput.focus();
-
-                        }
-
-                    }, 500);
-
-                }
-            );
+            });
 
         });
 
@@ -6055,35 +5393,16 @@ function initializeClientButtons() {
 function initializePortalButtons() {
 
     document
-        .querySelectorAll(
-            '[data-portal-button], .portal-button'
-        )
-        .forEach(function(button) {
+        .querySelectorAll('[data-portal-button], .portal-button')
+        .forEach(function (button) {
 
-            if (
-                button.dataset.iglesiasPortalReady ===
-                "true"
-            ) {
+            if (button.dataset.iglesiasPortalReady === "true") return;
 
-                return;
+            button.dataset.iglesiasPortalReady = "true";
 
-            }
-
-
-            button.dataset.iglesiasPortalReady =
-                "true";
-
-
-            button.addEventListener(
-                "click",
-                function() {
-
-                    console.log(
-                        "Iglesias Portal"
-                    );
-
-                }
-            );
+            button.addEventListener("click", function () {
+                console.log("Iglesias Portal");
+            });
 
         });
 
@@ -6096,56 +5415,28 @@ function initializePortalButtons() {
 
 function preventDuplicateSubmissions() {
 
-    document
-        .querySelectorAll("form")
-        .forEach(function(form) {
+    document.querySelectorAll("form").forEach(function (form) {
 
-            if (
-                form.dataset.iglesiasDuplicateReady ===
-                "true"
-            ) {
+        if (form.dataset.iglesiasDuplicateReady === "true") return;
 
+        form.dataset.iglesiasDuplicateReady = "true";
+
+        form.addEventListener("submit", function (event) {
+
+            if (form.dataset.processing === "true") {
+                event.preventDefault();
                 return;
-
             }
 
+            form.dataset.processing = "true";
 
-            form.dataset.iglesiasDuplicateReady =
-                "true";
+            setTimeout(function () {
+                form.dataset.processing = "false";
+            }, 5000);
 
+        }, true);
 
-            form.addEventListener(
-                "submit",
-                function(event) {
-
-                    if (
-                        form.dataset.processing ===
-                        "true"
-                    ) {
-
-                        event.preventDefault();
-
-                        return;
-
-                    }
-
-
-                    form.dataset.processing =
-                        "true";
-
-
-                    setTimeout(function() {
-
-                        form.dataset.processing =
-                            "false";
-
-                    }, 5000);
-
-                },
-                true
-            );
-
-        });
+    });
 
 }
 
@@ -6159,70 +5450,30 @@ function initializeWebsite() {
     try {
 
         initializeMobileLanguageFix();
-
         initializeFormsCSS();
-
         initializeForms();
-
         initializeFormsLayout();
-
         initializeLanguageSelector();
-
+        observeForLateSelectors();
         initializeClientButtons();
-
         initializePortalButtons();
-
         preventDuplicateSubmissions();
 
-
-        /* Aplicar idioma después de que
-           todos los elementos estén disponibles */
-
-        if (
-            typeof translations !== "undefined" &&
-            translations
-        ) {
-
+        waitForTranslations(function () {
             applyTranslations();
+        });
 
-        }
+        console.log("✓ Estudio Contable Iglesias iniciado correctamente.");
+        console.log("✓ Idioma:", currentLanguage);
 
-
-        console.log(
-            "✓ Estudio Contable Iglesias iniciado correctamente."
-        );
-
-
-        console.log(
-            "✓ Idioma:",
-            currentLanguage
-        );
-
-
-        if (
-            typeof supabaseClient !== "undefined" &&
-            supabaseClient
-        ) {
-
-            console.log(
-                "✓ Supabase conectado."
-            );
-
+        if (typeof supabaseClient !== "undefined" && supabaseClient) {
+            console.log("✓ Supabase conectado.");
         } else {
-
-            console.warn(
-                "⚠ Supabase no está configurado."
-            );
-
+            console.warn("⚠ Supabase no está configurado.");
         }
 
     } catch (error) {
-
-        console.error(
-            "Error durante la inicialización:",
-            error
-        );
-
+        console.error("Error durante la inicialización:", error);
     }
 
 }
@@ -6232,30 +5483,10 @@ function initializeWebsite() {
    ARRANQUE
    ========================================================= */
 
-function startWebsite() {
-
-    initializeWebsite();
-
-}
-
-
-/* =========================================================
-   DOM READY
-   ========================================================= */
-
-if (
-    document.readyState === "loading"
-) {
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        startWebsite
-    );
-
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeWebsite);
 } else {
-
-    startWebsite();
-
+    initializeWebsite();
 }
 
 
@@ -6263,17 +5494,9 @@ if (
    FUNCIONES GLOBALES
    ========================================================= */
 
-window.changeLanguage =
-    changeLanguage;
-
-window.submitClientForm =
-    submitClientForm;
-
-window.submitQuestionForm =
-    submitQuestionForm;
-
-window.initializeWebsite =
-    initializeWebsite;
+window.changeLanguage = changeLanguage;
+window.submitClientForm = submitClientForm;
+window.submitQuestionForm = submitQuestionForm;
+window.initializeWebsite = initializeWebsite;
 
 </script>
-```
