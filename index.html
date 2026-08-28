@@ -4635,6 +4635,7 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 };
 
+<script>
 
 /* =========================================================
    IDIOMA ACTIVO
@@ -4652,7 +4653,10 @@ function changeLanguage(language) {
 
     try {
 
-        if (!translations[language]) {
+        if (
+            typeof translations === "undefined" ||
+            !translations[language]
+        ) {
             language = "es";
         }
 
@@ -4663,6 +4667,7 @@ function changeLanguage(language) {
         if (!texts) {
             return;
         }
+
 
         /* -----------------------------------------
            TEXTOS
@@ -4683,7 +4688,8 @@ function changeLanguage(language) {
                     )
                 ) {
 
-                    element.innerHTML = texts[key];
+                    element.innerHTML =
+                        texts[key];
 
                 }
 
@@ -4695,7 +4701,9 @@ function changeLanguage(language) {
         ----------------------------------------- */
 
         document
-            .querySelectorAll("[data-i18n-placeholder]")
+            .querySelectorAll(
+                "[data-i18n-placeholder]"
+            )
             .forEach(function(element) {
 
                 const key =
@@ -4711,7 +4719,8 @@ function changeLanguage(language) {
                     )
                 ) {
 
-                    element.placeholder = texts[key];
+                    element.placeholder =
+                        texts[key];
 
                 }
 
@@ -4723,7 +4732,9 @@ function changeLanguage(language) {
         ----------------------------------------- */
 
         document
-            .querySelectorAll("[data-i18n-value]")
+            .querySelectorAll(
+                "[data-i18n-value]"
+            )
             .forEach(function(element) {
 
                 const key =
@@ -4739,7 +4750,8 @@ function changeLanguage(language) {
                     )
                 ) {
 
-                    element.value = texts[key];
+                    element.value =
+                        texts[key];
 
                 }
 
@@ -4750,26 +4762,22 @@ function changeLanguage(language) {
            HTML LANG
         ----------------------------------------- */
 
-        document.documentElement.lang = language;
+        document.documentElement.lang =
+            language;
 
 
         /* -----------------------------------------
            DIRECCIÓN
         ----------------------------------------- */
 
-        if (language === "ar") {
-
-            document.documentElement.dir = "rtl";
-
-        } else {
-
-            document.documentElement.dir = "ltr";
-
-        }
+        document.documentElement.dir =
+            language === "ar"
+                ? "rtl"
+                : "ltr";
 
 
         /* -----------------------------------------
-           GUARDAR
+           GUARDAR IDIOMA
         ----------------------------------------- */
 
         localStorage.setItem(
@@ -4783,19 +4791,26 @@ function changeLanguage(language) {
         ----------------------------------------- */
 
         const selector =
-            document.getElementById("language");
+            document.getElementById(
+                "language"
+            );
 
         if (selector) {
-            selector.value = language;
+
+            selector.value =
+                language;
+
         }
 
 
         /* -----------------------------------------
-           ACTUALIZAR ATRIBUTOS ARIA
+           ARIA
         ----------------------------------------- */
 
         document
-            .querySelectorAll("[data-i18n-aria]")
+            .querySelectorAll(
+                "[data-i18n-aria]"
+            )
             .forEach(function(element) {
 
                 const key =
@@ -4830,12 +4845,11 @@ function changeLanguage(language) {
 
 
 /* =========================================================
-   HACER CHANGE LANGUAGE GLOBAL
-   ESTO EVITA:
-   changeLanguage is not defined
+   FUNCIÓN GLOBAL DE IDIOMA
 ========================================================= */
 
-window.changeLanguage = changeLanguage;
+window.changeLanguage =
+    changeLanguage;
 
 
 /* =========================================================
@@ -4857,13 +4871,27 @@ function isValidEmail(email) {
 
 function t(key) {
 
+    if (
+        typeof translations === "undefined"
+    ) {
+
+        return key;
+
+    }
+
+
     const languageTexts =
         translations[currentLanguage] ||
-        translations.es;
+        translations.es ||
+        {};
+
 
     return (
         languageTexts[key] ||
-        translations.es[key] ||
+        (
+            translations.es &&
+            translations.es[key]
+        ) ||
         key
     );
 
@@ -4871,7 +4899,7 @@ function t(key) {
 
 
 /* =========================================================
-   MENSAJE VISUAL
+   MENSAJE VISUAL DEL FORMULARIO
 ========================================================= */
 
 function showFormMessage(
@@ -4884,6 +4912,7 @@ function showFormMessage(
         return;
     }
 
+
     let messageElement =
         form.querySelector(
             ".form-message"
@@ -4893,7 +4922,9 @@ function showFormMessage(
     if (!messageElement) {
 
         messageElement =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         messageElement.className =
             "form-message";
@@ -4910,7 +4941,8 @@ function showFormMessage(
     }
 
 
-    messageElement.textContent = message;
+    messageElement.textContent =
+        message;
 
     messageElement.dataset.type =
         type || "info";
@@ -4931,19 +4963,23 @@ function setButtonLoading(
         return;
     }
 
+
     if (loading) {
 
         button.dataset.originalText =
             button.innerHTML;
 
-        button.disabled = true;
+        button.disabled =
+            true;
 
         button.innerHTML =
             "⏳ " + t("formSending");
 
     } else {
 
-        button.disabled = false;
+        button.disabled =
+            false;
+
 
         if (
             button.dataset.originalText
@@ -4973,8 +5009,10 @@ function getFormData(form) {
         return data;
     }
 
+
     const formData =
         new FormData(form);
+
 
     formData.forEach(
         function(value, key) {
@@ -4985,9 +5023,11 @@ function getFormData(form) {
         }
     );
 
+
     return data;
 
 }
+
 
 /* =========================================================
    FORMULARIO DE CLIENTES
@@ -4997,11 +5037,19 @@ async function submitClientForm(event) {
 
     event.preventDefault();
 
-    const form = event.currentTarget;
 
-    if (!form) return false;
+    const form =
+        event.currentTarget;
 
-    const data = getFormData(form);
+
+    if (!form) {
+        return false;
+    }
+
+
+    const data =
+        getFormData(form);
+
 
     const name =
         data.name ||
@@ -5009,146 +5057,40 @@ async function submitClientForm(event) {
         data.nombre ||
         "";
 
+
     const email =
         data.email ||
         data.correo ||
         "";
+
 
     const phone =
         data.phone ||
         data.telefono ||
         "";
 
+
     const activity =
         data.activity ||
         data.actividad ||
         "";
+
 
     const message =
         data.message ||
         data.mensaje ||
         "";
 
-    if (!name || !email || !activity) {
-
-        showFormMessage(
-            form,
-            t("formRequired"),
-            "error"
-        );
-
-        return false;
-    }
-
-    if (!isValidEmail(email)) {
-
-        showFormMessage(
-            form,
-            t("formEmail"),
-            "error"
-        );
-
-        return false;
-    }
-
-    const button =
-        form.querySelector(
-            'button[type="submit"], input[type="submit"]'
-        );
-
-    setButtonLoading(button, true);
-
-    try {
-
-        if (!supabaseClient) {
-            throw new Error(
-                "Supabase no está configurado."
-            );
-        }
-
-        const { error } =
-            await supabaseClient
-                .from("client_requests")
-                .insert({
-                    name: name,
-                    email: email,
-                    phone: phone || null,
-                    activity: activity,
-                    message: message || null,
-                    language: currentLanguage,
-                    status: "new"
-                });
-
-        if (error) {
-            throw error;
-        }
-
-        showFormMessage(
-            form,
-            t("formSuccessClient"),
-            "success"
-        );
-
-        form.reset();
-
-    } catch (error) {
-
-        console.error(
-            "Error formulario cliente:",
-            error
-        );
-
-        showFormMessage(
-            form,
-            t("formError"),
-            "error"
-        );
-
-    } finally {
-
-        setButtonLoading(
-            button,
-            false
-        );
-
-    }
-
-    return false;
-}
-
-/* =========================================================
-   FORMULARIO DE CONSULTAS
-========================================================= */
-
-async function submitQuestionForm(event) {
-
-    event.preventDefault();
-
-    const form = event.currentTarget;
-
-    if (!form) {
-        console.error("No se encontró el formulario.");
-        return false;
-    }
-
-    const name =
-        form.querySelector('[name="nombre"]')?.value.trim() || "";
-
-    const email =
-        form.querySelector('[name="email"]')?.value.trim() || "";
-
-    const topic =
-        form.querySelector('[name="tema"]')?.value.trim() || "";
-
-    const question =
-        form.querySelector('[name="consulta"]')?.value.trim() || "";
-
 
     /* -----------------------------------------
        VALIDACIÓN
     ----------------------------------------- */
 
-    if (!name || !email || !topic || !question) {
+    if (
+        !name ||
+        !email ||
+        !activity
+    ) {
 
         showFormMessage(
             form,
@@ -5157,10 +5099,13 @@ async function submitQuestionForm(event) {
         );
 
         return false;
+
     }
 
 
-    if (!isValidEmail(email)) {
+    if (
+        !isValidEmail(email)
+    ) {
 
         showFormMessage(
             form,
@@ -5169,6 +5114,7 @@ async function submitQuestionForm(event) {
         );
 
         return false;
+
     }
 
 
@@ -5190,7 +5136,11 @@ async function submitQuestionForm(event) {
 
     try {
 
-        if (!supabaseClient) {
+        if (
+            typeof supabaseClient ===
+            "undefined" ||
+            !supabaseClient
+        ) {
 
             throw new Error(
                 "Supabase no está configurado."
@@ -5199,18 +5149,25 @@ async function submitQuestionForm(event) {
         }
 
 
-        const { error } =
+        const result =
             await supabaseClient
-                .from("questions")
+                .from("client_requests")
                 .insert({
 
-                    name: name,
+                    name:
+                        name,
 
-                    email: email,
+                    email:
+                        email,
 
-                    topic: topic,
+                    phone:
+                        phone || null,
 
-                    question: question,
+                    activity:
+                        activity,
+
+                    message:
+                        message || null,
 
                     language:
                         currentLanguage,
@@ -5221,16 +5178,221 @@ async function submitQuestionForm(event) {
                 });
 
 
-        if (error) {
+        if (
+            result.error
+        ) {
 
-            throw error;
+            throw result.error;
 
         }
 
 
-        /* -----------------------------------------
-           ÉXITO
-        ----------------------------------------- */
+        console.log(
+            "✓ Solicitud de cliente guardada correctamente."
+        );
+
+
+        showFormMessage(
+            form,
+            t("formSuccessClient"),
+            "success"
+        );
+
+
+        form.reset();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error formulario cliente:",
+            error
+        );
+
+
+        showFormMessage(
+            form,
+            t("formError"),
+            "error"
+        );
+
+
+    } finally {
+
+        setButtonLoading(
+            button,
+            false
+        );
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   FORMULARIO DE CONSULTAS
+========================================================= */
+
+async function submitQuestionForm(event) {
+
+    event.preventDefault();
+
+
+    const form =
+        event.currentTarget;
+
+
+    if (!form) {
+
+        console.error(
+            "No se encontró el formulario."
+        );
+
+        return false;
+
+    }
+
+
+    const name =
+        form.querySelector(
+            '[name="nombre"]'
+        )?.value.trim() || "";
+
+
+    const email =
+        form.querySelector(
+            '[name="email"]'
+        )?.value.trim() || "";
+
+
+    const topic =
+        form.querySelector(
+            '[name="tema"]'
+        )?.value.trim() || "";
+
+
+    const question =
+        form.querySelector(
+            '[name="consulta"]'
+        )?.value.trim() || "";
+
+
+    console.log(
+        "Datos consulta:",
+        {
+            name,
+            email,
+            topic,
+            question
+        }
+    );
+
+
+    /* -----------------------------------------
+       VALIDACIÓN
+    ----------------------------------------- */
+
+    if (
+        !name ||
+        !email ||
+        !topic ||
+        !question
+    ) {
+
+        showFormMessage(
+            form,
+            t("formRequired"),
+            "error"
+        );
+
+        return false;
+
+    }
+
+
+    if (
+        !isValidEmail(email)
+    ) {
+
+        showFormMessage(
+            form,
+            t("formEmail"),
+            "error"
+        );
+
+        return false;
+
+    }
+
+
+    const button =
+        form.querySelector(
+            'button[type="submit"], input[type="submit"]'
+        );
+
+
+    setButtonLoading(
+        button,
+        true
+    );
+
+
+    /* -----------------------------------------
+       SUPABASE
+    ----------------------------------------- */
+
+    try {
+
+        if (
+            typeof supabaseClient ===
+            "undefined" ||
+            !supabaseClient
+        ) {
+
+            throw new Error(
+                "Supabase no está configurado."
+            );
+
+        }
+
+
+        const result =
+            await supabaseClient
+                .from("questions")
+                .insert({
+
+                    name:
+                        name,
+
+                    email:
+                        email,
+
+                    topic:
+                        topic,
+
+                    question:
+                        question,
+
+                    language:
+                        currentLanguage,
+
+                    status:
+                        "new"
+
+                });
+
+
+        if (
+            result.error
+        ) {
+
+            throw result.error;
+
+        }
+
 
         console.log(
             "✓ Consulta guardada correctamente."
@@ -5283,9 +5445,9 @@ async function submitQuestionForm(event) {
 
 function initializeForms() {
 
-    /*
+    /* -----------------------------------------
        FORMULARIO CLIENTE
-    */
+    ----------------------------------------- */
 
     const possibleClientForms = [
 
@@ -5316,7 +5478,8 @@ function initializeForms() {
 
         if (element) {
 
-            clientForm = element;
+            clientForm =
+                element;
 
             break;
 
@@ -5335,9 +5498,9 @@ function initializeForms() {
     }
 
 
-    /*
+    /* -----------------------------------------
        FORMULARIO CONSULTAS
-    */
+    ----------------------------------------- */
 
     const possibleQuestionForms = [
 
@@ -5366,7 +5529,8 @@ function initializeForms() {
 
         if (element) {
 
-            questionForm = element;
+            questionForm =
+                element;
 
             break;
 
@@ -5435,7 +5599,9 @@ function initializeClientButtons() {
                                         );
 
 
-                                    if (firstInput) {
+                                    if (
+                                        firstInput
+                                    ) {
 
                                         firstInput.focus();
 
@@ -5469,6 +5635,10 @@ function initializeLanguageSelector() {
 
 
     if (!selector) {
+
+        console.warn(
+            "⚠ No se encontró el selector #language."
+        );
 
         return;
 
@@ -5592,9 +5762,16 @@ function initializeWebsite() {
         preventDuplicateSubmissions();
 
 
-        changeLanguage(
-            currentLanguage
-        );
+        if (
+            typeof translations !==
+            "undefined"
+        ) {
+
+            changeLanguage(
+                currentLanguage
+            );
+
+        }
 
 
         console.log(
@@ -5608,7 +5785,11 @@ function initializeWebsite() {
         );
 
 
-        if (supabaseClient) {
+        if (
+            typeof supabaseClient !==
+            "undefined" &&
+            supabaseClient
+        ) {
 
             console.log(
                 "✓ Supabase conectado."
@@ -5621,6 +5802,7 @@ function initializeWebsite() {
             );
 
         }
+
 
     } catch (error) {
 
