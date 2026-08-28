@@ -5116,7 +5116,6 @@ async function submitClientForm(event) {
     return false;
 }
 
-
 /* =========================================================
    FORMULARIO DE CONSULTAS
 ========================================================= */
@@ -5127,27 +5126,27 @@ async function submitQuestionForm(event) {
 
     const form = event.currentTarget;
 
-    if (!form) return false;
+    if (!form) {
+        console.error("No se encontró el formulario.");
+        return false;
+    }
 
     const name =
-        form.querySelector(
-            '[name="nombre"]'
-        )?.value.trim() || "";
+        form.querySelector('[name="nombre"]')?.value.trim() || "";
 
     const email =
-        form.querySelector(
-            '[name="email"]'
-        )?.value.trim() || "";
+        form.querySelector('[name="email"]')?.value.trim() || "";
 
     const topic =
-        form.querySelector(
-            '[name="tema"]'
-        )?.value.trim() || "";
+        form.querySelector('[name="tema"]')?.value.trim() || "";
 
     const question =
-        form.querySelector(
-            '[name="consulta"]'
-        )?.value.trim() || "";
+        form.querySelector('[name="consulta"]')?.value.trim() || "";
+
+
+    /* -----------------------------------------
+       VALIDACIÓN
+    ----------------------------------------- */
 
     if (!name || !email || !topic || !question) {
 
@@ -5160,6 +5159,7 @@ async function submitQuestionForm(event) {
         return false;
     }
 
+
     if (!isValidEmail(email)) {
 
         showFormMessage(
@@ -5171,79 +5171,12 @@ async function submitQuestionForm(event) {
         return false;
     }
 
-    const button =
-        form.querySelector(
-            'button[type="submit"], input[type="submit"]'
-        );
-
-    setButtonLoading(button, true);
-
-    try {
-
-        if (!supabaseClient) {
-            throw new Error(
-                "Supabase no está configurado."
-            );
-        }
-
-        const { error } =
-            await supabaseClient
-                .from("questions")
-                .insert({
-                    name: name,
-                    email: email,
-                    topic: topic,
-                    question: question,
-                    language: currentLanguage,
-                    status: "new"
-                });
-
-        if (error) {
-            throw error;
-        }
-
-        showFormMessage(
-            form,
-            t("formSuccessQuestion"),
-            "success"
-        );
-
-        form.reset();
-
-    } catch (error) {
-
-        console.error(
-            "Error formulario consulta:",
-            error
-        );
-
-        showFormMessage(
-            form,
-            t("formError"),
-            "error"
-        );
-
-    } finally {
-
-        setButtonLoading(
-            button,
-            false
-        );
-
-    }
-
-    return false;
-}
-
-
-    /* =====================================================
-       BOTÓN
-       ===================================================== */
 
     const button =
         form.querySelector(
             'button[type="submit"], input[type="submit"]'
         );
+
 
     setButtonLoading(
         button,
@@ -5251,9 +5184,9 @@ async function submitQuestionForm(event) {
     );
 
 
-    /* =====================================================
+    /* -----------------------------------------
        SUPABASE
-       ===================================================== */
+    ----------------------------------------- */
 
     try {
 
@@ -5279,9 +5212,11 @@ async function submitQuestionForm(event) {
 
                     question: question,
 
-                    language: currentLanguage,
+                    language:
+                        currentLanguage,
 
-                    status: "new"
+                    status:
+                        "new"
 
                 });
 
@@ -5293,9 +5228,14 @@ async function submitQuestionForm(event) {
         }
 
 
-        /* =================================================
+        /* -----------------------------------------
            ÉXITO
-           ================================================= */
+        ----------------------------------------- */
+
+        console.log(
+            "✓ Consulta guardada correctamente."
+        );
+
 
         showFormMessage(
             form,
@@ -5305,11 +5245,6 @@ async function submitQuestionForm(event) {
 
 
         form.reset();
-
-
-        changeLanguage(
-            currentLanguage
-        );
 
 
     } catch (error) {
@@ -5336,7 +5271,11 @@ async function submitQuestionForm(event) {
 
     }
 
+
+    return false;
+
 }
+
 
 /* =========================================================
    BUSCAR FORMULARIOS AUTOMÁTICAMENTE
@@ -5344,9 +5283,8 @@ async function submitQuestionForm(event) {
 
 function initializeForms() {
 
-
     /*
-       Formulario cliente
+       FORMULARIO CLIENTE
     */
 
     const possibleClientForms = [
@@ -5375,9 +5313,11 @@ function initializeForms() {
                 possibleClientForms[i]
             );
 
+
         if (element) {
 
             clientForm = element;
+
             break;
 
         }
@@ -5396,7 +5336,7 @@ function initializeForms() {
 
 
     /*
-       Formulario pregunta
+       FORMULARIO CONSULTAS
     */
 
     const possibleQuestionForms = [
@@ -5423,9 +5363,11 @@ function initializeForms() {
                 possibleQuestionForms[i]
             );
 
+
         if (element) {
 
             questionForm = element;
+
             break;
 
         }
@@ -5447,7 +5389,7 @@ function initializeForms() {
 
 /* =========================================================
    BOTONES "QUIERO SER CLIENTE"
-   ========================================================= */
+========================================================= */
 
 function initializeClientButtons() {
 
@@ -5455,49 +5397,61 @@ function initializeClientButtons() {
         .querySelectorAll(
             '[data-client-action], .client-button, [href="#cliente"], [href="#client"]'
         )
-        .forEach(function(button) {
+        .forEach(
+            function(button) {
 
-            button.addEventListener(
-                "click",
-                function(event) {
+                button.addEventListener(
+                    "click",
+                    function(event) {
 
-                    const target =
-                        document.querySelector(
-                            "#clientForm, #client-form, #contactForm, #contact-form"
-                        );
-
-                    if (target) {
-
-                        event.preventDefault();
-
-                        target.scrollIntoView({
-                            behavior:"smooth",
-                            block:"center"
-                        });
+                        const target =
+                            document.querySelector(
+                                "#clientForm, #client-form, #contactForm, #contact-form"
+                            );
 
 
-                        setTimeout(
-                            function() {
+                        if (target) {
 
-                                const firstInput =
-                                    target.querySelector(
-                                        "input, select, textarea"
-                                    );
+                            event.preventDefault();
 
-                                if (firstInput) {
-                                    firstInput.focus();
-                                }
 
-                            },
-                            500
-                        );
+                            target.scrollIntoView({
+
+                                behavior:
+                                    "smooth",
+
+                                block:
+                                    "center"
+
+                            });
+
+
+                            setTimeout(
+                                function() {
+
+                                    const firstInput =
+                                        target.querySelector(
+                                            "input, select, textarea"
+                                        );
+
+
+                                    if (firstInput) {
+
+                                        firstInput.focus();
+
+                                    }
+
+                                },
+                                500
+                            );
+
+                        }
 
                     }
+                );
 
-                }
-            );
-
-        });
+            }
+        );
 
 }
 
@@ -5515,14 +5469,11 @@ function initializeLanguageSelector() {
 
 
     if (!selector) {
+
         return;
+
     }
 
-
-    /*
-       Elimina listeners inline problemáticos
-       solamente si usamos nuestro listener.
-    */
 
     selector.addEventListener(
         "change",
@@ -5535,11 +5486,6 @@ function initializeLanguageSelector() {
         }
     );
 
-
-    /*
-       Evita que el selector quede
-       desactualizado.
-    */
 
     selector.value =
         currentLanguage;
@@ -5557,26 +5503,22 @@ function initializePortalButtons() {
         .querySelectorAll(
             '[data-portal-button], .portal-button'
         )
-        .forEach(function(button) {
+        .forEach(
+            function(button) {
 
-            button.addEventListener(
-                "click",
-                function() {
+                button.addEventListener(
+                    "click",
+                    function() {
 
-                    /*
-                       Cuando conectemos el login real
-                       del portal, este botón puede
-                       redirigir al dashboard.
-                    */
+                        console.log(
+                            "Iglesias Portal"
+                        );
 
-                    console.log(
-                        "Iglesias Portal"
-                    );
+                    }
+                );
 
-                }
-            );
-
-        });
+            }
+        );
 
 }
 
@@ -5588,40 +5530,45 @@ function initializePortalButtons() {
 function preventDuplicateSubmissions() {
 
     document
-        .querySelectorAll("form")
-        .forEach(function(form) {
+        .querySelectorAll(
+            "form"
+        )
+        .forEach(
+            function(form) {
 
-            form.addEventListener(
-                "submit",
-                function() {
+                form.addEventListener(
+                    "submit",
+                    function() {
 
-                    if (
-                        form.dataset.processing ===
-                        "true"
-                    ) {
+                        if (
+                            form.dataset.processing ===
+                            "true"
+                        ) {
 
-                        return;
+                            return;
+
+                        }
+
+
+                        form.dataset.processing =
+                            "true";
+
+
+                        setTimeout(
+                            function() {
+
+                                form.dataset.processing =
+                                    "false";
+
+                            },
+                            5000
+                        );
 
                     }
+                );
 
-                    form.dataset.processing =
-                        "true";
-
-
-                    setTimeout(
-                        function() {
-
-                            form.dataset.processing =
-                                "false";
-
-                        },
-                        5000
-                    );
-
-                }
-            );
-
-        });
+            }
+        );
 
 }
 
@@ -5643,6 +5590,7 @@ function initializeWebsite() {
         initializePortalButtons();
 
         preventDuplicateSubmissions();
+
 
         changeLanguage(
             currentLanguage
@@ -5673,7 +5621,6 @@ function initializeWebsite() {
             );
 
         }
-
 
     } catch (error) {
 
@@ -5715,11 +5662,14 @@ if (
 window.changeLanguage =
     changeLanguage;
 
+
 window.submitClientForm =
     submitClientForm;
 
+
 window.submitQuestionForm =
     submitQuestionForm;
+
 
 window.initializeWebsite =
     initializeWebsite;
