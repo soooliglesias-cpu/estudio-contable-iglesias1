@@ -4644,33 +4644,29 @@ throw new Error(
    GUARDAMOS EN client_requests
 */
 
-const result =
-await supabaseClient
-.from("client_requests")
-.insert({
+const { data: result, error } =
+await supabaseClient.rpc(
+"submit_client_request",
+{
+p_name: name,
+p_email: email,
+p_phone: phone || null,
+p_activity: activity,
+p_message: message || null,
+p_language: currentLanguage || "es"
+}
+);
 
-name:name,
+if (error) {
 
-email:email,
-
-phone:phone || null,
-
-activity:activity,
-
-message:message || null,
-
-language:currentLanguage,
-
-status:"new"
-
-});
-
-
-if (result.error) {
-
-throw result.error;
+throw error;
 
 }
+
+console.log(
+"✓ Solicitud de cliente guardada:",
+result
+);
 
 
 /*
