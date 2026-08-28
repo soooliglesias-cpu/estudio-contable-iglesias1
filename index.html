@@ -4632,13 +4632,11 @@ portalLogin:"تسجيل الدخول",
 portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 }
-    ```html
 <script>
-
 /* =========================================================
    ESTUDIO CONTABLE IGLESIAS
    IDIOMAS + SUPABASE + FORMULARIOS
-   VERSION ESTABLE
+   VERSIÓN DEFINITIVA
 ========================================================= */
 
 (function () {
@@ -4647,37 +4645,105 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
     /* =====================================================
-       IDIOMA
+       CONFIGURACIÓN DE SUPABASE
     ===================================================== */
 
-    let currentLanguage =
-        localStorage.getItem("preferredLanguage") || "es";
+    const SUPABASE_URL =
+        "https://lpjzhjftgmlcpjyrkqfl.supabase.co";
 
-    currentLanguage = String(currentLanguage)
-        .toLowerCase()
-        .trim();
+    const SUPABASE_ANON_KEY =
+        "sb_publishable_XJPVuprbVeoyev-rv7WsZg_h-D63Xf2";
 
 
     /* =====================================================
-       OBTENER IDIOMAS REALMENTE DISPONIBLES
+       CREAR CLIENTE SUPABASE
     ===================================================== */
 
-    function getAvailableLanguages() {
+    let supabaseClient = null;
+
+    function initializeSupabase() {
 
         if (
-            typeof translations === "undefined" ||
-            !translations ||
-            typeof translations !== "object"
+            typeof window.supabase === "undefined" ||
+            !window.supabase ||
+            typeof window.supabase.createClient !== "function"
         ) {
-            return ["es"];
+            console.error(
+                "❌ No se encontró la librería de Supabase."
+            );
+            return false;
         }
 
-        return Object.keys(translations);
+        try {
+
+            supabaseClient =
+                window.supabase.createClient(
+                    SUPABASE_URL,
+                    SUPABASE_ANON_KEY
+                );
+
+            window.supabaseClient =
+                supabaseClient;
+
+            console.log(
+                "✓ Supabase conectado correctamente."
+            );
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+                "❌ Error iniciando Supabase:",
+                error
+            );
+
+            return false;
+
+        }
+
     }
 
 
     /* =====================================================
-       TEXTO TRADUCIDO
+       IDIOMA ACTIVO
+    ===================================================== */
+
+    const availableLanguages = [
+        "es",
+        "en",
+        "it",
+        "fr",
+        "de",
+        "ar",
+        "ko",
+        "pt"
+    ];
+
+
+    let currentLanguage =
+        String(
+            localStorage.getItem(
+                "preferredLanguage"
+            ) || "es"
+        )
+        .toLowerCase()
+        .trim();
+
+
+    if (
+        !availableLanguages.includes(
+            currentLanguage
+        )
+    ) {
+
+        currentLanguage = "es";
+
+    }
+
+
+    /* =====================================================
+       OBTENER TRADUCCIÓN
     ===================================================== */
 
     function t(key) {
@@ -4686,13 +4752,17 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
             typeof translations === "undefined" ||
             !translations
         ) {
+
             return key;
+
         }
+
 
         const language =
             translations[currentLanguage] ||
             translations.es ||
             {};
+
 
         if (
             Object.prototype.hasOwnProperty.call(
@@ -4700,8 +4770,11 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
                 key
             )
         ) {
+
             return language[key];
+
         }
+
 
         if (
             translations.es &&
@@ -4710,10 +4783,14 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
                 key
             )
         ) {
+
             return translations.es[key];
+
         }
 
+
         return key;
+
     }
 
 
@@ -4727,24 +4804,13 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
             typeof translations === "undefined" ||
             !translations
         ) {
-            return;
-        }
 
-        const available =
-            getAvailableLanguages();
-
-
-        if (!available.includes(currentLanguage)) {
-
-            currentLanguage =
-                available.includes("es")
-                    ? "es"
-                    : available[0];
-
-            localStorage.setItem(
-                "preferredLanguage",
-                currentLanguage
+            console.warn(
+                "⚠ El objeto translations todavía no existe."
             );
+
+            return;
+
         }
 
 
@@ -4754,7 +4820,14 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
         if (!texts) {
+
+            console.warn(
+                "⚠ No existe traducción para:",
+                currentLanguage
+            );
+
             return;
+
         }
 
 
@@ -4767,7 +4840,10 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
             .forEach(function (element) {
 
                 const key =
-                    element.getAttribute("data-i18n");
+                    element.getAttribute(
+                        "data-i18n"
+                    );
+
 
                 if (
                     key &&
@@ -4799,6 +4875,7 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
                     element.getAttribute(
                         "data-i18n-placeholder"
                     );
+
 
                 if (
                     key &&
@@ -4833,6 +4910,7 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
                         "data-i18n-value"
                     );
 
+
                 if (
                     key &&
                     Object.prototype.hasOwnProperty.call(
@@ -4863,6 +4941,7 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
                     element.getAttribute(
                         "data-i18n-aria"
                     );
+
 
                 if (
                     key &&
@@ -4914,6 +4993,12 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
             });
 
+
+        console.log(
+            "✓ Idioma aplicado:",
+            currentLanguage
+        );
+
     }
 
 
@@ -4924,25 +5009,20 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
     function changeLanguage(language) {
 
         language =
-            String(language || "")
-                .toLowerCase()
-                .trim();
+            String(
+                language || "es"
+            )
+            .toLowerCase()
+            .trim();
 
-        const available =
-            getAvailableLanguages();
 
-
-        if (!available.includes(language)) {
-
-            console.warn(
-                "Idioma no disponible:",
+        if (
+            !availableLanguages.includes(
                 language
-            );
+            )
+        ) {
 
-            language =
-                available.includes("es")
-                    ? "es"
-                    : available[0];
+            language = "es";
 
         }
 
@@ -4960,101 +5040,79 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
         applyTranslations();
 
 
-        console.log(
-            "Idioma activo:",
-            currentLanguage
-        );
+        return true;
 
     }
 
+
+    /* IMPORTANTE:
+       La función queda disponible para tu HTML.
+    */
 
     window.changeLanguage =
         changeLanguage;
 
 
+    window.t =
+        t;
+
+
     /* =====================================================
-       SELECTOR DE IDIOMA
+       SELECTORES DE IDIOMA
     ===================================================== */
 
-    function initializeLanguageSelector() {
+    function initializeLanguageSelectors() {
 
-        const selectors =
-            document.querySelectorAll(
+        document
+            .querySelectorAll(
                 "#language, " +
                 ".language-selector select, " +
                 ".language-switcher select, " +
                 ".lang-selector select, " +
                 "select[data-language]"
-            );
+            )
+            .forEach(function (selector) {
+
+                if (
+                    selector.dataset
+                        .iglesiasLanguageReady === "true"
+                ) {
+
+                    selector.value =
+                        currentLanguage;
+
+                    return;
+
+                }
 
 
-        selectors.forEach(function (selector) {
-
-            if (
                 selector.dataset
-                    .iglesiasLanguageReady === "true"
-            ) {
+                    .iglesiasLanguageReady =
+                    "true";
+
+
                 selector.value =
                     currentLanguage;
 
-                return;
-            }
 
+                selector.addEventListener(
+                    "change",
+                    function (event) {
 
-            selector.dataset
-                .iglesiasLanguageReady =
-                "true";
+                        changeLanguage(
+                            event.target.value
+                        );
 
+                    }
+                );
 
-            selector.value =
-                currentLanguage;
-
-
-            selector.addEventListener(
-                "change",
-                function (event) {
-
-                    changeLanguage(
-                        event.target.value
-                    );
-
-                }
-            );
-
-        });
+            });
 
     }
 
 
     /* =====================================================
-       ESPERAR TRADUCCIONES
-    ===================================================== */
-
-    function waitForTranslations() {
-
-        if (
-            typeof translations !== "undefined" &&
-            translations
-        ) {
-
-            initializeLanguageSelector();
-
-            applyTranslations();
-
-            return;
-        }
-
-
-        setTimeout(
-            waitForTranslations,
-            200
-        );
-
-    }
-
-
-    /* =====================================================
-       VALIDAR EMAIL
+       VALIDACIÓN EMAIL
     ===================================================== */
 
     function isValidEmail(email) {
@@ -5068,7 +5126,7 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
     /* =====================================================
-       MENSAJE DEL FORMULARIO
+       MENSAJE DE FORMULARIO
     ===================================================== */
 
     function showFormMessage(
@@ -5077,50 +5135,53 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
         type
     ) {
 
-        if (!form) {
-            return;
-        }
+        if (!form) return;
 
 
-        let element =
+        let messageElement =
             form.querySelector(
                 ".form-message"
             );
 
 
-        if (!element) {
+        if (!messageElement) {
 
-            element =
+            messageElement =
                 document.createElement(
                     "div"
                 );
 
-            element.className =
+            messageElement.className =
                 "form-message";
 
-            element.setAttribute(
+            messageElement.setAttribute(
                 "role",
                 "status"
             );
 
             form.appendChild(
-                element
+                messageElement
             );
 
         }
 
 
-        element.textContent =
+        messageElement.textContent =
             message;
 
-        element.dataset.type =
+
+        messageElement.dataset.type =
             type || "info";
+
+
+        messageElement.style.display =
+            "block";
 
     }
 
 
     /* =====================================================
-       BOTON CARGANDO
+       BOTÓN CARGANDO
     ===================================================== */
 
     function setButtonLoading(
@@ -5128,18 +5189,18 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
         loading
     ) {
 
-        if (!button) {
-            return;
-        }
+        if (!button) return;
 
 
         if (loading) {
 
             if (
-                !button.dataset.originalText
+                !button.dataset
+                    .originalText
             ) {
 
-                button.dataset.originalText =
+                button.dataset
+                    .originalText =
                     button.innerHTML;
 
             }
@@ -5160,49 +5221,20 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
             if (
-                button.dataset.originalText
+                button.dataset
+                    .originalText
             ) {
 
                 button.innerHTML =
-                    button.dataset.originalText;
+                    button.dataset
+                        .originalText;
 
-                delete button.dataset.originalText;
+                delete button.dataset
+                    .originalText;
 
             }
 
         }
-
-    }
-
-
-    /* =====================================================
-       FORM DATA
-    ===================================================== */
-
-    function getFormData(form) {
-
-        const data = {};
-
-        if (!form) {
-            return data;
-        }
-
-
-        const formData =
-            new FormData(form);
-
-
-        formData.forEach(
-            function (value, key) {
-
-                data[key] =
-                    String(value).trim();
-
-            }
-        );
-
-
-        return data;
 
     }
 
@@ -5220,13 +5252,24 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
             event.currentTarget;
 
 
-        if (!form) {
-            return false;
-        }
+        if (!form) return false;
 
 
-        const data =
-            getFormData(form);
+        const formData =
+            new FormData(form);
+
+
+        const data = {};
+
+
+        formData.forEach(
+            function (value, key) {
+
+                data[key] =
+                    String(value).trim();
+
+            }
+        );
 
 
         const name =
@@ -5259,6 +5302,8 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
             data.mensaje ||
             "";
 
+
+        /* VALIDACIÓN */
 
         if (
             !name ||
@@ -5306,14 +5351,10 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
         try {
 
-            if (
-                typeof supabaseClient ===
-                "undefined" ||
-                !supabaseClient
-            ) {
+            if (!supabaseClient) {
 
                 throw new Error(
-                    "Supabase no está configurado."
+                    "Supabase no está disponible."
                 );
 
             }
@@ -5321,21 +5362,27 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
             const result =
                 await supabaseClient
-                    .from("client_requests")
+                    .from(
+                        "client_requests"
+                    )
                     .insert({
 
-                        name: name,
+                        name:
+                            name,
 
-                        email: email,
+                        email:
+                            email,
 
                         phone:
-                            phone || null,
+                            phone ||
+                            null,
 
                         activity:
                             activity,
 
                         message:
-                            message || null,
+                            message ||
+                            null,
 
                         language:
                             currentLanguage,
@@ -5347,13 +5394,17 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
             if (result.error) {
+
                 throw result.error;
+
             }
 
 
             showFormMessage(
                 form,
-                t("formSuccessClient"),
+                t(
+                    "formSuccessClient"
+                ),
                 "success"
             );
 
@@ -5361,13 +5412,20 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
             form.reset();
 
 
+            /* Restaurar placeholders/values */
+
             applyTranslations();
+
+
+            console.log(
+                "✓ Cliente guardado en Supabase."
+            );
 
 
         } catch (error) {
 
             console.error(
-                "Error formulario cliente:",
+                "❌ Error formulario cliente:",
                 error
             );
 
@@ -5406,34 +5464,52 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
             event.currentTarget;
 
 
-        if (!form) {
-            return false;
-        }
+        if (!form) return false;
+
+
+        const getValue =
+            function (name) {
+
+                const field =
+                    form.querySelector(
+                        '[name="' +
+                        name +
+                        '"]'
+                    );
+
+
+                return field &&
+                    typeof field.value ===
+                        "string"
+
+                    ? field.value.trim()
+
+                    : "";
+
+            };
 
 
         const name =
-            form.querySelector(
-                '[name="nombre"], [name="name"]'
-            )?.value.trim() || "";
+            getValue("nombre") ||
+            getValue("name");
 
 
         const email =
-            form.querySelector(
-                '[name="email"], [name="correo"]'
-            )?.value.trim() || "";
+            getValue("email") ||
+            getValue("correo");
 
 
         const topic =
-            form.querySelector(
-                '[name="tema"], [name="topic"]'
-            )?.value.trim() || "";
+            getValue("tema") ||
+            getValue("topic");
 
 
         const question =
-            form.querySelector(
-                '[name="consulta"], [name="question"]'
-            )?.value.trim() || "";
+            getValue("consulta") ||
+            getValue("question");
 
+
+        /* VALIDACIÓN */
 
         if (
             !name ||
@@ -5482,14 +5558,10 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
         try {
 
-            if (
-                typeof supabaseClient ===
-                "undefined" ||
-                !supabaseClient
-            ) {
+            if (!supabaseClient) {
 
                 throw new Error(
-                    "Supabase no está configurado."
+                    "Supabase no está disponible."
                 );
 
             }
@@ -5497,16 +5569,22 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
             const result =
                 await supabaseClient
-                    .from("questions")
+                    .from(
+                        "questions"
+                    )
                     .insert({
 
-                        name: name,
+                        name:
+                            name,
 
-                        email: email,
+                        email:
+                            email,
 
-                        topic: topic,
+                        topic:
+                            topic,
 
-                        question: question,
+                        question:
+                            question,
 
                         language:
                             currentLanguage,
@@ -5518,13 +5596,17 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
             if (result.error) {
+
                 throw result.error;
+
             }
 
 
             showFormMessage(
                 form,
-                t("formSuccessQuestion"),
+                t(
+                    "formSuccessQuestion"
+                ),
                 "success"
             );
 
@@ -5535,10 +5617,15 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
             applyTranslations();
 
 
+            console.log(
+                "✓ Consulta guardada en Supabase."
+            );
+
+
         } catch (error) {
 
             console.error(
-                "Error formulario consulta:",
+                "❌ Error formulario consulta:",
                 error
             );
 
@@ -5568,7 +5655,7 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
        BUSCAR FORMULARIOS
     ===================================================== */
 
-    function getClientForm() {
+    function findClientForm() {
 
         return document.querySelector(
             "#clientForm, " +
@@ -5582,7 +5669,7 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
     }
 
 
-    function getQuestionForm() {
+    function findQuestionForm() {
 
         return document.querySelector(
             "#questionForm, " +
@@ -5601,7 +5688,7 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
     function initializeForms() {
 
         const clientForm =
-            getClientForm();
+            findClientForm();
 
 
         if (
@@ -5624,7 +5711,7 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
         const questionForm =
-            getQuestionForm();
+            findQuestionForm();
 
 
         if (
@@ -5649,17 +5736,22 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
     /* =====================================================
-       FORMULARIOS LADO A LADO
+       FORMULARIOS UNO AL LADO DEL OTRO
+       
+       IMPORTANTE:
+       NO MOVEMOS LOS FORMULARIOS DEL DOM.
+       SOLAMENTE CAMBIAMOS EL LAYOUT DEL CONTENEDOR
+       QUE YA EXISTE.
     ===================================================== */
 
     function initializeFormsLayout() {
 
         const clientForm =
-            getClientForm();
+            findClientForm();
 
 
         const questionForm =
-            getQuestionForm();
+            findQuestionForm();
 
 
         if (
@@ -5668,7 +5760,7 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
         ) {
 
             console.warn(
-                "No se encontraron ambos formularios."
+                "⚠ No se encontraron ambos formularios."
             );
 
             return;
@@ -5677,69 +5769,48 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
         /* ---------------------------------------------
-           CREAR CONTENEDOR
+           ENCONTRAR EL CONTENEDOR COMÚN
         --------------------------------------------- */
 
-        let wrapper =
-            document.querySelector(
-                ".iglesias-forms-container"
+        let commonParent =
+            clientForm.parentElement;
+
+
+        while (
+            commonParent &&
+            commonParent !== document.body &&
+            !commonParent.contains(
+                questionForm
+            )
+        ) {
+
+            commonParent =
+                commonParent.parentElement;
+
+        }
+
+
+        if (
+            !commonParent ||
+            commonParent === document.body
+        ) {
+
+            console.warn(
+                "⚠ No se encontró un contenedor común seguro para los formularios."
             );
 
-
-        if (!wrapper) {
-
-            wrapper =
-                document.createElement(
-                    "div"
-                );
-
-            wrapper.className =
-                "iglesias-forms-container";
-
-
-            const firstForm =
-                clientForm.compareDocumentPosition(
-                    questionForm
-                ) &
-                Node.DOCUMENT_POSITION_FOLLOWING
-                    ? clientForm
-                    : questionForm;
-
-
-            firstForm.parentNode.insertBefore(
-                wrapper,
-                firstForm
-            );
+            return;
 
         }
 
 
         /* ---------------------------------------------
-           MOVER FORMULARIOS
+           CLASE ÚNICA
         --------------------------------------------- */
 
-        if (
-            clientForm.parentNode !==
-            wrapper
-        ) {
-
-            wrapper.appendChild(
-                clientForm
-            );
-
-        }
-
-
-        if (
-            questionForm.parentNode !==
-            wrapper
-        ) {
-
-            wrapper.appendChild(
-                questionForm
-            );
-
-        }
+        commonParent.classList.add(
+            "iglesias-forms-layout"
+        );
 
 
         clientForm.classList.add(
@@ -5755,7 +5826,11 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
     /* =====================================================
-       CSS FORMULARIOS
+       CSS DE FORMULARIOS
+       
+       NO SE CREA WRAPPER.
+       NO SE CAMBIA EL HTML.
+       NO SE MUEVEN ELEMENTOS.
     ===================================================== */
 
     function initializeFormsCSS() {
@@ -5783,17 +5858,19 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
         style.textContent = `
 
-            .iglesias-forms-container {
+            /*
+             * CONTENEDOR DE LOS DOS FORMULARIOS
+             */
+
+            .iglesias-forms-layout {
 
                 width: 100% !important;
 
                 max-width: 1200px !important;
 
-                margin: 0 auto !important;
+                margin-left: auto !important;
 
-                padding: 0 !important;
-
-                box-sizing: border-box !important;
+                margin-right: auto !important;
 
                 display: grid !important;
 
@@ -5805,22 +5882,26 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
                 align-items: start !important;
 
+                box-sizing: border-box !important;
+
             }
 
 
-            .iglesias-forms-container
+            /*
+             * CADA FORMULARIO
+             */
+
+            .iglesias-forms-layout
             > .iglesias-client-form,
 
-            .iglesias-forms-container
+            .iglesias-forms-layout
             > .iglesias-question-form {
-
-                display: block !important;
 
                 width: 100% !important;
 
-                min-width: 0 !important;
+                max-width: 100% !important;
 
-                max-width: none !important;
+                min-width: 0 !important;
 
                 margin: 0 !important;
 
@@ -5829,57 +5910,81 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
             }
 
 
-            .iglesias-forms-container
+            /*
+             * EVITAR QUE ELEMENTOS INTERNOS
+             * ROMPAN EL ANCHO
+             */
+
+            .iglesias-forms-layout
             input,
 
-            .iglesias-forms-container
+            .iglesias-forms-layout
             select,
 
-            .iglesias-forms-container
-            textarea {
+            .iglesias-forms-layout
+            textarea,
 
-                max-width: 100% !important;
+            .iglesias-forms-layout
+            button {
 
-                box-sizing: border-box !important;
-
-            }
-
-
-            .iglesias-forms-container
-            textarea {
-
-                min-height: 120px;
-
-                resize: vertical;
-
-            }
-
-
-            .iglesias-forms-container
-            .form-message {
-
-                width: 100%;
-
-                margin-top: 15px;
+                max-width: 100%;
 
                 box-sizing: border-box;
 
             }
 
 
+            /*
+             * MENSAJES
+             */
+
+            .iglesias-forms-layout
+            .form-message {
+
+                width: 100%;
+
+                box-sizing: border-box;
+
+                margin-top: 15px;
+
+                padding: 12px 14px;
+
+                border-radius: 8px;
+
+            }
+
+
+            /*
+             * CELULAR
+             */
+
             @media (max-width: 768px) {
 
-                .iglesias-forms-container {
+                .iglesias-forms-layout {
 
-                    display: flex !important;
-
-                    flex-direction: column !important;
+                    grid-template-columns:
+                        minmax(0, 1fr) !important;
 
                     gap: 24px !important;
 
-                    width: 100% !important;
+                }
 
-                    max-width: 100% !important;
+            }
+
+
+            /*
+             * TABLET
+             */
+
+            @media (
+                min-width: 769px
+            ) and (
+                max-width: 950px
+            ) {
+
+                .iglesias-forms-layout {
+
+                    gap: 20px !important;
 
                 }
 
@@ -5896,7 +6001,7 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
     /* =====================================================
-       BOTONES CLIENTE
+       BOTONES "QUIERO SER CLIENTE"
     ===================================================== */
 
     function initializeClientButtons() {
@@ -5915,7 +6020,9 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
                         .iglesiasClientReady ===
                     "true"
                 ) {
+
                     return;
+
                 }
 
 
@@ -5929,11 +6036,13 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
                     function (event) {
 
                         const target =
-                            getClientForm();
+                            findClientForm();
 
 
                         if (!target) {
+
                             return;
+
                         }
 
 
@@ -5941,24 +6050,31 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
                         target.scrollIntoView({
+
                             behavior:
                                 "smooth",
+
                             block:
                                 "center"
+
                         });
 
 
                         setTimeout(
                             function () {
 
-                                const input =
+                                const firstInput =
                                     target.querySelector(
                                         "input, select, textarea"
                                     );
 
 
-                                if (input) {
-                                    input.focus();
+                                if (
+                                    firstInput
+                                ) {
+
+                                    firstInput.focus();
+
                                 }
 
                             },
@@ -5991,7 +6107,9 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
                         .iglesiasPortalReady ===
                     "true"
                 ) {
+
                     return;
+
                 }
 
 
@@ -6017,59 +6135,58 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
 
 
     /* =====================================================
-       INICIO
+       INICIALIZACIÓN
     ===================================================== */
 
     function initializeWebsite() {
 
-        try {
-
-            initializeFormsCSS();
-
-            initializeForms();
-
-            initializeFormsLayout();
-
-            initializeClientButtons();
-
-            initializePortalButtons();
-
-            waitForTranslations();
+        console.log(
+            "✓ Iniciando Estudio Contable Iglesias..."
+        );
 
 
-            console.log(
-                "✓ Estudio Contable Iglesias iniciado."
-            );
+        initializeSupabase();
+
+        initializeLanguageSelectors();
+
+        initializeFormsCSS();
+
+        initializeForms();
+
+        initializeFormsLayout();
+
+        initializeClientButtons();
+
+        initializePortalButtons();
+
+        applyTranslations();
 
 
-            if (
-                typeof supabaseClient !==
-                    "undefined" &&
-                supabaseClient
-            ) {
-
-                console.log(
-                    "✓ Supabase conectado."
-                );
-
-            } else {
-
-                console.warn(
-                    "⚠ Supabase no está disponible."
-                );
-
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Error de inicialización:",
-                error
-            );
-
-        }
+        console.log(
+            "✓ Sistema iniciado."
+        );
 
     }
+
+
+    /* =====================================================
+       FUNCIONES GLOBALES
+    ===================================================== */
+
+    window.submitClientForm =
+        submitClientForm;
+
+
+    window.submitQuestionForm =
+        submitQuestionForm;
+
+
+    window.initializeWebsite =
+        initializeWebsite;
+
+
+    window.initializeForms =
+        initializeForms;
 
 
     /* =====================================================
@@ -6093,23 +6210,5 @@ portalComingSoon:"البوابة ستكون متاحة قريباً"
     }
 
 
-    /* =====================================================
-       FUNCIONES GLOBALES
-    ===================================================== */
-
-    window.submitClientForm =
-        submitClientForm;
-
-    window.submitQuestionForm =
-        submitQuestionForm;
-
-    window.initializeWebsite =
-        initializeWebsite;
-
-    window.applyTranslations =
-        applyTranslations;
-
 })();
-
 </script>
-```
