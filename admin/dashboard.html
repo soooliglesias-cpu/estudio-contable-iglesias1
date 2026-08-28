@@ -9,1592 +9,667 @@
 
 <meta name="robots" content="noindex,nofollow">
 
-<title>
-Administración | Estudio Contable Iglesias
-</title>
+<title>Administración | Estudio Iglesias</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
 :root{
+    --navy:#102a43;
+    --navy-dark:#071b2d;
+    --navy-soft:#173f60;
+    --gold:#b89452;
+    --gold-light:#d4b978;
 
---navy:#102a43;
---navy-dark:#071b2d;
---navy-soft:#173f60;
---gold:#b89452;
---gold-light:#d4b978;
+    --white:#ffffff;
+    --cream:#f7f4ee;
+    --background:#f5f7f9;
 
---white:#ffffff;
---cream:#f7f4ee;
+    --text:#263746;
+    --muted:#718096;
 
---text:#263746;
---muted:#718096;
+    --border:#e7e1d5;
 
---border:#e7e1d5;
-
---success:#3d8b68;
---warning:#b98535;
---danger:#b95c5c;
-
+    --success:#3d8b68;
+    --warning:#b98535;
+    --danger:#b95c5c;
 }
-
 
 *{
-
-box-sizing:border-box;
-
-margin:0;
-
-padding:0;
-
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
-
 
 body{
-
-font-family:
-"Segoe UI",
-Arial,
-sans-serif;
-
-background:#f5f7f9;
-
-color:var(--text);
-
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:var(--background);
+    color:var(--text);
 }
 
-
-/* =========================================================
-   HEADER
-========================================================= */
+/* HEADER */
 
 .header{
+    height:76px;
+    background:white;
+    border-bottom:1px solid var(--border);
 
-height:76px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-background:white;
+    padding:0 30px;
 
-border-bottom:1px solid var(--border);
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-padding:0 30px;
-
-position:sticky;
-
-top:0;
-
-z-index:1000;
-
+    position:sticky;
+    top:0;
+    z-index:1000;
 }
 
-
-.logo{
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
+.brand{
+    font-family:Georgia,serif;
+    font-size:25px;
+    letter-spacing:3px;
+    color:var(--navy);
+    font-weight:600;
 }
-
-
-.logo-mark{
-
-width:43px;
-
-height:43px;
-
-border-radius:50%;
-
-background:var(--navy);
-
-color:var(--gold-light);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-weight:800;
-
-}
-
-
-.logo-text{
-
-display:flex;
-
-flex-direction:column;
-
-line-height:1.15;
-
-}
-
-
-.logo-text strong{
-
-font-size:15px;
-
-color:var(--navy);
-
-}
-
-
-.logo-text span{
-
-font-size:10px;
-
-text-transform:uppercase;
-
-letter-spacing:1.4px;
-
-color:var(--gold);
-
-}
-
 
 .header-right{
-
-display:flex;
-
-align-items:center;
-
-gap:20px;
-
+    display:flex;
+    align-items:center;
+    gap:18px;
 }
 
-
-.admin-name{
-
-font-size:13px;
-
-font-weight:700;
-
-color:var(--navy);
-
+.connection{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:12px;
+    color:var(--muted);
 }
 
-
-.avatar{
-
-width:40px;
-
-height:40px;
-
-border-radius:50%;
-
-background:var(--navy);
-
-color:white;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-weight:700;
-
+.connection-dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#aaa;
 }
 
+.connection-dot.online{
+    background:var(--success);
+}
+
+.connection-dot.error{
+    background:var(--danger);
+}
 
 .logout{
-
-border:none;
-
-background:none;
-
-color:var(--muted);
-
-cursor:pointer;
-
-font-size:13px;
-
+    border:none;
+    background:none;
+    color:var(--muted);
+    cursor:pointer;
+    font-size:13px;
 }
 
-
-/* =========================================================
-   LAYOUT
-========================================================= */
+/* LAYOUT */
 
 .layout{
-
-display:flex;
-
-min-height:calc(100vh - 76px);
-
+    display:flex;
+    min-height:calc(100vh - 76px);
 }
 
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
+/* SIDEBAR */
 
 .sidebar{
+    width:255px;
+    background:var(--navy-dark);
+    color:white;
 
-width:255px;
+    padding:25px 15px;
 
-background:var(--navy-dark);
+    position:fixed;
+    top:76px;
+    bottom:0;
 
-color:white;
-
-padding:25px 15px;
-
-position:fixed;
-
-top:76px;
-
-bottom:0;
-
-overflow-y:auto;
-
+    overflow-y:auto;
 }
-
 
 .sidebar-title{
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    color:#91a6b8;
 
-font-size:10px;
-
-text-transform:uppercase;
-
-letter-spacing:2px;
-
-color:#91a6b8;
-
-padding:12px 15px;
-
-margin-bottom:5px;
-
+    padding:12px 15px;
+    margin-bottom:5px;
 }
-
 
 .menu{
-
-list-style:none;
-
+    list-style:none;
 }
-
 
 .menu li{
-
-margin-bottom:4px;
-
+    margin-bottom:4px;
 }
-
 
 .menu button{
+    width:100%;
+    border:none;
+    background:transparent;
+    color:#d9e2ec;
 
-width:100%;
+    padding:12px 15px;
 
-border:none;
+    border-radius:8px;
 
-background:transparent;
+    text-align:left;
 
-color:#d9e2ec;
+    font-family:inherit;
+    font-size:13px;
 
-padding:12px 15px;
+    cursor:pointer;
 
-border-radius:8px;
+    display:flex;
+    align-items:center;
+    gap:11px;
 
-text-align:left;
-
-font-family:inherit;
-
-font-size:13px;
-
-cursor:pointer;
-
-display:flex;
-
-align-items:center;
-
-gap:11px;
-
-transition:.2s;
-
+    transition:.2s;
 }
-
 
 .menu button:hover{
-
-background:rgba(255,255,255,.08);
-
-color:white;
-
+    background:rgba(255,255,255,.08);
+    color:white;
 }
-
 
 .menu button.active{
-
-background:rgba(184,148,82,.18);
-
-color:var(--gold-light);
-
+    background:rgba(184,148,82,.18);
+    color:var(--gold-light);
 }
-
 
 .menu-icon{
-
-width:22px;
-
-text-align:center;
-
+    width:22px;
+    text-align:center;
 }
 
+.badge{
+    margin-left:auto;
+
+    min-width:20px;
+    height:20px;
+
+    padding:0 6px;
+
+    border-radius:20px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:var(--gold);
+    color:white;
+
+    font-size:10px;
+    font-weight:700;
+}
 
 .sidebar-footer{
+    margin-top:35px;
+    padding:15px;
 
-margin-top:35px;
+    border-top:1px solid rgba(255,255,255,.1);
 
-padding:15px;
-
-border-top:1px solid rgba(255,255,255,.1);
-
-font-size:11px;
-
-color:#91a6b8;
-
-line-height:1.6;
-
+    font-size:11px;
+    color:#91a6b8;
+    line-height:1.6;
 }
 
-
-/* =========================================================
-   MAIN
-========================================================= */
+/* MAIN */
 
 .main{
-
-margin-left:255px;
-
-width:calc(100% - 255px);
-
-padding:35px;
-
+    margin-left:255px;
+    width:calc(100% - 255px);
+    padding:35px;
 }
-
 
 .page{
-
-display:none;
-
+    display:none;
 }
-
 
 .page.active{
-
-display:block;
-
+    display:block;
 }
-
 
 .page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
 
-display:flex;
-
-justify-content:space-between;
-
-align-items:flex-start;
-
-gap:20px;
-
-margin-bottom:30px;
-
+    gap:20px;
+    margin-bottom:30px;
 }
-
 
 .page-header h1{
+    font-family:Georgia,serif;
+    font-size:36px;
+    font-weight:500;
 
-font-family:Georgia,serif;
+    color:var(--navy);
 
-font-size:36px;
-
-font-weight:500;
-
-color:var(--navy);
-
-margin-bottom:7px;
-
+    margin-bottom:7px;
 }
-
 
 .page-header p{
-
-font-size:13px;
-
-color:var(--muted);
-
+    font-size:13px;
+    color:var(--muted);
 }
 
+/* BUTTONS */
 
 .btn{
+    border:none;
+    border-radius:8px;
 
-border:none;
+    padding:11px 17px;
 
-border-radius:8px;
+    font-family:inherit;
+    font-size:13px;
+    font-weight:700;
 
-padding:11px 17px;
-
-font-family:inherit;
-
-font-size:13px;
-
-font-weight:700;
-
-cursor:pointer;
-
-transition:.2s;
-
+    cursor:pointer;
+    transition:.2s;
 }
-
 
 .btn-gold{
-
-background:var(--gold);
-
-color:white;
-
+    background:var(--gold);
+    color:white;
 }
-
 
 .btn-gold:hover{
-
-background:#9f7d40;
-
-transform:translateY(-1px);
-
+    background:#9f7d40;
 }
-
 
 .btn-navy{
-
-background:var(--navy);
-
-color:white;
-
+    background:var(--navy);
+    color:white;
 }
-
 
 .btn-light{
-
-background:white;
-
-color:var(--navy);
-
-border:1px solid var(--border);
-
+    background:white;
+    color:var(--navy);
+    border:1px solid var(--border);
 }
 
-
-/* =========================================================
-   CARDS
-========================================================= */
+/* STATS */
 
 .stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
 
-display:grid;
+    gap:18px;
 
-grid-template-columns:repeat(4,1fr);
-
-gap:18px;
-
-margin-bottom:25px;
-
+    margin-bottom:25px;
 }
-
 
 .stat-card{
+    background:white;
 
-background:white;
+    border:1px solid var(--border);
+    border-radius:12px;
 
-border:1px solid var(--border);
-
-border-radius:12px;
-
-padding:22px;
-
+    padding:22px;
 }
-
 
 .stat-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:12px;
-
+    margin-bottom:12px;
 }
-
 
 .stat-icon{
+    width:40px;
+    height:40px;
 
-width:40px;
+    border-radius:9px;
 
-height:40px;
+    background:var(--cream);
 
-border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-background:var(--cream);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:19px;
-
+    font-size:19px;
 }
-
 
 .stat-label{
-
-font-size:12px;
-
-color:var(--muted);
-
+    font-size:12px;
+    color:var(--muted);
 }
-
 
 .stat-number{
-
-font-family:Georgia,serif;
-
-font-size:30px;
-
-color:var(--navy);
-
+    font-family:Georgia,serif;
+    font-size:30px;
+    color:var(--navy);
 }
-
 
 .stat-change{
-
-font-size:11px;
-
-margin-top:5px;
-
-color:var(--success);
-
+    font-size:11px;
+    margin-top:5px;
+    color:var(--success);
 }
 
-
-/* =========================================================
-   GRID
-========================================================= */
+/* PANELS */
 
 .grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
 
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:22px;
-
-margin-bottom:22px;
-
+    gap:22px;
+    margin-bottom:22px;
 }
-
-
-.grid-3{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:20px;
-
-margin-bottom:22px;
-
-}
-
-
-/* =========================================================
-   PANEL
-========================================================= */
 
 .panel{
+    background:white;
 
-background:white;
+    border:1px solid var(--border);
+    border-radius:12px;
 
-border:1px solid var(--border);
+    padding:24px;
 
-border-radius:12px;
-
-padding:24px;
-
+    margin-bottom:22px;
 }
-
 
 .panel-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:20px;
-
+    margin-bottom:20px;
 }
-
 
 .panel-header h2{
+    font-family:Georgia,serif;
 
-font-family:Georgia,serif;
+    font-size:23px;
+    font-weight:500;
 
-font-size:23px;
-
-font-weight:500;
-
-color:var(--navy);
-
+    color:var(--navy);
 }
-
 
 .panel-header span{
-
-font-size:11px;
-
-color:var(--muted);
-
+    font-size:11px;
+    color:var(--muted);
 }
 
-
-/* =========================================================
-   CLIENTES
-========================================================= */
-
-.client-list{
-
-display:flex;
-
-flex-direction:column;
-
-}
-
-
-.client{
-
-display:flex;
-
-align-items:center;
-
-gap:13px;
-
-padding:14px 0;
-
-border-bottom:1px solid var(--border);
-
-}
-
-
-.client:last-child{
-
-border-bottom:none;
-
-}
-
-
-.client-avatar{
-
-width:39px;
-
-height:39px;
-
-border-radius:50%;
-
-background:var(--navy);
-
-color:white;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:12px;
-
-font-weight:700;
-
-}
-
-
-.client-info{
-
-flex:1;
-
-}
-
-
-.client-name{
-
-font-size:13px;
-
-font-weight:700;
-
-color:var(--navy);
-
-}
-
-
-.client-type{
-
-font-size:11px;
-
-color:var(--muted);
-
-margin-top:2px;
-
-}
-
-
-.status{
-
-font-size:10px;
-
-font-weight:700;
-
-padding:5px 9px;
-
-border-radius:30px;
-
-}
-
-
-.status.ok{
-
-background:#e6f3ed;
-
-color:var(--success);
-
-}
-
-
-.status.pending{
-
-background:#fbf0dc;
-
-color:var(--warning);
-
-}
-
-
-.status.alert{
-
-background:#f8e4e4;
-
-color:var(--danger);
-
-}
-
-
-/* =========================================================
-   TABLA
-========================================================= */
+/* TABLE */
 
 .table-wrapper{
-
-overflow-x:auto;
-
+    overflow-x:auto;
 }
-
 
 table{
-
-width:100%;
-
-border-collapse:collapse;
-
+    width:100%;
+    border-collapse:collapse;
 }
-
 
 th{
+    background:#f8f6f1;
 
-background:#f8f6f1;
+    color:var(--navy);
 
-color:var(--navy);
+    font-size:11px;
 
-font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.6px;
 
-text-transform:uppercase;
+    text-align:left;
 
-letter-spacing:.6px;
+    padding:13px;
 
-text-align:left;
-
-padding:13px;
-
-border-bottom:1px solid var(--border);
-
+    border-bottom:1px solid var(--border);
 }
-
 
 td{
+    font-size:12px;
 
-font-size:12px;
+    padding:14px 13px;
 
-padding:14px 13px;
+    border-bottom:1px solid var(--border);
 
-border-bottom:1px solid var(--border);
-
+    vertical-align:top;
 }
-
 
 tr:last-child td{
-
-border-bottom:none;
-
+    border-bottom:none;
 }
 
+/* STATUS */
 
-/* =========================================================
-   FORMULARIOS
-========================================================= */
+.status{
+    display:inline-block;
+
+    font-size:10px;
+    font-weight:700;
+
+    padding:5px 9px;
+
+    border-radius:30px;
+}
+
+.status.new{
+    background:#fbf0dc;
+    color:var(--warning);
+}
+
+.status.review{
+    background:#e8eef5;
+    color:var(--navy);
+}
+
+.status.done{
+    background:#e6f3ed;
+    color:var(--success);
+}
+
+.status.closed{
+    background:#eeeeee;
+    color:#666;
+}
+
+/* EMPTY */
+
+.empty{
+    padding:45px 20px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:12px;
+}
+
+.empty-icon{
+    font-size:30px;
+    margin-bottom:12px;
+}
+
+/* FORM */
 
 .form-grid{
+    display:grid;
 
-display:grid;
+    grid-template-columns:1fr 1fr;
 
-grid-template-columns:1fr 1fr;
-
-gap:18px;
-
+    gap:18px;
 }
-
 
 .form-group{
-
-margin-bottom:17px;
-
+    margin-bottom:17px;
 }
-
 
 .form-group.full{
-
-grid-column:1/-1;
-
+    grid-column:1/-1;
 }
-
 
 label{
+    display:block;
 
-display:block;
+    font-size:11px;
+    font-weight:700;
 
-font-size:11px;
+    color:var(--navy);
 
-font-weight:700;
-
-color:var(--navy);
-
-margin-bottom:6px;
-
+    margin-bottom:6px;
 }
-
 
 input,
 select,
 textarea{
+    width:100%;
 
-width:100%;
+    padding:11px 12px;
 
-padding:11px 12px;
+    border:1px solid #d8dfe6;
 
-border:1px solid #d8dfe6;
+    border-radius:7px;
 
-border-radius:7px;
+    font-family:inherit;
 
-font-family:inherit;
+    font-size:13px;
 
-font-size:13px;
+    outline:none;
 
-outline:none;
-
-background:white;
-
+    background:white;
 }
-
-
-input:focus,
-select:focus,
-textarea:focus{
-
-border-color:var(--gold);
-
-}
-
 
 textarea{
-
-min-height:100px;
-
-resize:vertical;
-
+    min-height:110px;
+    resize:vertical;
 }
 
+/* MESSAGE */
 
-.form-actions{
+.message{
+    position:fixed;
 
-display:flex;
+    right:25px;
+    bottom:25px;
 
-justify-content:flex-end;
+    max-width:380px;
 
-gap:10px;
+    padding:15px 18px;
 
-margin-top:10px;
+    background:var(--navy);
 
+    color:white;
+
+    border-radius:10px;
+
+    box-shadow:0 8px 30px rgba(0,0,0,.18);
+
+    font-size:12px;
+
+    display:none;
+
+    z-index:5000;
 }
 
-
-/* =========================================================
-   CLIENTE DETALLE
-========================================================= */
-
-.client-profile{
-
-display:grid;
-
-grid-template-columns:240px 1fr;
-
-gap:22px;
-
+.message.show{
+    display:block;
 }
 
-
-.profile-card{
-
-background:var(--navy);
-
-color:white;
-
-border-radius:12px;
-
-padding:28px;
-
-text-align:center;
-
+.message.error{
+    background:var(--danger);
 }
 
-
-.profile-avatar{
-
-width:80px;
-
-height:80px;
-
-border-radius:50%;
-
-background:white;
-
-color:var(--navy);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-margin:0 auto 17px;
-
-font-size:22px;
-
-font-weight:800;
-
+.message.success{
+    background:var(--success);
 }
 
-
-.profile-card h3{
-
-font-family:Georgia,serif;
-
-font-size:22px;
-
-font-weight:500;
-
-margin-bottom:6px;
-
-}
-
-
-.profile-card p{
-
-font-size:12px;
-
-color:#cbd5e0;
-
-}
-
-
-.profile-menu{
-
-margin-top:25px;
-
-text-align:left;
-
-}
-
-
-.profile-menu button{
-
-width:100%;
-
-border:none;
-
-background:transparent;
-
-color:#d9e2ec;
-
-padding:9px;
-
-text-align:left;
-
-cursor:pointer;
-
-font-size:12px;
-
-border-radius:6px;
-
-}
-
-
-.profile-menu button:hover{
-
-background:rgba(255,255,255,.08);
-
-}
-
-
-.profile-content{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:18px;
-
-}
-
-
-/* =========================================================
-   AGRO
-========================================================= */
-
-.agro-header{
-
-background:
-
-linear-gradient(
-135deg,
-var(--navy),
-var(--navy-soft)
-);
-
-color:white;
-
-padding:28px;
-
-border-radius:12px;
-
-margin-bottom:20px;
-
-}
-
-
-.agro-header h2{
-
-font-family:Georgia,serif;
-
-font-size:29px;
-
-font-weight:500;
-
-color:var(--gold-light);
-
-margin-bottom:7px;
-
-}
-
-
-.agro-header p{
-
-font-size:12px;
-
-color:#d9e2ec;
-
-}
-
-
-.agro-grid{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:18px;
-
-}
-
-
-.agro-card{
-
-background:white;
-
-border:1px solid var(--border);
-
-border-radius:11px;
-
-padding:22px;
-
-}
-
-
-.agro-card .icon{
-
-font-size:25px;
-
-margin-bottom:10px;
-
-}
-
-
-.agro-card h3{
-
-font-family:Georgia,serif;
-
-font-size:20px;
-
-font-weight:500;
-
-color:var(--navy);
-
-margin-bottom:6px;
-
-}
-
-
-.agro-card p{
-
-font-size:11px;
-
-color:var(--muted);
-
-}
-
-
-/* =========================================================
-   BARRAS
-========================================================= */
-
-.chart{
-
-height:230px;
-
-display:flex;
-
-align-items:flex-end;
-
-gap:18px;
-
-padding:20px 5px 0;
-
-}
-
-
-.bar-column{
-
-flex:1;
-
-height:100%;
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:flex-end;
-
-align-items:center;
-
-gap:7px;
-
-}
-
-
-.bar{
-
-width:55%;
-
-max-width:45px;
-
-background:var(--navy);
-
-border-radius:5px 5px 0 0;
-
-min-height:8px;
-
-}
-
-
-.bar.income{
-
-background:var(--gold);
-
-}
-
-
-.bar-label{
-
-font-size:10px;
-
-color:var(--muted);
-
-}
-
-
-.bar-value{
-
-font-size:9px;
-
-color:var(--navy);
-
-font-weight:700;
-
-}
-
-
-/* =========================================================
-   NOVEDADES
-========================================================= */
-
-.news-item{
-
-padding:17px 0;
-
-border-bottom:1px solid var(--border);
-
-}
-
-
-.news-item:last-child{
-
-border-bottom:none;
-
-}
-
-
-.news-item h3{
-
-font-family:Georgia,serif;
-
-font-size:19px;
-
-color:var(--navy);
-
-margin-bottom:5px;
-
-}
-
-
-.news-item p{
-
-font-size:12px;
-
-color:var(--muted);
-
-}
-
-
-.news-date{
-
-font-size:10px;
-
-text-transform:uppercase;
-
-letter-spacing:1px;
-
-color:var(--gold);
-
-font-weight:800;
-
-margin-bottom:5px;
-
-}
-
-
-/* =========================================================
-   CALENDARIO
-========================================================= */
-
-.calendar-day{
-
-padding:13px;
-
-border:1px solid var(--border);
-
-border-radius:8px;
-
-background:white;
-
-margin-bottom:9px;
-
-display:flex;
-
-align-items:center;
-
-gap:15px;
-
-}
-
-
-.calendar-date{
-
-width:45px;
-
-height:45px;
-
-background:var(--navy);
-
-color:white;
-
-border-radius:8px;
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-justify-content:center;
-
-}
-
-
-.calendar-date strong{
-
-font-size:17px;
-
-}
-
-
-.calendar-date span{
-
-font-size:8px;
-
-text-transform:uppercase;
-
-}
-
-
-.calendar-info{
-
-flex:1;
-
-}
-
-
-.calendar-info strong{
-
-font-size:12px;
-
-color:var(--navy);
-
-}
-
-
-.calendar-info p{
-
-font-size:10px;
-
-color:var(--muted);
-
-}
-
-
-/* =========================================================
-   SEGURIDAD
-========================================================= */
-
-.security-card{
-
-background:#faf7ef;
-
-border:1px solid #eadfca;
-
-border-radius:11px;
-
-padding:22px;
-
-}
-
-
-.security-card h3{
-
-color:#80632e;
-
-font-family:Georgia,serif;
-
-font-size:21px;
-
-margin-bottom:8px;
-
-}
-
-
-.security-card p{
-
-font-size:12px;
-
-color:#6b5b3e;
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
+/* MOBILE */
 
 .mobile-menu{
+    display:none;
 
-display:none;
+    border:none;
+    background:none;
 
-border:none;
+    font-size:24px;
 
-background:none;
+    color:var(--navy);
 
-font-size:24px;
-
-color:var(--navy);
-
-cursor:pointer;
-
+    cursor:pointer;
 }
-
 
 @media(max-width:1100px){
 
-.stats{
-
-grid-template-columns:1fr 1fr;
-
-}
-
-.agro-grid{
-
-grid-template-columns:1fr 1fr;
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
 
 }
-
-}
-
 
 @media(max-width:850px){
 
-.sidebar{
+    .sidebar{
+        transform:translateX(-100%);
 
-transform:translateX(-100%);
+        transition:.25s;
 
-transition:.25s;
+        z-index:1500;
+    }
 
-z-index:1500;
+    .sidebar.open{
+        transform:translateX(0);
+    }
 
-}
+    .main{
+        margin-left:0;
+        width:100%;
 
-.sidebar.open{
+        padding:22px;
+    }
 
-transform:translateX(0);
+    .mobile-menu{
+        display:block;
+    }
 
-}
+    .header{
+        padding:0 18px;
+    }
 
-.main{
+    .grid-2{
+        grid-template-columns:1fr;
+    }
 
-margin-left:0;
+    .form-grid{
+        grid-template-columns:1fr;
+    }
 
-width:100%;
-
-padding:22px;
-
-}
-
-.mobile-menu{
-
-display:block;
-
-}
-
-.header{
-
-padding:0 18px;
-
-}
-
-.admin-name{
-
-display:none;
+    .form-group.full{
+        grid-column:auto;
+    }
 
 }
-
-.grid-2,
-.client-profile{
-
-grid-template-columns:1fr;
-
-}
-
-.form-grid{
-
-grid-template-columns:1fr;
-
-}
-
-.form-group.full{
-
-grid-column:auto;
-
-}
-
-}
-
 
 @media(max-width:600px){
 
-.stats{
+    .stats{
+        grid-template-columns:1fr;
+    }
 
-grid-template-columns:1fr;
+    .page-header{
+        flex-direction:column;
+    }
 
-}
+    .page-header h1{
+        font-size:30px;
+    }
 
-.agro-grid{
-
-grid-template-columns:1fr;
-
-}
-
-.profile-content{
-
-grid-template-columns:1fr;
-
-}
-
-.page-header{
-
-flex-direction:column;
-
-}
-
-.page-header h1{
-
-font-size:30px;
-
-}
+    .brand{
+        font-size:20px;
+    }
 
 }
 
@@ -1602,16 +677,12 @@ font-size:30px;
 
 </head>
 
-
 <body>
 
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
+<!-- HEADER -->
 
 <header class="header">
-
 
 <div style="display:flex;align-items:center;gap:15px;">
 
@@ -1619,52 +690,35 @@ font-size:30px;
 class="mobile-menu"
 onclick="toggleSidebar()"
 >
-
 ☰
-
 </button>
 
-
-<div class="logo">
-
-<div class="logo-mark">
-SI
-</div>
-
-<div class="logo-text">
-
-<strong>
-Estudio Contable Iglesias
-</strong>
-
-<span>
-Administración
-</span>
-
+<div class="brand">
+ESTUDIO IGLESIAS
 </div>
 
 </div>
-
-</div>
-
 
 <div class="header-right">
 
-<div class="admin-name">
-María Sol Iglesias
-</div>
+<div class="connection">
 
-<div class="avatar">
-MS
+<span
+class="connection-dot"
+id="connectionDot"
+></span>
+
+<span id="connectionText">
+Conectando...
+</span>
+
 </div>
 
 <button
 class="logout"
 onclick="logout()"
 >
-
 Salir
-
 </button>
 
 </div>
@@ -1672,232 +726,152 @@ Salir
 </header>
 
 
-
-<!-- =====================================================
-     LAYOUT
-===================================================== -->
-
 <div class="layout">
 
 
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
+<!-- SIDEBAR -->
 
 <aside
 class="sidebar"
 id="sidebar"
 >
 
-
 <div class="sidebar-title">
-Administración
+Panel de gestión
 </div>
-
 
 <ul class="menu">
 
-
 <li>
-
 <button
 class="active"
 onclick="showPage('inicio',this)"
 >
-
 <span class="menu-icon">🏠</span>
-
 Inicio
-
 </button>
-
 </li>
 
+<li>
+<button
+onclick="showPage('consultas',this);loadConsultas()"
+>
+<span class="menu-icon">📩</span>
+Consultas
+<span
+class="badge"
+id="consultasBadge"
+style="display:none;"
+>
+0
+</span>
+</button>
+</li>
 
 <li>
+<button
+onclick="showPage('solicitudes',this);loadSolicitudes()"
+>
+<span class="menu-icon">📋</span>
+Solicitudes
+<span
+class="badge"
+id="solicitudesBadge"
+style="display:none;"
+>
+0
+</span>
+</button>
+</li>
 
+<li>
 <button
 onclick="showPage('clientes',this)"
 >
-
 <span class="menu-icon">👥</span>
-
 Clientes
-
 </button>
-
 </li>
 
-
 <li>
-
-<button
-onclick="showPage('cliente',this)"
->
-
-<span class="menu-icon">👤</span>
-
-Ficha de cliente
-
-</button>
-
-</li>
-
-
-<li>
-
 <button
 onclick="showPage('contabilidad',this)"
 >
-
 <span class="menu-icon">📊</span>
-
 Contabilidad
-
 </button>
-
 </li>
 
-
 <li>
-
 <button
 onclick="showPage('impuestos',this)"
 >
-
 <span class="menu-icon">🧾</span>
-
 Impuestos / ARCA
-
 </button>
-
 </li>
 
-
 <li>
-
 <button
 onclick="showPage('agro',this)"
 >
-
 <span class="menu-icon">🌾</span>
-
 Agro
-
 </button>
-
 </li>
 
-
 <li>
-
 <button
 onclick="showPage('vencimientos',this)"
 >
-
 <span class="menu-icon">📅</span>
-
 Vencimientos
-
 </button>
-
 </li>
 
-
 <li>
-
-<button
-onclick="showPage('comparativos',this)"
->
-
-<span class="menu-icon">📈</span>
-
-Comparativos
-
-</button>
-
-</li>
-
-
-<li>
-
 <button
 onclick="showPage('documentacion',this)"
 >
-
 <span class="menu-icon">📁</span>
-
 Documentación
-
 </button>
-
 </li>
 
-
 <li>
-
 <button
 onclick="showPage('agenda',this)"
 >
-
 <span class="menu-icon">🗓️</span>
-
 Agenda
-
 </button>
-
 </li>
 
-
 <li>
-
 <button
 onclick="showPage('novedades',this)"
 >
-
 <span class="menu-icon">📰</span>
-
 Novedades
-
 </button>
-
 </li>
 
+<li>
 
 <div class="sidebar-title">
 Sistema
 </div>
 
-
-<li>
-
-<button
-onclick="showPage('seguridad',this)"
->
-
-<span class="menu-icon">🔐</span>
-
-Seguridad
-
-</button>
-
 </li>
 
-
 <li>
-
 <button
 onclick="showPage('configuracion',this)"
 >
-
 <span class="menu-icon">⚙️</span>
-
 Configuración
-
 </button>
-
 </li>
-
 
 </ul>
 
@@ -1905,7 +879,7 @@ Configuración
 <div class="sidebar-footer">
 
 <strong>
-Estudio Contable Iglesias
+ESTUDIO IGLESIAS
 </strong>
 
 <br>
@@ -1918,27 +892,20 @@ Contadora Pública
 
 </div>
 
-
 </aside>
 
 
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
+<!-- MAIN -->
 
 <main class="main">
 
 
-<!-- =====================================================
-     INICIO
-===================================================== -->
+<!-- ================= INICIO ================= -->
 
 <section
 class="page active"
 id="page-inicio"
 >
-
 
 <div class="page-header">
 
@@ -1949,23 +916,19 @@ Buenos días, María Sol.
 </h1>
 
 <p>
-Panel general del Estudio Contable Iglesias.
+Panel general de ESTUDIO IGLESIAS.
 </p>
 
 </div>
 
-
 <button
 class="btn btn-gold"
-onclick="showPage('clientes')"
+onclick="refreshDashboard()"
 >
-
-+ Nuevo cliente
-
+↻ Actualizar
 </button>
 
 </div>
-
 
 
 <div class="stats">
@@ -1976,7 +939,63 @@ onclick="showPage('clientes')"
 <div class="stat-top">
 
 <span class="stat-label">
-Clientes activos
+Consultas
+</span>
+
+<div class="stat-icon">
+📩
+</div>
+
+</div>
+
+<div
+class="stat-number"
+id="totalConsultas"
+>
+0
+</div>
+
+<div class="stat-change">
+Consultas recibidas
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<span class="stat-label">
+Solicitudes
+</span>
+
+<div class="stat-icon">
+📋
+</div>
+
+</div>
+
+<div
+class="stat-number"
+id="totalSolicitudes"
+>
+0
+</div>
+
+<div class="stat-change">
+Solicitudes recibidas
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<span class="stat-label">
+Clientes
 </span>
 
 <div class="stat-icon">
@@ -1985,12 +1004,15 @@ Clientes activos
 
 </div>
 
-<div class="stat-number">
+<div
+class="stat-number"
+id="totalClientes"
+>
 0
 </div>
 
 <div class="stat-change">
-Base de datos pendiente de conectar
+Clientes registrados
 </div>
 
 </div>
@@ -2001,78 +1023,29 @@ Base de datos pendiente de conectar
 <div class="stat-top">
 
 <span class="stat-label">
-Vencimientos próximos
+Pendientes
 </span>
 
 <div class="stat-icon">
-📅
+!
 </div>
 
 </div>
 
-<div class="stat-number">
+<div
+class="stat-number"
+id="totalPendientes"
+>
 0
 </div>
 
 <div class="stat-change">
-Sin datos cargados
+Requieren revisión
 </div>
 
 </div>
 
-
-<div class="stat-card">
-
-<div class="stat-top">
-
-<span class="stat-label">
-Alertas impositivas
-</span>
-
-<div class="stat-icon">
-🧾
 </div>
-
-</div>
-
-<div class="stat-number">
-0
-</div>
-
-<div class="stat-change">
-Sin datos cargados
-</div>
-
-</div>
-
-
-<div class="stat-card">
-
-<div class="stat-top">
-
-<span class="stat-label">
-Tareas pendientes
-</span>
-
-<div class="stat-icon">
-✓
-</div>
-
-</div>
-
-<div class="stat-number">
-0
-</div>
-
-<div class="stat-change">
-Todo organizado
-</div>
-
-</div>
-
-
-</div>
-
 
 
 <div class="grid-2">
@@ -2083,33 +1056,27 @@ Todo organizado
 <div class="panel-header">
 
 <h2>
-Clientes recientes
+Últimas consultas
 </h2>
 
 <span>
-Últimos movimientos
+Supabase
 </span>
 
 </div>
 
+<div
+id="recentConsultas"
+class="empty"
+>
+<div class="empty-icon">
+📩
+</div>
 
-<div class="client-list">
-
-<div style="padding:25px;text-align:center;color:var(--muted);font-size:12px;">
-
-Todavía no hay clientes cargados.
-
-<br><br>
-
-Los clientes aparecerán aquí cuando conectemos
-la base de datos.
-
+Cargando consultas...
 </div>
 
 </div>
-
-</div>
-
 
 
 <div class="panel">
@@ -2117,20 +1084,24 @@ la base de datos.
 <div class="panel-header">
 
 <h2>
-Próximos vencimientos
+Últimas solicitudes
 </h2>
 
 <span>
-Calendario
+Supabase
 </span>
 
 </div>
 
+<div
+id="recentSolicitudes"
+class="empty"
+>
+<div class="empty-icon">
+📋
+</div>
 
-<div style="padding:25px;text-align:center;color:var(--muted);font-size:12px;">
-
-No hay vencimientos cargados.
-
+Cargando solicitudes...
 </div>
 
 </div>
@@ -2138,62 +1109,54 @@ No hay vencimientos cargados.
 </div>
 
 
+<div class="panel">
 
-<div class="security-card">
+<div class="panel-header">
 
-<h3>
-🔐 Tu panel privado
-</h3>
-
-<p>
-
-Este espacio está diseñado para administrar la
-información del estudio. Antes de utilizarlo con
-datos reales, se conectará a autenticación segura,
-base de datos privada, permisos por usuario,
-copias de seguridad y verificación en dos pasos.
-
-</p>
+<h2>
+Estado de conexión
+</h2>
 
 </div>
 
+<div
+id="databaseStatus"
+style="font-size:13px;color:var(--muted);"
+>
+Comprobando conexión con Supabase...
+</div>
+
+</div>
 
 </section>
 
 
-
-<!-- =====================================================
-     CLIENTES
-===================================================== -->
+<!-- ================= CONSULTAS ================= -->
 
 <section
 class="page"
-id="page-clientes"
+id="page-consultas"
 >
-
 
 <div class="page-header">
 
 <div>
 
 <h1>
-Clientes
+Consultas
 </h1>
 
 <p>
-Administrá la cartera de clientes del estudio.
+Consultas recibidas desde los formularios de la página pública.
 </p>
 
 </div>
 
-
 <button
 class="btn btn-gold"
-onclick="newClient()"
+onclick="loadConsultas()"
 >
-
-+ Agregar cliente
-
+↻ Actualizar
 </button>
 
 </div>
@@ -2201,16 +1164,14 @@ onclick="newClient()"
 
 <div class="panel">
 
-
 <div class="panel-header">
 
 <h2>
-Listado de clientes
+Bandeja de consultas
 </h2>
 
-<span>
-Base privada
-
+<span id="consultasCount">
+0 registros
 </span>
 
 </div>
@@ -2225,15 +1186,23 @@ Base privada
 <tr>
 
 <th>
-Cliente
+Fecha
 </th>
 
 <th>
-Tipo
+Nombre
 </th>
 
 <th>
-CUIT
+Email
+</th>
+
+<th>
+Teléfono
+</th>
+
+<th>
+Mensaje
 </th>
 
 <th>
@@ -2248,16 +1217,15 @@ Acción
 
 </thead>
 
-
-<tbody id="clientsTable">
+<tbody id="consultasTable">
 
 <tr>
 
-<td colspan="5"
-style="text-align:center;color:var(--muted);padding:35px;">
-
-Todavía no hay clientes cargados.
-
+<td
+colspan="7"
+class="empty"
+>
+Cargando...
 </td>
 
 </tr>
@@ -2273,659 +1241,33 @@ Todavía no hay clientes cargados.
 </section>
 
 
-
-<!-- =====================================================
-     FICHA CLIENTE
-===================================================== -->
+<!-- ================= SOLICITUDES ================= -->
 
 <section
 class="page"
-id="page-cliente"
+id="page-solicitudes"
 >
-
 
 <div class="page-header">
 
 <div>
 
 <h1>
-Ficha de cliente
+Solicitudes
 </h1>
 
 <p>
-Información individual y privada.
+Solicitudes enviadas desde la página pública.
 </p>
 
 </div>
-
-</div>
-
-
-<div class="client-profile">
-
-
-<div class="profile-card">
-
-<div class="profile-avatar">
-CL
-</div>
-
-<h3>
-Seleccionar cliente
-</h3>
-
-<p>
-La información aparecerá cuando
-selecciones un cliente.
-</p>
-
-
-<div class="profile-menu">
-
-<button>
-📊 Resumen
-</button>
-
-<button>
-🧾 Impuestos
-</button>
-
-<button>
-🌾 Agro
-</button>
-
-<button>
-📁 Documentación
-</button>
-
-<button>
-📈 Comparativos
-</button>
-
-</div>
-
-</div>
-
-
-<div class="profile-content">
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>
-Datos personales
-</h2>
-
-</div>
-
-
-<div class="form-grid">
-
-<div class="form-group">
-
-<label>
-Nombre y apellido
-</label>
-
-<input
-placeholder="Nombre del cliente"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-CUIT
-</label>
-
-<input
-placeholder="CUIT"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Email
-</label>
-
-<input
-type="email"
-placeholder="Email"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Teléfono
-</label>
-
-<input
-placeholder="Teléfono"
->
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>
-Tipo de cliente
-</h2>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Actividad
-</label>
-
-<select>
-
-<option>
-Seleccionar
-</option>
-
-<option>
-Monotributo
-</option>
-
-<option>
-Responsable Inscripto
-</option>
-
-<option>
-Empresa
-</option>
-
-<option>
-Productor agropecuario
-</option>
-
-<option>
-Profesional
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Estado
-</label>
-
-<select>
-
-<option>
-Activo
-</option>
-
-<option>
-Pendiente
-</option>
-
-<option>
-Inactivo
-</option>
-
-</select>
-
-</div>
-
-</div>
-
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<!-- =====================================================
-     CONTABILIDAD
-===================================================== -->
-
-<section
-class="page"
-id="page-contabilidad"
->
-
-
-<div class="page-header">
-
-<div>
-
-<h1>
-Contabilidad
-</h1>
-
-<p>
-Ingresos, gastos y evolución económica de tus clientes.
-</p>
-
-</div>
-
-</div>
-
-
-<div class="grid-2">
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>
-Ingresos
-</h2>
-
-<span>
-Últimos períodos
-</span>
-
-</div>
-
-
-<div class="chart">
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-0
-</div>
-
-<div
-class="bar income"
-style="height:20%"
-></div>
-
-<div class="bar-label">
-Ene
-</div>
-
-</div>
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-0
-</div>
-
-<div
-class="bar income"
-style="height:35%"
-></div>
-
-<div class="bar-label">
-Feb
-</div>
-
-</div>
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-0
-</div>
-
-<div
-class="bar income"
-style="height:45%"
-></div>
-
-<div class="bar-label">
-Mar
-</div>
-
-</div>
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-0
-</div>
-
-<div
-class="bar income"
-style="height:30%"
-></div>
-
-<div class="bar-label">
-Abr
-</div>
-
-</div>
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-0
-</div>
-
-<div
-class="bar income"
-style="height:60%"
-></div>
-
-<div class="bar-label">
-May
-</div>
-
-</div>
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-0
-</div>
-
-<div
-class="bar income"
-style="height:70%"
-></div>
-
-<div class="bar-label">
-Jun
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>
-Gastos
-</h2>
-
-<span>
-Últimos períodos
-</span>
-
-</div>
-
-
-<div class="chart">
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-0
-</div>
-
-<div
-class="bar"
-style="height:25%"
-></div>
-
-<div class="bar-label">
-Ene
-</div>
-
-</div>
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-0
-</div>
-
-<div
-class="bar"
-style="height:30%"
-></div>
-
-<div class="bar-label">
-Feb
-</div>
-
-</div>
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-0
-</div>
-
-<div
-class="bar"
-style="height:40%"
-></div>
-
-<div class="bar-label">
-Mar
-</div>
-
-</div>
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-0
-</div>
-
-<div
-class="bar"
-style="height:35%"
-></div>
-
-<div class="bar-label">
-Abr
-</div>
-
-</div>
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-0
-</div>
-
-<div
-class="bar"
-style="height:45%"
-></div>
-
-<div class="bar-label">
-May
-</div>
-
-</div>
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-0
-</div>
-
-<div
-class="bar"
-style="height:50%"
-></div>
-
-<div class="bar-label">
-Jun
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>
-Cargar movimiento
-</h2>
-
-</div>
-
-
-<div class="form-grid">
-
-
-<div class="form-group">
-
-<label>
-Cliente
-</label>
-
-<select>
-
-<option>
-Seleccionar cliente
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Tipo
-</label>
-
-<select>
-
-<option>
-Ingreso
-</option>
-
-<option>
-Gasto
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Fecha
-</label>
-
-<input type="date">
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Importe
-</label>
-
-<input
-type="number"
-placeholder="$ 0,00"
->
-
-</div>
-
-
-<div class="form-group full">
-
-<label>
-Descripción
-</label>
-
-<input
-placeholder="Descripción del movimiento"
->
-
-</div>
-
-</div>
-
 
 <button
 class="btn btn-gold"
-onclick="saveDemo()"
+onclick="loadSolicitudes()"
 >
-
-Guardar movimiento
-
+↻ Actualizar
 </button>
-
-</div>
-
-</section>
-
-
-
-<!-- =====================================================
-     IMPUESTOS / ARCA
-===================================================== -->
-
-<section
-class="page"
-id="page-impuestos"
->
-
-
-<div class="page-header">
-
-<div>
-
-<h1>
-Impuestos y ARCA
-</h1>
-
-<p>
-Administración de información tributaria de cada cliente.
-</p>
-
-</div>
 
 </div>
 
@@ -2935,158 +1277,12 @@ Administración de información tributaria de cada cliente.
 <div class="panel-header">
 
 <h2>
-Datos tributarios
+Bandeja de solicitudes
 </h2>
 
-<span>
-Carga privada
+<span id="solicitudesCount">
+0 registros
 </span>
-
-</div>
-
-
-<div class="form-grid">
-
-
-<div class="form-group">
-
-<label>
-Cliente
-</label>
-
-<select>
-
-<option>
-Seleccionar cliente
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-CUIT
-</label>
-
-<input
-placeholder="CUIT"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Condición frente al IVA
-</label>
-
-<select>
-
-<option>
-Seleccionar
-</option>
-
-<option>
-Responsable Inscripto
-</option>
-
-<option>
-Monotributo
-</option>
-
-<option>
-Exento
-</option>
-
-<option>
-No alcanzado
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Monotributo — categoría
-</label>
-
-<input
-placeholder="Categoría"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Domicilio fiscal
-</label>
-
-<input
-placeholder="Domicilio"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Actividad principal
-</label>
-
-<input
-placeholder="Actividad"
->
-
-</div>
-
-
-<div class="form-group full">
-
-<label>
-Observaciones ARCA
-</label>
-
-<textarea
-placeholder="Datos y observaciones de interés..."
-></textarea>
-
-</div>
-
-</div>
-
-
-<button
-class="btn btn-gold"
-onclick="saveDemo()"
->
-
-Guardar información
-
-</button>
-
-</div>
-
-
-<br>
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>
-Estado impositivo
-</h2>
 
 </div>
 
@@ -3100,63 +1296,46 @@ Estado impositivo
 <tr>
 
 <th>
-Cliente
+Fecha
 </th>
 
 <th>
-IVA
+Nombre
 </th>
 
 <th>
-IIBB
+Email
 </th>
 
 <th>
-Ganancias
+Teléfono
 </th>
 
 <th>
-Monotributo
+Solicitud
 </th>
 
 <th>
 Estado
 </th>
 
+<th>
+Acción
+</th>
+
 </tr>
 
 </thead>
 
-
-<tbody>
+<tbody id="solicitudesTable">
 
 <tr>
 
-<td>
-Sin clientes cargados
-</td>
-
-<td>
-—
-</td>
-
-<td>
-—
-</td>
-
-<td>
-—
-</td>
-
-<td>
-—
-</td>
-
-<td>
-<span class="status pending">
-Pendiente
-</span>
-
+<td
+colspan="7"
+class="empty"
+>
+Cargando...
 </td>
 
 </tr>
@@ -3172,308 +1351,252 @@ Pendiente
 </section>
 
 
-
-<!-- =====================================================
-     AGRO
-===================================================== -->
+<!-- ================= CLIENTES ================= -->
 
 <section
 class="page"
-id="page-agro"
+id="page-clientes"
 >
 
+<div class="page-header">
 
-<div class="agro-header">
+<div>
 
-<h2>
-🌾 Gestión Agropecuaria
-</h2>
-
-<p>
-Seguimiento integral de la información económica,
-productiva y documental del productor.
-</p>
-
-</div>
-
-
-<div class="agro-grid">
-
-
-<div class="agro-card">
-
-<div class="icon">
-🌾
-</div>
-
-<h3>
-Campos
-</h3>
+<h1>
+Clientes
+</h1>
 
 <p>
-Establecimientos, ubicación, superficie,
-lotes y características.
-</p>
-
-</div>
-
-
-<div class="agro-card">
-
-<div class="icon">
-🚜
-</div>
-
-<h3>
-Campañas
-</h3>
-
-<p>
-Cultivos, superficie sembrada, producción
-y evolución por campaña.
-</p>
-
-</div>
-
-
-<div class="agro-card">
-
-<div class="icon">
-🐄
-</div>
-
-<h3>
-Hacienda
-</h3>
-
-<p>
-Existencias, categorías, movimientos y
-seguimiento del rodeo.
-</p>
-
-</div>
-
-
-<div class="agro-card">
-
-<div class="icon">
-🏷️
-</div>
-
-<h3>
-Caravanas
-</h3>
-
-<p>
-Identificación individual y seguimiento
-de animales.
-</p>
-
-</div>
-
-
-<div class="agro-card">
-
-<div class="icon">
-📋
-</div>
-
-<h3>
-SISA
-</h3>
-
-<p>
-Información declarada, situación y
-seguimiento documental.
-</p>
-
-</div>
-
-
-<div class="agro-card">
-
-<div class="icon">
-📊
-</div>
-
-<h3>
-Resultados
-</h3>
-
-<p>
-Ingresos, gastos, márgenes y comparativos
-por campaña.
+Clientes registrados en la base de datos.
 </p>
 
 </div>
 
 </div>
-
-
-<br>
 
 
 <div class="panel">
 
-<div class="panel-header">
+<div class="table-wrapper">
 
-<h2>
-Ficha agropecuaria
-</h2>
+<table>
 
-</div>
+<thead>
 
+<tr>
 
-<div class="form-grid">
+<th>
+Nombre
+</th>
 
+<th>
+Email
+</th>
 
-<div class="form-group">
+<th>
+CUIT
+</th>
 
-<label>
-Productor
-</label>
+<th>
+Estado
+</th>
 
-<select>
+</tr>
 
-<option>
-Seleccionar cliente
-</option>
+</thead>
 
-</select>
+<tbody id="clientsTable">
 
-</div>
+<tr>
 
-
-<div class="form-group">
-
-<label>
-Establecimiento
-</label>
-
-<input
-placeholder="Nombre del campo"
+<td
+colspan="4"
+class="empty"
 >
+Todavía no hay clientes registrados.
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 </div>
-
-
-<div class="form-group">
-
-<label>
-Ubicación
-</label>
-
-<input
-placeholder="Localidad / Provincia"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Superficie
-</label>
-
-<input
-placeholder="Hectáreas"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-SISA
-</label>
-
-<input
-placeholder="Datos / estado SISA"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Hacienda
-</label>
-
-<input
-placeholder="Cantidad / categorías"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Caravanas
-</label>
-
-<input
-placeholder="Identificación"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Campaña
-</label>
-
-<input
-placeholder="Ej. 2026/27"
->
-
-</div>
-
-
-<div class="form-group full">
-
-<label>
-Observaciones
-</label>
-
-<textarea
-placeholder="Información adicional del establecimiento..."
-></textarea>
-
-</div>
-
-</div>
-
-
-<button
-class="btn btn-gold"
-onclick="saveDemo()"
->
-
-Guardar ficha agro
-
-</button>
 
 </div>
 
 </section>
 
 
+<!-- ================= CONTABILIDAD ================= -->
 
-<!-- =====================================================
-     VENCIMIENTOS
-===================================================== -->
+<section
+class="page"
+id="page-contabilidad"
+>
+
+<div class="page-header">
+
+<div>
+
+<h1>
+Contabilidad
+</h1>
+
+<p>
+Gestión contable del estudio.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="empty">
+
+<div class="empty-icon">
+📊
+</div>
+
+La información contable se mostrará aquí
+cuando conectemos las tablas correspondientes.
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= IMPUESTOS ================= -->
+
+<section
+class="page"
+id="page-impuestos"
+>
+
+<div class="page-header">
+
+<div>
+
+<h1>
+Impuestos / ARCA
+</h1>
+
+<p>
+Información tributaria de los clientes.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="empty">
+
+<div class="empty-icon">
+🧾
+</div>
+
+Módulo preparado para conexión con la base de datos.
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= AGRO ================= -->
+
+<section
+class="page"
+id="page-agro"
+>
+
+<div class="page-header">
+
+<div>
+
+<h1>
+Agro
+</h1>
+
+<p>
+Gestión de clientes y establecimientos agropecuarios.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="grid-2">
+
+<div class="panel">
+
+<h2 style="font-family:Georgia,serif;color:var(--navy);margin-bottom:10px;">
+🌾 Campos
+</h2>
+
+<p style="font-size:12px;color:var(--muted);">
+Establecimientos, superficies y lotes.
+</p>
+
+</div>
+
+<div class="panel">
+
+<h2 style="font-family:Georgia,serif;color:var(--navy);margin-bottom:10px;">
+🚜 Campañas
+</h2>
+
+<p style="font-size:12px;color:var(--muted);">
+Cultivos, producción y resultados.
+</p>
+
+</div>
+
+<div class="panel">
+
+<h2 style="font-family:Georgia,serif;color:var(--navy);margin-bottom:10px;">
+🐄 Hacienda
+</h2>
+
+<p style="font-size:12px;color:var(--muted);">
+Existencias y movimientos.
+</p>
+
+</div>
+
+<div class="panel">
+
+<h2 style="font-family:Georgia,serif;color:var(--navy);margin-bottom:10px;">
+🏷️ Caravanas
+</h2>
+
+<p style="font-size:12px;color:var(--muted);">
+Identificación individual.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= VENCIMIENTOS ================= -->
 
 <section
 class="page"
 id="page-vencimientos"
 >
-
 
 <div class="page-header">
 
@@ -3484,146 +1607,22 @@ Vencimientos
 </h1>
 
 <p>
-Calendario general y vencimientos particulares de clientes.
-</p>
-
-</div>
-
-
-<button
-class="btn btn-gold"
-onclick="saveDemo()"
->
-
-+ Nuevo vencimiento
-
-</button>
-
-</div>
-
-
-<div class="grid-2">
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>
-Próximos
-</h2>
-
-</div>
-
-
-<div>
-
-<div class="calendar-day">
-
-<div class="calendar-date">
-
-<strong>
-—
-</strong>
-
-<span>
-fecha
-</span>
-
-</div>
-
-<div class="calendar-info">
-
-<strong>
-Sin vencimientos cargados
-</strong>
-
-<p>
-Los vencimientos aparecerán aquí.
+Calendario de obligaciones.
 </p>
 
 </div>
 
 </div>
 
-</div>
-
-</div>
-
-
 <div class="panel">
 
-<div class="panel-header">
+<div class="empty">
 
-<h2>
-Nuevo vencimiento
-</h2>
-
+<div class="empty-icon">
+📅
 </div>
 
-
-<div class="form-group">
-
-<label>
-Cliente
-</label>
-
-<select>
-
-<option>
-General
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Fecha
-</label>
-
-<input type="date">
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Obligación
-</label>
-
-<input
-placeholder="Ej. IVA"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Período
-</label>
-
-<input
-placeholder="Ej. 08/2026"
->
-
-</div>
-
-
-<button
-class="btn btn-gold"
-onclick="saveDemo()"
->
-
-Guardar vencimiento
-
-</button>
+Todavía no hay vencimientos cargados.
 
 </div>
 
@@ -3632,157 +1631,12 @@ Guardar vencimiento
 </section>
 
 
-
-<!-- =====================================================
-     COMPARATIVOS
-===================================================== -->
-
-<section
-class="page"
-id="page-comparativos"
->
-
-
-<div class="page-header">
-
-<div>
-
-<h1>
-Comparativos
-</h1>
-
-<p>
-Análisis de evolución económica de los clientes.
-</p>
-
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>
-Comparativo de períodos
-</h2>
-
-</div>
-
-
-<div class="form-grid">
-
-
-<div class="form-group">
-
-<label>
-Cliente
-</label>
-
-<select>
-
-<option>
-Seleccionar cliente
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Comparar
-</label>
-
-<select>
-
-<option>
-Año actual vs. año anterior
-</option>
-
-<option>
-Mes actual vs. mes anterior
-</option>
-
-<option>
-Campaña actual vs. campaña anterior
-</option>
-
-</select>
-
-</div>
-
-</div>
-
-
-<div class="chart">
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-—
-</div>
-
-<div
-class="bar"
-style="height:45%"
-></div>
-
-<div class="bar-label">
-Período 1
-</div>
-
-</div>
-
-
-<div class="bar-column">
-
-<div class="bar-value">
-—
-</div>
-
-<div
-class="bar income"
-style="height:70%"
-></div>
-
-<div class="bar-label">
-Período 2
-</div>
-
-</div>
-
-</div>
-
-
-<p
-style="font-size:11px;color:var(--muted);text-align:center;"
->
-
-El gráfico se actualizará automáticamente
-cuando exista información en la base de datos.
-
-</p>
-
-</div>
-
-</section>
-
-
-
-<!-- =====================================================
-     DOCUMENTACIÓN
-===================================================== -->
+<!-- ================= DOCUMENTACIÓN ================= -->
 
 <section
 class="page"
 id="page-documentacion"
 >
-
 
 <div class="page-header">
 
@@ -3793,51 +1647,22 @@ Documentación
 </h1>
 
 <p>
-Gestión documental privada de clientes.
+Repositorio documental privado.
 </p>
 
 </div>
 
-
-<button
-class="btn btn-gold"
-onclick="saveDemo()"
->
-
-+ Cargar documento
-
-</button>
-
 </div>
-
 
 <div class="panel">
 
-<div class="panel-header">
+<div class="empty">
 
-<h2>
-Documentos
-</h2>
-
-<span>
-Repositorio privado
-</span>
-
+<div class="empty-icon">
+📁
 </div>
 
-
-<div style="text-align:center;padding:45px;color:var(--muted);font-size:12px;">
-
-📁
-
-<br><br>
-
-Todavía no hay documentos.
-
-<br>
-
-La carga de archivos se conectará posteriormente
-a un almacenamiento seguro.
+Todavía no hay documentos cargados.
 
 </div>
 
@@ -3846,16 +1671,12 @@ a un almacenamiento seguro.
 </section>
 
 
-
-<!-- =====================================================
-     AGENDA
-===================================================== -->
+<!-- ================= AGENDA ================= -->
 
 <section
 class="page"
 id="page-agenda"
 >
-
 
 <div class="page-header">
 
@@ -3871,119 +1692,17 @@ Reuniones y turnos del estudio.
 
 </div>
 
-
-<a
-href="https://calendar.google.com/"
-target="_blank"
-class="btn btn-gold"
->
-
-Abrir Google Calendar
-
-</a>
-
 </div>
-
-
-<div class="grid-2">
-
 
 <div class="panel">
 
-<div class="panel-header">
+<div class="empty">
 
-<h2>
-Agenda del estudio
-</h2>
-
-</div>
-
-
-<div style="padding:35px;text-align:center;color:var(--muted);font-size:12px;">
-
+<div class="empty-icon">
 🗓️
-
-<br><br>
-
-La integración real con Google Calendar
-se realizará en la etapa de conexión.
-
 </div>
 
-</div>
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>
-Nueva reunión
-</h2>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Cliente
-</label>
-
-<select>
-
-<option>
-Seleccionar cliente
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Fecha
-</label>
-
-<input type="date">
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Hora
-</label>
-
-<input type="time">
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Motivo
-</label>
-
-<input
-placeholder="Reunión / consulta"
->
-
-</div>
-
-
-<button
-class="btn btn-gold"
-onclick="saveDemo()"
->
-
-Guardar reunión
-
-</button>
+La agenda se conectará posteriormente.
 
 </div>
 
@@ -3992,16 +1711,12 @@ Guardar reunión
 </section>
 
 
-
-<!-- =====================================================
-     NOVEDADES
-===================================================== -->
+<!-- ================= NOVEDADES ================= -->
 
 <section
 class="page"
 id="page-novedades"
 >
-
 
 <div class="page-header">
 
@@ -4012,133 +1727,22 @@ Novedades
 </h1>
 
 <p>
-Contenido que podrás publicar en la web pública.
+Publicaciones del Estudio Iglesias.
 </p>
 
 </div>
 
-
-<button
-class="btn btn-gold"
-onclick="saveDemo()"
->
-
-+ Nueva noticia
-
-</button>
-
 </div>
-
-
-<div class="grid-2">
-
 
 <div class="panel">
 
-<div class="panel-header">
+<div class="empty">
 
-<h2>
-Crear novedad
-</h2>
-
+<div class="empty-icon">
+📰
 </div>
 
-
-<div class="form-group">
-
-<label>
-Título
-</label>
-
-<input
-placeholder="Título de la publicación"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Categoría
-</label>
-
-<select>
-
-<option>
-Actualidad tributaria
-</option>
-
-<option>
-Agro
-</option>
-
-<option>
-Entrevistas
-</option>
-
-<option>
-Estudio
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-Contenido
-</label>
-
-<textarea
-placeholder="Escribí la novedad..."
-></textarea>
-
-</div>
-
-
-<button
-class="btn btn-gold"
-onclick="saveDemo()"
->
-
-Guardar borrador
-
-</button>
-
-</div>
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>
-Publicaciones
-</h2>
-
-</div>
-
-
-<div class="news-item">
-
-<div class="news-date">
-Sin publicaciones
-</div>
-
-<h3>
-Todavía no hay novedades
-</h3>
-
-<p>
-Las publicaciones que cargues aparecerán
-en este panel y posteriormente podrán
-mostrarse en la web pública.
-</p>
-
-</div>
+Todavía no hay publicaciones.
 
 </div>
 
@@ -4147,136 +1751,12 @@ mostrarse en la web pública.
 </section>
 
 
-
-<!-- =====================================================
-     SEGURIDAD
-===================================================== -->
-
-<section
-class="page"
-id="page-seguridad"
->
-
-
-<div class="page-header">
-
-<div>
-
-<h1>
-Seguridad
-</h1>
-
-<p>
-Configuración de seguridad de tu cuenta.
-</p>
-
-</div>
-
-</div>
-
-
-<div class="grid-2">
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>
-🔐 Verificación en dos pasos
-</h2>
-
-</div>
-
-
-<p
-style="font-size:13px;color:var(--muted);margin-bottom:20px;"
->
-
-La cuenta de administración deberá utilizar
-un segundo factor de autenticación.
-
-</p>
-
-
-<span class="status pending">
-Pendiente de configuración
-</span>
-
-<br><br>
-
-
-<button
-class="btn btn-gold"
-onclick="saveDemo()"
->
-
-Configurar 2FA
-
-</button>
-
-</div>
-
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2>
-🛡️ Sesiones
-</h2>
-
-</div>
-
-
-<p
-style="font-size:13px;color:var(--muted);"
->
-
-En la versión segura podrás consultar los
-dispositivos y sesiones activas de tu cuenta.
-
-</p>
-
-</div>
-
-
-</div>
-
-
-<br>
-
-
-<div class="security-card">
-
-<h3>
-Información sensible
-</h3>
-
-<p>
-
-El sistema final deberá aplicar permisos,
-cifrado, autenticación, control de sesiones,
-copias de seguridad y separación estricta
-entre los datos de cada cliente.
-
-</p>
-
-</div>
-
-</section>
-
-
-
-<!-- =====================================================
-     CONFIGURACIÓN
-===================================================== -->
+<!-- ================= CONFIGURACIÓN ================= -->
 
 <section
 class="page"
 id="page-configuracion"
 >
-
 
 <div class="page-header">
 
@@ -4287,19 +1767,16 @@ Configuración
 </h1>
 
 <p>
-Datos generales del Estudio Contable Iglesias.
+Datos generales del estudio.
 </p>
 
 </div>
 
 </div>
 
-
 <div class="panel">
 
-
 <div class="form-grid">
-
 
 <div class="form-group">
 
@@ -4313,7 +1790,6 @@ value="María Sol Iglesias"
 
 </div>
 
-
 <div class="form-group">
 
 <label>
@@ -4325,7 +1801,6 @@ value="Estudio Contable Iglesias"
 >
 
 </div>
-
 
 <div class="form-group">
 
@@ -4339,7 +1814,6 @@ value="econtablesoliglesias@gmail.com"
 
 </div>
 
-
 <div class="form-group">
 
 <label>
@@ -4352,59 +1826,7 @@ value="2395 472873"
 
 </div>
 
-
-<div class="form-group">
-
-<label>
-Instagram
-</label>
-
-<input
-value="@contadora.soliglesias"
->
-
 </div>
-
-
-<div class="form-group">
-
-<label>
-Dirección
-</label>
-
-<input
-value="Monseñor D Andrea 363"
->
-
-</div>
-
-
-<div class="form-group full">
-
-<label>
-Presentación
-</label>
-
-<textarea>
-
-Estudio Contable Iglesias — María Sol Iglesias.
-Contadora Pública.
-
-</textarea>
-
-</div>
-
-</div>
-
-
-<button
-class="btn btn-gold"
-onclick="saveDemo()"
->
-
-Guardar configuración
-
-</button>
 
 </div>
 
@@ -4416,8 +1838,1231 @@ Guardar configuración
 </div>
 
 
+<div
+id="message"
+class="message"
+></div>
+
 
 <script>
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+"https://lpjzhjftgmlcpjyrkqfl.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_XJPVuprbVeoyev-rv7WsZg_h-D63Xf2";
+
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* =====================================================
+   UTILIDADES
+===================================================== */
+
+function showMessage(text,type="success"){
+
+    const box =
+        document.getElementById("message");
+
+    box.textContent = text;
+
+    box.className =
+        "message show " + type;
+
+    setTimeout(()=>{
+        box.className = "message";
+    },4000);
+}
+
+
+function escapeHTML(value){
+
+    if(value === null || value === undefined){
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+function formatDate(value){
+
+    if(!value){
+        return "—";
+    }
+
+    try{
+
+        return new Date(value)
+            .toLocaleString(
+                "es-AR",
+                {
+                    dateStyle:"short",
+                    timeStyle:"short"
+                }
+            );
+
+    }catch{
+        return value;
+    }
+}
+
+
+function getValue(row,names){
+
+    for(const name of names){
+
+        if(
+            row &&
+            row[name] !== undefined &&
+            row[name] !== null &&
+            row[name] !== ""
+        ){
+
+            return row[name];
+
+        }
+
+    }
+
+    return "";
+
+}
+
+
+function getStatus(row){
+
+    return getValue(
+        row,
+        [
+            "status",
+            "estado",
+            "state"
+        ]
+    ) || "new";
+
+}
+
+
+function statusLabel(status){
+
+    const s =
+        String(status)
+        .toLowerCase();
+
+    if(
+        s === "new" ||
+        s === "nuevo" ||
+        s === "nueva"
+    ){
+        return "Nueva";
+    }
+
+    if(
+        s === "review" ||
+        s === "revisar" ||
+        s === "en_revision"
+    ){
+        return "En revisión";
+    }
+
+    if(
+        s === "done" ||
+        s === "respondida" ||
+        s === "respondido"
+    ){
+        return "Respondida";
+    }
+
+    if(
+        s === "closed" ||
+        s === "cerrada" ||
+        s === "cerrado"
+    ){
+        return "Cerrada";
+    }
+
+    return status;
+}
+
+
+function statusClass(status){
+
+    const s =
+        String(status)
+        .toLowerCase();
+
+    if(
+        s === "new" ||
+        s === "nuevo" ||
+        s === "nueva"
+    ){
+        return "new";
+    }
+
+    if(
+        s === "review" ||
+        s === "revisar" ||
+        s === "en_revision"
+    ){
+        return "review";
+    }
+
+    if(
+        s === "done" ||
+        s === "respondida" ||
+        s === "respondido"
+    ){
+        return "done";
+    }
+
+    return "closed";
+}
+
+
+/* =====================================================
+   CONEXIÓN
+===================================================== */
+
+async function testConnection(){
+
+    const dot =
+        document.getElementById("connectionDot");
+
+    const text =
+        document.getElementById("connectionText");
+
+    const status =
+        document.getElementById("databaseStatus");
+
+    try{
+
+        const result =
+            await supabaseClient
+                .from("questions")
+                .select("*")
+                .limit(1);
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+        dot.classList.add("online");
+
+        text.textContent =
+            "Supabase conectado";
+
+        status.innerHTML =
+            "🟢 <strong>Supabase conectado correctamente.</strong><br><br>" +
+            "La administración puede consultar la información disponible.";
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "Error de conexión:",
+            error
+        );
+
+        dot.classList.add("error");
+
+        text.textContent =
+            "Error de conexión";
+
+        status.innerHTML =
+            "🔴 <strong>No se pudo consultar Supabase.</strong><br><br>" +
+            escapeHTML(error.message || error);
+
+        return false;
+
+    }
+
+}
+
+
+/* =====================================================
+   CONSULTAS
+===================================================== */
+
+async function loadConsultas(){
+
+    const table =
+        document.getElementById("consultasTable");
+
+    const recent =
+        document.getElementById("recentConsultas");
+
+    table.innerHTML =
+        `<tr>
+            <td colspan="7" class="empty">
+                Cargando consultas...
+            </td>
+        </tr>`;
+
+    try{
+
+        const {data,error} =
+            await supabaseClient
+                .from("questions")
+                .select("*")
+                .order("created_at",{ascending:false});
+
+        if(error){
+            throw error;
+        }
+
+        const rows =
+            data || [];
+
+        document.getElementById(
+            "totalConsultas"
+        ).textContent =
+            rows.length;
+
+        document.getElementById(
+            "consultasCount"
+        ).textContent =
+            `${rows.length} registros`;
+
+        updateBadge(
+            "consultasBadge",
+            rows
+        );
+
+        if(rows.length === 0){
+
+            table.innerHTML =
+                `<tr>
+                    <td colspan="7" class="empty">
+                        <div class="empty-icon">📩</div>
+                        No hay consultas recibidas todavía.
+                    </td>
+                </tr>`;
+
+            recent.innerHTML =
+                `<div class="empty">
+                    <div class="empty-icon">📩</div>
+                    No hay consultas recibidas.
+                </div>`;
+
+            return;
+
+        }
+
+
+        table.innerHTML =
+            rows.map(row=>{
+
+                const id =
+                    getValue(
+                        row,
+                        ["id"]
+                    );
+
+                const name =
+                    getValue(
+                        row,
+                        [
+                            "name",
+                            "nombre",
+                            "full_name",
+                            "nombre_apellido"
+                        ]
+                    ) || "Sin nombre";
+
+                const email =
+                    getValue(
+                        row,
+                        [
+                            "email",
+                            "correo"
+                        ]
+                    ) || "—";
+
+                const phone =
+                    getValue(
+                        row,
+                        [
+                            "phone",
+                            "telefono",
+                            "tel"
+                        ]
+                    ) || "—";
+
+                const message =
+                    getValue(
+                        row,
+                        [
+                            "message",
+                            "mensaje",
+                            "consulta",
+                            "question"
+                        ]
+                    ) || "—";
+
+                const status =
+                    getStatus(row);
+
+                const date =
+                    getValue(
+                        row,
+                        [
+                            "created_at",
+                            "createdAt",
+                            "fecha"
+                        ]
+                    );
+
+
+                return `
+                <tr>
+
+                    <td>
+                        ${escapeHTML(formatDate(date))}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${escapeHTML(name)}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(email)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(phone)}
+                    </td>
+
+                    <td style="max-width:300px;">
+                        ${escapeHTML(message)}
+                    </td>
+
+                    <td>
+                        <span class="status ${statusClass(status)}">
+                            ${escapeHTML(statusLabel(status))}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        ${
+                            id
+                            ?
+                            `
+                            <select
+                                onchange="updateQuestionStatus('${escapeHTML(id)}',this.value)"
+                                style="width:auto;min-width:120px;padding:7px;"
+                            >
+
+                                <option
+                                    value="new"
+                                    ${status==="new"?"selected":""}
+                                >
+                                    Nueva
+                                </option>
+
+                                <option
+                                    value="review"
+                                    ${status==="review"?"selected":""}
+                                >
+                                    En revisión
+                                </option>
+
+                                <option
+                                    value="done"
+                                    ${status==="done"?"selected":""}
+                                >
+                                    Respondida
+                                </option>
+
+                                <option
+                                    value="closed"
+                                    ${status==="closed"?"selected":""}
+                                >
+                                    Cerrada
+                                </option>
+
+                            </select>
+                            `
+                            :
+                            "—"
+                        }
+
+                    </td>
+
+                </tr>
+                `;
+
+            }).join("");
+
+
+        recent.innerHTML =
+            rows
+            .slice(0,5)
+            .map(row=>{
+
+                const name =
+                    getValue(
+                        row,
+                        [
+                            "name",
+                            "nombre",
+                            "full_name"
+                        ]
+                    ) || "Sin nombre";
+
+                const message =
+                    getValue(
+                        row,
+                        [
+                            "message",
+                            "mensaje",
+                            "consulta",
+                            "question"
+                        ]
+                    ) || "";
+
+                return `
+                <div
+                    style="
+                    padding:12px 0;
+                    border-bottom:1px solid var(--border);
+                    "
+                >
+
+                    <strong
+                        style="
+                        font-size:12px;
+                        color:var(--navy);
+                        "
+                    >
+                        ${escapeHTML(name)}
+                    </strong>
+
+                    <p
+                        style="
+                        font-size:11px;
+                        color:var(--muted);
+                        margin-top:4px;
+                        "
+                    >
+                        ${escapeHTML(message).substring(0,120)}
+                    </p>
+
+                </div>
+                `;
+
+            })
+            .join("");
+
+    }catch(error){
+
+        console.error(
+            "Error consultas:",
+            error
+        );
+
+        table.innerHTML =
+            `<tr>
+                <td colspan="7" class="empty">
+                    <div class="empty-icon">⚠️</div>
+                    No se pudieron cargar las consultas.<br><br>
+                    ${escapeHTML(error.message || error)}
+                </td>
+            </tr>`;
+
+        recent.innerHTML =
+            `<div class="empty">
+                ⚠️ Error al consultar Supabase.
+            </div>`;
+
+    }
+
+}
+
+
+/* =====================================================
+   SOLICITUDES
+===================================================== */
+
+async function loadSolicitudes(){
+
+    const table =
+        document.getElementById("solicitudesTable");
+
+    const recent =
+        document.getElementById("recentSolicitudes");
+
+    table.innerHTML =
+        `<tr>
+            <td colspan="7" class="empty">
+                Cargando solicitudes...
+            </td>
+        </tr>`;
+
+    try{
+
+        const {data,error} =
+            await supabaseClient
+                .from("client_requests")
+                .select("*")
+                .order("created_at",{ascending:false});
+
+        if(error){
+            throw error;
+        }
+
+        const rows =
+            data || [];
+
+        document.getElementById(
+            "totalSolicitudes"
+        ).textContent =
+            rows.length;
+
+        document.getElementById(
+            "solicitudesCount"
+        ).textContent =
+            `${rows.length} registros`;
+
+        updateBadge(
+            "solicitudesBadge",
+            rows
+        );
+
+
+        if(rows.length === 0){
+
+            table.innerHTML =
+                `<tr>
+                    <td colspan="7" class="empty">
+
+                        <div class="empty-icon">
+                            📋
+                        </div>
+
+                        No hay solicitudes recibidas todavía.
+
+                    </td>
+                </tr>`;
+
+            recent.innerHTML =
+                `<div class="empty">
+
+                    <div class="empty-icon">
+                        📋
+                    </div>
+
+                    No hay solicitudes recibidas.
+
+                </div>`;
+
+            return;
+
+        }
+
+
+        table.innerHTML =
+            rows.map(row=>{
+
+                const id =
+                    getValue(
+                        row,
+                        ["id"]
+                    );
+
+                const name =
+                    getValue(
+                        row,
+                        [
+                            "name",
+                            "nombre",
+                            "full_name",
+                            "nombre_apellido"
+                        ]
+                    ) || "Sin nombre";
+
+                const email =
+                    getValue(
+                        row,
+                        [
+                            "email",
+                            "correo"
+                        ]
+                    ) || "—";
+
+                const phone =
+                    getValue(
+                        row,
+                        [
+                            "phone",
+                            "telefono",
+                            "tel"
+                        ]
+                    ) || "—";
+
+                const request =
+                    getValue(
+                        row,
+                        [
+                            "request",
+                            "solicitud",
+                            "message",
+                            "mensaje",
+                            "service",
+                            "servicio",
+                            "tipo"
+                        ]
+                    ) || "—";
+
+                const status =
+                    getStatus(row);
+
+                const date =
+                    getValue(
+                        row,
+                        [
+                            "created_at",
+                            "createdAt",
+                            "fecha"
+                        ]
+                    );
+
+
+                return `
+                <tr>
+
+                    <td>
+                        ${escapeHTML(formatDate(date))}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${escapeHTML(name)}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(email)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(phone)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(request)}
+                    </td>
+
+                    <td>
+
+                        <span class="status ${statusClass(status)}">
+                            ${escapeHTML(statusLabel(status))}
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        ${
+                            id
+                            ?
+                            `
+                            <select
+                                onchange="updateRequestStatus('${escapeHTML(id)}',this.value)"
+                                style="width:auto;min-width:120px;padding:7px;"
+                            >
+
+                                <option
+                                    value="new"
+                                    ${status==="new"?"selected":""}
+                                >
+                                    Nueva
+                                </option>
+
+                                <option
+                                    value="review"
+                                    ${status==="review"?"selected":""}
+                                >
+                                    En revisión
+                                </option>
+
+                                <option
+                                    value="done"
+                                    ${status==="done"?"selected":""}
+                                >
+                                    Respondida
+                                </option>
+
+                                <option
+                                    value="closed"
+                                    ${status==="closed"?"selected":""}
+                                >
+                                    Cerrada
+                                </option>
+
+                            </select>
+                            `
+                            :
+                            "—"
+                        }
+
+                    </td>
+
+                </tr>
+                `;
+
+            }).join("");
+
+
+        recent.innerHTML =
+            rows
+            .slice(0,5)
+            .map(row=>{
+
+                const name =
+                    getValue(
+                        row,
+                        [
+                            "name",
+                            "nombre",
+                            "full_name"
+                        ]
+                    ) || "Sin nombre";
+
+                const request =
+                    getValue(
+                        row,
+                        [
+                            "request",
+                            "solicitud",
+                            "message",
+                            "mensaje",
+                            "service",
+                            "servicio"
+                        ]
+                    ) || "";
+
+                return `
+                <div
+                    style="
+                    padding:12px 0;
+                    border-bottom:1px solid var(--border);
+                    "
+                >
+
+                    <strong
+                        style="
+                        font-size:12px;
+                        color:var(--navy);
+                        "
+                    >
+                        ${escapeHTML(name)}
+                    </strong>
+
+                    <p
+                        style="
+                        font-size:11px;
+                        color:var(--muted);
+                        margin-top:4px;
+                        "
+                    >
+                        ${escapeHTML(request).substring(0,120)}
+                    </p>
+
+                </div>
+                `;
+
+            })
+            .join("");
+
+
+    }catch(error){
+
+        console.error(
+            "Error solicitudes:",
+            error
+        );
+
+        table.innerHTML =
+            `<tr>
+
+                <td colspan="7" class="empty">
+
+                    <div class="empty-icon">
+                        ⚠️
+                    </div>
+
+                    No se pudieron cargar las solicitudes.
+
+                    <br><br>
+
+                    ${escapeHTML(error.message || error)}
+
+                </td>
+
+            </tr>`;
+
+        recent.innerHTML =
+            `<div class="empty">
+                ⚠️ Error al consultar Supabase.
+            </div>`;
+
+    }
+
+}
+
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+function updateBadge(id,rows){
+
+    const badge =
+        document.getElementById(id);
+
+    if(!badge){
+        return;
+    }
+
+    const pending =
+        rows.filter(row=>{
+
+            const status =
+                getStatus(row);
+
+            return (
+                status === "new" ||
+                status === "nuevo" ||
+                status === "nueva"
+            );
+
+        }).length;
+
+    if(pending > 0){
+
+        badge.style.display =
+            "flex";
+
+        badge.textContent =
+            pending;
+
+    }else{
+
+        badge.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   ESTADOS
+===================================================== */
+
+async function updateQuestionStatus(id,status){
+
+    try{
+
+        const {error} =
+            await supabaseClient
+                .from("questions")
+                .update({
+                    status:status
+                })
+                .eq("id",id);
+
+        if(error){
+            throw error;
+        }
+
+        showMessage(
+            "Estado de la consulta actualizado."
+        );
+
+        await loadConsultas();
+
+        updatePending();
+
+    }catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "No se pudo actualizar la consulta: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+async function updateRequestStatus(id,status){
+
+    try{
+
+        const {error} =
+            await supabaseClient
+                .from("client_requests")
+                .update({
+                    status:status
+                })
+                .eq("id",id);
+
+        if(error){
+            throw error;
+        }
+
+        showMessage(
+            "Estado de la solicitud actualizado."
+        );
+
+        await loadSolicitudes();
+
+        updatePending();
+
+    }catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "No se pudo actualizar la solicitud: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   PENDIENTES
+===================================================== */
+
+async function updatePending(){
+
+    try{
+
+        const q =
+            await supabaseClient
+                .from("questions")
+                .select("id,status");
+
+        const r =
+            await supabaseClient
+                .from("client_requests")
+                .select("id,status");
+
+        let pending = 0;
+
+        if(!q.error){
+
+            pending +=
+                (q.data || [])
+                .filter(x =>
+                    !x.status ||
+                    x.status === "new" ||
+                    x.status === "nuevo" ||
+                    x.status === "nueva"
+                )
+                .length;
+
+        }
+
+        if(!r.error){
+
+            pending +=
+                (r.data || [])
+                .filter(x =>
+                    !x.status ||
+                    x.status === "new" ||
+                    x.status === "nuevo" ||
+                    x.status === "nueva"
+                )
+                .length;
+
+        }
+
+        document.getElementById(
+            "totalPendientes"
+        ).textContent =
+            pending;
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =====================================================
+   CLIENTES
+===================================================== */
+
+async function loadClientes(){
+
+    const table =
+        document.getElementById(
+            "clientsTable"
+        );
+
+    try{
+
+        const {data,error} =
+            await supabaseClient
+                .from("clients")
+                .select("*")
+                .order("created_at",{ascending:false});
+
+        if(error){
+
+            table.innerHTML =
+                `<tr>
+                    <td colspan="4" class="empty">
+                        No se pudo consultar la tabla de clientes.
+                    </td>
+                </tr>`;
+
+            return;
+
+        }
+
+        const rows =
+            data || [];
+
+        document.getElementById(
+            "totalClientes"
+        ).textContent =
+            rows.length;
+
+        if(rows.length === 0){
+
+            table.innerHTML =
+                `<tr>
+                    <td colspan="4" class="empty">
+                        Todavía no hay clientes registrados.
+                    </td>
+                </tr>`;
+
+            return;
+
+        }
+
+        table.innerHTML =
+            rows.map(row=>{
+
+                const name =
+                    getValue(
+                        row,
+                        [
+                            "name",
+                            "nombre",
+                            "full_name"
+                        ]
+                    ) || "—";
+
+                const email =
+                    getValue(
+                        row,
+                        [
+                            "email",
+                            "correo"
+                        ]
+                    ) || "—";
+
+                const cuit =
+                    getValue(
+                        row,
+                        [
+                            "cuit",
+                            "CUIT"
+                        ]
+                    ) || "—";
+
+                const status =
+                    getStatus(row);
+
+                return `
+                <tr>
+
+                    <td>
+                        <strong>
+                            ${escapeHTML(name)}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(email)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(cuit)}
+                    </td>
+
+                    <td>
+                        <span class="status ${statusClass(status)}">
+                            ${escapeHTML(statusLabel(status))}
+                        </span>
+                    </td>
+
+                </tr>
+                `;
+
+            }).join("");
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+async function refreshDashboard(){
+
+    await Promise.all([
+        loadConsultas(),
+        loadSolicitudes(),
+        loadClientes()
+    ]);
+
+    await updatePending();
+
+    showMessage(
+        "Panel actualizado."
+    );
+
+}
 
 
 /* =====================================================
@@ -4426,116 +3071,94 @@ Guardar configuración
 
 function showPage(page,button){
 
-document
-.querySelectorAll(".page")
-.forEach(p=>{
+    document
+        .querySelectorAll(".page")
+        .forEach(p=>{
+            p.classList.remove("active");
+        });
 
-p.classList.remove("active");
+    const target =
+        document.getElementById(
+            "page-"+page
+        );
 
-});
+    if(target){
+        target.classList.add("active");
+    }
 
+    document
+        .querySelectorAll(".menu button")
+        .forEach(b=>{
+            b.classList.remove("active");
+        });
 
-const target =
-document.getElementById("page-"+page);
+    if(button){
+        button.classList.add("active");
+    }
 
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 
-if(target){
-
-target.classList.add("active");
-
-}
-
-
-document
-.querySelectorAll(".menu button")
-.forEach(b=>{
-
-b.classList.remove("active");
-
-});
-
-
-if(button){
-
-button.classList.add("active");
-
-}
-
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-
-document
-.getElementById("sidebar")
-.classList.remove("open");
+    document
+        .getElementById("sidebar")
+        .classList.remove("open");
 
 }
 
 
 /* =====================================================
-   SIDEBAR MOBILE
+   MOBILE
 ===================================================== */
 
 function toggleSidebar(){
 
-document
-.getElementById("sidebar")
-.classList.toggle("open");
+    document
+        .getElementById("sidebar")
+        .classList.toggle("open");
 
 }
 
 
 /* =====================================================
-   NUEVO CLIENTE
-===================================================== */
-
-function newClient(){
-
-showPage("cliente");
-
-alert(
-"Ficha de nuevo cliente preparada. La creación real quedará conectada a la base de datos segura."
-);
-
-}
-
-
-/* =====================================================
-   GUARDADO PROVISORIO
-===================================================== */
-
-function saveDemo(){
-
-alert(
-"Esta función está preparada para conectarse a la base de datos segura. Todavía no se guardan datos reales."
-);
-
-}
-
-
-/* =====================================================
-   LOGOUT PROVISORIO
+   LOGOUT
 ===================================================== */
 
 function logout(){
 
-if(
-confirm(
-"¿Querés salir del panel de administración?"
-)
-){
+    if(
+        confirm(
+            "¿Querés salir del panel de administración?"
+        )
+    ){
 
-window.location.href="../";
+        window.location.href="../";
+
+    }
 
 }
 
+
+/* =====================================================
+   INICIO
+===================================================== */
+
+async function init(){
+
+    await testConnection();
+
+    await refreshDashboard();
+
 }
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    init
+);
 
 </script>
-
 
 </body>
 
