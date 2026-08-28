@@ -2025,101 +2025,117 @@ Solicitar contacto </button>
 FORMULARIO CONSULTAS
 ========================= -->
 
+```html
 <div class="form-box">
 
-<h3 data-i18n="questionFormTitle">
-Hacer una consulta
-</h3>
+    <h3 data-i18n="questionFormTitle">
+        Hacer una consulta
+    </h3>
 
-<form id="questionForm">
+    <form id="questionForm">
 
-<label data-i18n="nameLabelShort">
-Nombre
-</label>
+        <label data-i18n="nameLabelShort">
+            Nombre
+        </label>
 
-<input
-type="text"
-name="nombre"
-required
+        <input
+            type="text"
+            name="nombre"
+            required
+        >
 
->
+        <label data-i18n="emailLabel">
+            Email
+        </label>
 
-<label data-i18n="emailLabel">
-Email
-</label>
+        <input
+            type="email"
+            name="email"
+            required
+        >
 
-<input
-type="email"
-name="email"
-required
+        <label data-i18n="topicLabel">
+            Tema
+        </label>
 
->
+        <select
+            name="tema"
+            required
+        >
 
-<label data-i18n="topicLabel">
-Tema
-</label>
+            <option
+                value=""
+                data-i18n="selectTopic"
+            >
+                Seleccionar
+            </option>
 
-<select
-name="tema"
-required
+            <option
+                value="Contabilidad"
+                data-i18n="topicAccounting"
+            >
+                Contabilidad
+            </option>
 
->
+            <option
+                value="Impuestos"
+                data-i18n="topicTaxes"
+            >
+                Impuestos
+            </option>
 
-<option value="" data-i18n="selectTopic">
-Seleccionar
-</option>
+            <option
+                value="Agro"
+                data-i18n="topicAgro"
+            >
+                Agro
+            </option>
 
-<option value="Contabilidad" data-i18n="topicAccounting">
-Contabilidad
-</option>
+            <option
+                value="Monotributo"
+                data-i18n="topicMono"
+            >
+                Monotributo
+            </option>
 
-<option value="Impuestos" data-i18n="topicTaxes">
-Impuestos
-</option>
+            <option
+                value="Empresas"
+                data-i18n="topicCompanies"
+            >
+                Empresas
+            </option>
 
-<option value="Agro" data-i18n="topicAgro">
-Agro
-</option>
+            <option
+                value="Otro"
+                data-i18n="topicOther"
+            >
+                Otro
+            </option>
 
-<option value="Monotributo" data-i18n="topicMono">
-Monotributo
-</option>
+        </select>
 
-<option value="Empresas" data-i18n="topicCompanies">
-Empresas
-</option>
+        <label data-i18n="questionLabel">
+            Consulta
+        </label>
 
-<option value="Otro" data-i18n="topicOther">
-Otro
-</option>
+        <textarea
+            name="consulta"
+            required
+        ></textarea>
 
-</select>
+        <button
+            type="submit"
+            class="btn gold"
+            data-i18n="sendQuestionButton"
+        >
+            Enviar consulta
+        </button>
 
-<label data-i18n="questionLabel">
-Consulta
-</label>
-
-<textarea
-name="consulta"
-required
-></textarea>
-
-<button
-type="submit"
-class="btn gold"
-data-i18n="sendQuestionButton"
-
->
-
-Enviar consulta </button>
-
-</form>
+    </form>
 
 </div>
+```
 
-</div>
-
-</div>
 
 </section>
 
